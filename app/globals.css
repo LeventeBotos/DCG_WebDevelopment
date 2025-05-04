@@ -58,88 +58,44 @@
   }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
+/* Futuristic animations */
+@keyframes shimmer {
   0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
+    transform: translateX(-100%);
   }
   100% {
-    transform: translateY(0px);
+    transform: translateX(100%);
   }
 }
 
-/* Cartoon-style animations */
-.cartoon-bounce {
-  animation: cartoon-bounce 2s ease-in-out infinite;
-}
-
-@keyframes cartoon-bounce {
+@keyframes pulse-glow {
   0%,
   100% {
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-  }
-  50% {
-    transform: translateY(-25px);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  }
-}
-
-.cartoon-wiggle {
-  animation: cartoon-wiggle 2s ease-in-out infinite;
-}
-
-@keyframes cartoon-wiggle {
-  0%,
-  100% {
-    transform: rotate(-3deg);
-  }
-  50% {
-    transform: rotate(3deg);
-  }
-}
-
-.cartoon-pulse {
-  animation: cartoon-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes cartoon-pulse {
-  0%,
-  100% {
-    opacity: 1;
+    opacity: 0.5;
     transform: scale(1);
   }
   50% {
     opacity: 0.8;
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 }
 
-/* Blob animation */
-.blob {
-  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-  animation: blob-animation 8s linear infinite;
-}
-
-@keyframes blob-animation {
+@keyframes float {
   0%,
   100% {
-    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-  }
-  25% {
-    border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%;
+    transform: translateY(0);
   }
   50% {
-    border-radius: 30% 70% 70% 30% / 53% 51% 49% 47%;
+    transform: translateY(-10px);
   }
-  75% {
-    border-radius: 66% 34% 33% 67% / 65% 73% 27% 35%;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -160,4 +116,56 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Futuristic grid background */
+.grid-background {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glassmorphism */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Futuristic text glow */
+.text-glow {
+  text-shadow: 0 0 10px rgba(0, 51, 102, 0.5), 0 0 20px rgba(0, 51, 102, 0.3);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 10px rgba(0, 102, 68, 0.5), 0 0 20px rgba(0, 102, 68, 0.3);
+}
+
+/* Animated border */
+.animated-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.animated-border::after {
+  content: "";
+  position: absolute;
+  top: -100%;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite 0.5s;
 }

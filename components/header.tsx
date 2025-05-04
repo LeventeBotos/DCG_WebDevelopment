@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "./mode-toggle"
+import { FuturisticButton } from "./futuristic-button"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -45,12 +44,10 @@ export default function Header() {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? "border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-          : "bg-transparent"
+        isScrolled ? "backdrop-blur-md bg-white/10 border-b border-white/10" : "bg-transparent"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-20 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
             <motion.div
@@ -67,12 +64,12 @@ export default function Header() {
               />
             </motion.div>
             <motion.span
-              className="hidden font-bold sm:inline-block text-primary"
+              className="hidden font-bold sm:inline-block text-primary text-xl"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              Data Consulting Group Ltd
+              Data Consulting Group
             </motion.span>
           </Link>
         </div>
@@ -84,7 +81,7 @@ export default function Header() {
                 <div>
                   <button
                     onClick={() => toggleDropdown(item.label)}
-                    className="group flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors hover:text-primary"
+                    className="group flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors hover:text-primary"
                   >
                     {item.label}
                     <ChevronDown
@@ -98,16 +95,17 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute left-0 top-full z-10 mt-1 w-48 rounded-md border bg-background shadow-lg"
+                        className="absolute left-0 top-full z-10 mt-1 w-48 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md shadow-lg"
                       >
                         <div className="py-1">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.label}
                               href={dropdownItem.href}
-                              className="block px-4 py-2 text-sm hover:bg-muted"
+                              className="flex items-center px-4 py-2 text-sm hover:bg-white/10 transition-colors"
                               onClick={() => setActiveDropdown(null)}
                             >
+                              <ChevronRight className="mr-2 h-3 w-3 text-primary" />
                               {dropdownItem.label}
                             </Link>
                           ))}
@@ -122,8 +120,12 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
                 >
-                  <Link href={item.href} className="px-3 py-2 text-sm font-medium transition-colors hover:text-primary">
+                  <Link
+                    href={item.href}
+                    className="relative px-4 py-2 text-sm font-medium transition-colors hover:text-primary group"
+                  >
                     {item.label}
+                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   </Link>
                 </motion.div>
               )}
@@ -132,12 +134,15 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ModeToggle />
-          <Button asChild className="hidden md:flex">
+          <FuturisticButton asChild className="hidden md:flex">
             <Link href="/contact">Get Started</Link>
-          </Button>
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </FuturisticButton>
+          <button
+            className="md:hidden flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -151,7 +156,7 @@ export default function Header() {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-4 rounded-xl border border-white/10 bg-white/10 backdrop-blur-md p-4">
               {navItems.map((item, index) => (
                 <div key={item.label}>
                   {item.dropdown ? (
@@ -174,18 +179,19 @@ export default function Header() {
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="ml-4 space-y-2 border-l pl-4"
+                            className="ml-4 space-y-2 border-l border-white/10 pl-4"
                           >
                             {item.dropdown.map((dropdownItem) => (
                               <Link
                                 key={dropdownItem.label}
                                 href={dropdownItem.href}
-                                className="block text-sm text-muted-foreground hover:text-foreground"
+                                className="flex items-center text-sm text-muted-foreground hover:text-foreground"
                                 onClick={() => {
                                   setActiveDropdown(null)
                                   setIsMenuOpen(false)
                                 }}
                               >
+                                <ChevronRight className="mr-2 h-3 w-3 text-primary" />
                                 {dropdownItem.label}
                               </Link>
                             ))}
@@ -204,11 +210,11 @@ export default function Header() {
                   )}
                 </div>
               ))}
-              <Button asChild className="w-full">
+              <FuturisticButton asChild className="w-full mt-2">
                 <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
                   Get Started
                 </Link>
-              </Button>
+              </FuturisticButton>
             </nav>
           </motion.div>
         )}

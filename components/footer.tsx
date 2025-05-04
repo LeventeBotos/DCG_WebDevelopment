@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react"
 import { motion } from "framer-motion"
-import AnimatedBlob from "./animated-blob"
+import FuturisticBlob from "./futuristic-blob"
 
 export default function Footer() {
   const footerLinks = [
@@ -46,13 +46,22 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative overflow-hidden bg-primary text-primary-foreground">
+    <footer className="relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 text-white">
       <div className="absolute inset-0 pointer-events-none">
-        <AnimatedBlob className="-left-40 -top-40" color="#006644" opacity={0.05} size={500} />
-        <AnimatedBlob className="-right-40 -bottom-40" color="#003366" opacity={0.05} size={500} />
+        <FuturisticBlob className="-left-40 -top-40" color="#006644" opacity={0.1} size={500} blur={80} />
+        <FuturisticBlob className="-right-40 -bottom-40" color="#003366" opacity={0.1} size={500} blur={80} />
       </div>
 
-      <div className="container relative z-10 py-12 md:py-16">
+      {/* Grid pattern overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-10"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)`,
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      <div className="container relative z-10 py-16">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <motion.div
@@ -62,16 +71,12 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
             >
               <Link href="/" className="flex items-center space-x-2 mb-6">
-                <Image
-                  src="/placeholder.svg?height=40&width=40"
-                  alt="DCG Logo"
-                  width={40}
-                  height={40}
-                  className="h-10 w-auto"
-                />
+                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm">
+                  <Image src="/placeholder.svg?height=40&width=40" alt="DCG Logo" fill className="object-cover" />
+                </div>
                 <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
-              <p className="max-w-xs mb-6">
+              <p className="max-w-xs mb-6 text-white/80">
                 We create innovative digital solutions by providing expertise in Software Development, Data Science and
                 Artificial Intelligence.
               </p>
@@ -82,7 +87,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
                     aria-label={link.label}
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -116,7 +121,7 @@ export default function Footer() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: 0.05 * linkIndex + 0.2 * sectionIndex }}
                   >
-                    <Link href={link.href} className="hover:underline">
+                    <Link href={link.href} className="text-white/80 hover:text-white transition-colors hover:underline">
                       {link.label}
                     </Link>
                   </motion.li>
@@ -127,32 +132,32 @@ export default function Footer() {
         </div>
 
         <motion.div
-          className="mt-12 pt-8 border-t border-primary-foreground/20"
+          className="mt-16 pt-8 border-t border-white/20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="space-y-2">
+            <div className="space-y-2 text-white/80">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 <span>London, United Kingdom</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:info@dataconsultinggroup.co.uk" className="hover:underline">
+                <a href="mailto:info@dataconsultinggroup.co.uk" className="hover:text-white transition-colors">
                   info@dataconsultinggroup.co.uk
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <a href="tel:+441234567890" className="hover:underline">
+                <a href="tel:+441234567890" className="hover:text-white transition-colors">
                   +44 123 456 7890
                 </a>
               </div>
             </div>
-            <div className="text-right text-sm">
+            <div className="text-right text-sm text-white/60">
               <p>&copy; {new Date().getFullYear()} Data Consulting Group Ltd. All rights reserved.</p>
             </div>
           </div>
