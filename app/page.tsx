@@ -1,14 +1,23 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { ArrowRight, BarChart3, Brain, Database, Zap, Shield, Cpu, Server } from "lucide-react"
-import { FuturisticButton } from "@/components/futuristic-button"
-import FuturisticDataVisualization from "@/components/futuristic-data-visualization"
-import FuturisticCard from "@/components/futuristic-card"
-import FuturisticSection from "@/components/futuristic-section"
-import FuturisticHeading from "@/components/futuristic-heading"
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  BarChart3,
+  Brain,
+  Database,
+  Zap,
+  Shield,
+  Cpu,
+  Server,
+} from "lucide-react";
+import { FuturisticButton } from "@/components/futuristic-button";
+import FuturisticDataVisualization from "@/components/futuristic-data-visualization";
+import FuturisticCard from "@/components/futuristic-card";
+import FuturisticSection from "@/components/futuristic-section";
+import FuturisticHeading from "@/components/futuristic-heading";
 
 export default function Home() {
   return (
@@ -39,8 +48,8 @@ export default function Home() {
                 </span>
               </h1>
               <p className="max-w-[600px] text-slate-600 md:text-xl">
-                We create innovative digital solutions by providing expertise in Software Development, Data Science and
-                Artificial Intelligence.
+                We create innovative digital solutions by providing expertise in
+                Software Development, Data Science and Artificial Intelligence.
               </p>
             </motion.div>
             <motion.div
@@ -52,7 +61,9 @@ export default function Home() {
               <FuturisticButton
                 asChild
                 className="group"
-                icon={<ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />}
+                icon={
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                }
                 iconPosition="right"
               >
                 <Link href="/industries">Explore Industries</Link>
@@ -105,24 +116,26 @@ export default function Home() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          {["BP", "Shell", "British Airways", "Infosys", "Intel"].map((client, index) => (
-            <motion.div
-              key={client}
-              className="flex items-center justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="relative h-16 w-40">
-                <div className="flex h-full w-full items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-6 py-3 shadow-sm">
-                  <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                    {client}
-                  </span>
+          {["BP", "Shell", "British Airways", "Infosys", "Intel"].map(
+            (client, index) => (
+              <motion.div
+                key={client}
+                className="flex items-center justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="relative h-16 w-40">
+                  <div className="flex h-full w-full items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-6 py-3 shadow-sm">
+                    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                      {client}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            )
+          )}
         </motion.div>
       </FuturisticSection>
 
@@ -151,9 +164,10 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              We leverage cutting-edge technology and data-driven insights to transform complex challenges into
-              streamlined, scalable opportunities, ensuring our clients are future-ready and resilient in an evolving
-              market landscape.
+              We leverage cutting-edge technology and data-driven insights to
+              transform complex challenges into streamlined, scalable
+              opportunities, ensuring our clients are future-ready and resilient
+              in an evolving market landscape.
             </motion.p>
           </FuturisticCard>
 
@@ -172,8 +186,9 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Our vision is a future where technology not only accelerates business success but also contributes to a
-              connected, efficient, and environmentally responsible global economy.
+              Our vision is a future where technology not only accelerates
+              business success but also contributes to a connected, efficient,
+              and environmentally responsible global economy.
             </motion.p>
           </FuturisticCard>
         </div>
@@ -214,7 +229,9 @@ export default function Home() {
               >
                 {stat.value}
               </motion.span>
-              <p className="text-sm font-medium text-white/80 md:text-base">{stat.label}</p>
+              <p className="text-sm font-medium text-white/80 md:text-base">
+                {stat.label}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -240,42 +257,48 @@ export default function Home() {
             {
               icon: Brain,
               title: "AI Consulting",
-              description: "Strategic guidance on implementing AI solutions to solve complex business challenges.",
+              description:
+                "Strategic guidance on implementing AI solutions to solve complex business challenges.",
               delay: 0.1,
               glowColor: "rgba(0, 51, 102, 0.3)",
             },
             {
               icon: Database,
               title: "Data Analytics",
-              description: "Transform raw data into actionable insights to drive informed decision-making.",
+              description:
+                "Transform raw data into actionable insights to drive informed decision-making.",
               delay: 0.2,
               glowColor: "rgba(0, 102, 68, 0.3)",
             },
             {
               icon: Cpu,
               title: "Machine Learning",
-              description: "Custom ML models to predict outcomes and optimize business processes.",
+              description:
+                "Custom ML models to predict outcomes and optimize business processes.",
               delay: 0.3,
               glowColor: "rgba(0, 51, 102, 0.3)",
             },
             {
               icon: Server,
               title: "Cloud Solutions",
-              description: "Scalable cloud infrastructure to support your AI and data initiatives.",
+              description:
+                "Scalable cloud infrastructure to support your AI and data initiatives.",
               delay: 0.4,
               glowColor: "rgba(0, 102, 68, 0.3)",
             },
             {
               icon: Shield,
               title: "Data Security",
-              description: "Protect your valuable data assets with advanced security measures.",
+              description:
+                "Protect your valuable data assets with advanced security measures.",
               delay: 0.5,
               glowColor: "rgba(0, 51, 102, 0.3)",
             },
             {
               icon: Zap,
               title: "Process Automation",
-              description: "Streamline operations with intelligent automation of repetitive tasks.",
+              description:
+                "Streamline operations with intelligent automation of repetitive tasks.",
               delay: 0.6,
               glowColor: "rgba(0, 102, 68, 0.3)",
             },
@@ -309,7 +332,8 @@ export default function Home() {
           {[
             {
               title: "Energy",
-              description: "Optimizing production forecasting and operational efficiency for energy companies.",
+              description:
+                "Optimizing production forecasting and operational efficiency for energy companies.",
               href: "/industries/energy",
               image: "/placeholder.svg?height=200&width=300",
               delay: 0.1,
@@ -317,7 +341,8 @@ export default function Home() {
             },
             {
               title: "Banking",
-              description: "Advanced risk assessment and fraud detection solutions for financial institutions.",
+              description:
+                "Advanced risk assessment and fraud detection solutions for financial institutions.",
               href: "/industries/banking",
               image: "/placeholder.svg?height=200&width=300",
               delay: 0.2,
@@ -325,7 +350,8 @@ export default function Home() {
             },
             {
               title: "Manufacturing",
-              description: "Predictive maintenance and supply chain optimization for manufacturing companies.",
+              description:
+                "Predictive maintenance and supply chain optimization for manufacturing companies.",
               href: "/industries/manufacturing",
               image: "/placeholder.svg?height=200&width=300",
               delay: 0.3,
@@ -350,11 +376,15 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-4">
-                  <h3 className="text-xl font-bold text-white">{industry.title}</h3>
+                  <h3 className="text-xl font-bold text-white">
+                    {industry.title}
+                  </h3>
                 </div>
               </div>
               <div className="p-4">
-                <p className="mb-4 text-sm text-slate-600">{industry.description}</p>
+                <p className="mb-4 text-sm text-slate-600">
+                  {industry.description}
+                </p>
                 <Link
                   href={industry.href}
                   className="inline-flex items-center text-sm font-medium text-primary hover:underline"
@@ -377,7 +407,9 @@ export default function Home() {
           <FuturisticButton
             asChild
             className="group"
-            icon={<ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />}
+            icon={
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            }
             iconPosition="right"
           >
             <Link href="/industries">View All Industries</Link>
@@ -423,7 +455,8 @@ export default function Home() {
               {
                 step: 3,
                 title: "Development & Implementation",
-                description: "We develop and implement the solution using agile methodologies for optimal results.",
+                description:
+                  "We develop and implement the solution using agile methodologies for optimal results.",
                 icon: Server,
                 delay: 0.3,
               },
@@ -438,7 +471,8 @@ export default function Home() {
               {
                 step: 5,
                 title: "Deployment & Support",
-                description: "We deploy the solution and provide ongoing support to ensure long-term success.",
+                description:
+                  "We deploy the solution and provide ongoing support to ensure long-term success.",
                 icon: Zap,
                 delay: 0.5,
               },
@@ -526,7 +560,9 @@ export default function Home() {
               glowColor={testimonial.glowColor}
               className="flex flex-col justify-between"
             >
-              <div className="mt-4 text-sm text-slate-500">{testimonial.company}</div>
+              <div className="mt-4 text-sm text-slate-500">
+                {testimonial.company}
+              </div>
             </FuturisticCard>
           ))}
         </div>
@@ -546,7 +582,8 @@ export default function Home() {
               Ready to Transform Your Business?
             </h2>
             <p className="mx-auto max-w-[700px] text-white/80 md:text-xl">
-              Let's discuss how our AI and data solutions can help your organization thrive in the digital age.
+              Let's discuss how our AI and data solutions can help your
+              organization thrive in the digital age.
             </p>
           </motion.div>
           <motion.div
@@ -558,9 +595,11 @@ export default function Home() {
           >
             <FuturisticButton
               asChild
-              variant="secondary"
+              variant="primary"
               className="group"
-              icon={<ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />}
+              icon={
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              }
               iconPosition="right"
             >
               <Link href="/contact">Get Started Today</Link>
@@ -572,5 +611,5 @@ export default function Home() {
         </div>
       </FuturisticSection>
     </div>
-  )
+  );
 }

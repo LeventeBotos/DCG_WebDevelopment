@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FuturisticButton } from "./futuristic-button"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FuturisticButton } from "./futuristic-button";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+      setIsScrolled(window.scrollY > 10);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleDropdown = (dropdown: string) => {
-    setActiveDropdown(activeDropdown === dropdown ? null : dropdown)
-  }
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -39,12 +39,14 @@ export default function Header() {
     { label: "Services", href: "/services" },
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
-  ]
+  ];
 
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-md bg-white/10 border-b border-white/10" : "bg-transparent"
+        isScrolled
+          ? "backdrop-blur-md bg-white/10 border-b border-white/10"
+          : "bg-transparent"
       }`}
     >
       <div className="container flex h-20 items-center justify-between">
@@ -56,21 +58,21 @@ export default function Header() {
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
               <Image
-                src="/placeholder.svg?height=40&width=40"
+                src="/logo.png"
                 alt="DCG Logo"
                 width={40}
                 height={40}
-                className="h-10 w-auto"
+                className="h-12 bg-primary p-2 rounded-lg w-auto"
               />
             </motion.div>
-            <motion.span
+            {/* <motion.span
               className="hidden font-bold sm:inline-block text-primary text-xl"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
               Data Consulting Group
-            </motion.span>
+            </motion.span> */}
           </Link>
         </div>
 
@@ -85,7 +87,9 @@ export default function Header() {
                   >
                     {item.label}
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`}
+                      className={`h-4 w-4 transition-transform ${
+                        activeDropdown === item.label ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
                   <AnimatePresence>
@@ -138,11 +142,15 @@ export default function Header() {
             <Link href="/contact">Get Started</Link>
           </FuturisticButton>
           <button
-            className="md:hidden flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm"
+            className="md:hidden flex items-center justify-center h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
       </div>
@@ -187,8 +195,8 @@ export default function Header() {
                                 href={dropdownItem.href}
                                 className="flex items-center text-sm text-muted-foreground hover:text-foreground"
                                 onClick={() => {
-                                  setActiveDropdown(null)
-                                  setIsMenuOpen(false)
+                                  setActiveDropdown(null);
+                                  setIsMenuOpen(false);
                                 }}
                               >
                                 <ChevronRight className="mr-2 h-3 w-3 text-primary" />
@@ -210,7 +218,7 @@ export default function Header() {
                   )}
                 </div>
               ))}
-              <FuturisticButton asChild className="w-full mt-2">
+              <FuturisticButton asChild className="w-full h-12 mt-2">
                 <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
                   Get Started
                 </Link>
@@ -220,5 +228,5 @@ export default function Header() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }

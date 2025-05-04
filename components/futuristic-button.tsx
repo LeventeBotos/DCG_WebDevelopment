@@ -1,44 +1,59 @@
-"use client"
+"use client";
 
-import type { ButtonHTMLAttributes, ReactNode } from "react"
-import { forwardRef } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { forwardRef } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-interface FuturisticButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
-  variant?: "primary" | "secondary" | "outline" | "ghost"
-  size?: "sm" | "md" | "lg"
-  className?: string
-  glowColor?: string
-  icon?: ReactNode
-  iconPosition?: "left" | "right"
+interface FuturisticButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  glowColor?: string;
+  icon?: ReactNode;
+  iconPosition?: "left" | "right";
+  asChild?: boolean;
 }
 
 const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(
   (
-    { children, variant = "primary", size = "md", className = "", glowColor, icon, iconPosition = "left", ...props },
-    ref,
+    {
+      children,
+      variant = "primary",
+      size = "md",
+      className = "",
+      glowColor,
+      icon,
+      iconPosition = "left",
+      ...props
+    },
+    ref
   ) => {
     const variantStyles = {
-      primary: "bg-primary text-white border-primary/50 hover:bg-primary/90 hover:border-primary",
-      secondary: "bg-secondary text-white border-secondary/50 hover:bg-secondary/90 hover:border-secondary",
-      outline: "bg-transparent border-white/20 text-foreground hover:bg-white/5 hover:border-white/40",
-      ghost: "bg-transparent border-transparent text-foreground hover:bg-white/5",
-    }
+      primary:
+        "bg-primary text-white border-primary/50 hover:bg-primary/90 hover:border-primary",
+      secondary:
+        "bg-secondary text-white border-secondary/50 hover:bg-secondary/90 hover:border-secondary",
+      outline:
+        "bg-transparent border-white/20 text-foreground hover:bg-white/5 hover:border-white/40",
+      ghost:
+        "bg-transparent border-transparent text-foreground hover:bg-white/5",
+    };
 
     const sizeStyles = {
       sm: "text-xs px-3 py-1.5 rounded-lg",
       md: "text-sm px-4 py-2 rounded-lg",
       lg: "text-base px-6 py-3 rounded-xl",
-    }
+    };
 
     const defaultGlowColor =
       variant === "primary"
         ? "rgba(0, 51, 102, 0.5)"
         : variant === "secondary"
-          ? "rgba(0, 102, 68, 0.5)"
-          : "rgba(255, 255, 255, 0.1)"
+        ? "rgba(0, 102, 68, 0.5)"
+        : "rgba(255, 255, 255, 0.1)";
 
     return (
       <motion.button
@@ -49,7 +64,7 @@ const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(
           "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2",
           variantStyles[variant],
           sizeStyles[size],
-          className,
+          className
         )}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -59,7 +74,9 @@ const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(
         <div
           className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
-            background: `radial-gradient(circle at center, ${glowColor || defaultGlowColor} 0%, transparent 70%)`,
+            background: `radial-gradient(circle at center, ${
+              glowColor || defaultGlowColor
+            } 0%, transparent 70%)`,
             opacity: 0.5,
           }}
         />
@@ -79,10 +96,10 @@ const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(
           <div className="absolute top-0 left-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/50 to-transparent animate-[shimmer_2s_infinite_0.7s]" />
         </div>
       </motion.button>
-    )
-  },
-)
+    );
+  }
+);
 
-FuturisticButton.displayName = "FuturisticButton"
+FuturisticButton.displayName = "FuturisticButton";
 
-export { FuturisticButton }
+export { FuturisticButton };

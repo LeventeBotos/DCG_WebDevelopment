@@ -1,22 +1,22 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Data Consulting Group Ltd",
-  description: "AI predictions and data consulting for leading British companies",
-    generator: 'v0.dev'
-}
+  description:
+    "AI predictions and data consulting for leading British companies",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -28,5 +28,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  )
+  );
 }
