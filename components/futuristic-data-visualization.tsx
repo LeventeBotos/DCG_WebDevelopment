@@ -63,8 +63,8 @@ export default function FuturisticDataVisualization() {
       color: string;
 
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * (canvas ? canvas.width : 1);
+        this.y = Math.random() * (canvas ? canvas.height : 1);
         this.size = Math.random() * 3 + 1;
         this.speedX = (Math.random() - 0.5) * 1;
         this.speedY = (Math.random() - 0.5) * 1;
@@ -75,10 +75,12 @@ export default function FuturisticDataVisualization() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.x > canvas.width) this.x = 0;
-        else if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        else if (this.y < 0) this.y = canvas.height;
+        if (canvas) {
+          if (this.x > canvas.width) this.x = 0;
+          else if (this.x < 0) this.x = canvas.width;
+          if (this.y > canvas.height) this.y = 0;
+          else if (this.y < 0) this.y = canvas.height;
+        }
       }
 
       draw() {

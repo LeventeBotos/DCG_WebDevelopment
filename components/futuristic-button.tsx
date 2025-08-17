@@ -4,7 +4,6 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-
 interface FuturisticButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -14,7 +13,6 @@ interface FuturisticButtonProps
   glowColor?: string;
   icon?: ReactNode;
   iconPosition?: "left" | "right";
-  asChild?: boolean;
 }
 
 const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(

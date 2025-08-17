@@ -27,17 +27,23 @@ export default function Header() {
 
   const navItems = [
     { label: "Home", href: "/" },
+    { label: "Projects", href: "/projects" },
+    // { label: "Team", href: "/team" },
+    { label: "Services", href: "/services" },
     {
       label: "Industries",
       href: "/industries",
       dropdown: [
         { label: "Energy", href: "/industries/energy" },
+        { label: "Retail", href: "/industries/retail" },
+        {
+          label: "Manufacturing & Production",
+          href: "/industries/manufacturing",
+        },
         { label: "Banking", href: "/industries/banking" },
-        { label: "Manufacturing", href: "/industries/manufacturing" },
       ],
     },
-    { label: "Services", href: "/services" },
-    { label: "About Us", href: "/about" },
+    // { label: "News Feed", href: "/news" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -58,11 +64,11 @@ export default function Header() {
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
               <Image
-                src="/logo.png"
+                src="/logo2.png"
                 alt="DCG Logo"
                 width={40}
                 height={40}
-                className="h-12 bg-primary p-2 rounded-lg w-auto"
+                className="h-10 w-auto"
               />
             </motion.div>
             {/* <motion.span
@@ -138,11 +144,11 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <FuturisticButton asChild className="hidden md:flex">
+          <FuturisticButton className="hidden md:flex">
             <Link href="/contact">Get Started</Link>
           </FuturisticButton>
           <button
-            className="md:hidden flex items-center justify-center h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm"
+            className="md:hidden flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -218,7 +224,7 @@ export default function Header() {
                   )}
                 </div>
               ))}
-              <FuturisticButton asChild className="w-full h-12 mt-2">
+              <FuturisticButton className="w-full mt-2">
                 <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
                   Get Started
                 </Link>

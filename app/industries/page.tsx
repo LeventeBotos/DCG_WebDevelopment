@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Factory, Fuel, Landmark } from "lucide-react"
+import { ArrowRight, Factory, Fuel, Landmark, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function IndustriesPage() {
@@ -20,6 +20,33 @@ export default function IndustriesPage() {
       ],
     },
     {
+      id: "retail",
+      name: "Retail",
+      icon: ShoppingCart,
+      description: "Advanced analytics and AI solutions for retail optimization and customer experience enhancement.",
+      clients: ["Major Retail Chains"],
+      solutions: [
+        "Customer behavior analytics",
+        "Inventory optimization",
+        "Demand forecasting",
+        "Personalization engines",
+        "Supply chain optimization",
+      ],
+    },
+    {
+      id: "manufacturing",
+      name: "Manufacturing & Production",
+      icon: Factory,
+      description: "Predictive maintenance and supply chain optimization for manufacturing companies.",
+      clients: ["Infosys"],
+      solutions: [
+        "Supply chain optimization",
+        "Predictive maintenance",
+        "Quality control automation",
+        "Production planning and scheduling",
+      ],
+    },
+    {
       id: "banking",
       name: "Banking",
       icon: Landmark,
@@ -31,19 +58,6 @@ export default function IndustriesPage() {
         "Customer behavior analysis",
         "Risk assessment models",
         "Automated compliance monitoring",
-      ],
-    },
-    {
-      id: "manufacturing",
-      name: "Manufacturing",
-      icon: Factory,
-      description: "Predictive maintenance and supply chain optimization for manufacturing companies.",
-      clients: ["Infosys"],
-      solutions: [
-        "Supply chain optimization",
-        "Predictive maintenance",
-        "Quality control automation",
-        "Production planning and scheduling",
       ],
     },
   ]

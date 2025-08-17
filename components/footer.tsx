@@ -12,29 +12,33 @@ export default function Footer() {
       title: "Company",
       links: [
         { label: "About Us", href: "/about" },
+        { label: "Projects", href: "/projects" },
+        { label: "Team", href: "/team" },
         { label: "Services", href: "/services" },
         { label: "Industries", href: "/industries" },
-        { label: "Case Studies", href: "/case-studies" },
-        { label: "Careers", href: "/careers" },
       ],
     },
     {
-      title: "Resources",
+      title: "Projects",
       links: [
-        { label: "Blog", href: "/blog" },
-        { label: "Whitepapers", href: "/resources/whitepapers" },
-        { label: "Webinars", href: "/resources/webinars" },
-        { label: "Documentation", href: "/docs" },
-        { label: "FAQ", href: "/faq" },
+        { label: "Knowledge Graph", href: "/projects/knowledge-graph" },
+        { label: "Cloud Migration", href: "/projects/cloud-migration" },
+        { label: "Data Analytics", href: "/projects/data-analytics" },
+        { label: "Customer Habits", href: "/projects/customer-habits" },
+        { label: "Supply Chain", href: "/projects/supply-chain" },
       ],
     },
     {
-      title: "Legal",
+      title: "Contact",
       links: [
-        { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/terms" },
-        { label: "Cookie Policy", href: "/cookies" },
-        { label: "GDPR", href: "/gdpr" },
+        { label: "Get Started", href: "/contact" },
+        { label: "WhatsApp Chat", href: "#" },
+        {
+          label: "Email Support",
+          href: "mailto:info@dataconsulting-group.com",
+        },
+        { label: "Phone Support", href: "tel:+447123456789" },
+        { label: "Business Hours", href: "#" },
       ],
     },
   ];
@@ -83,18 +87,20 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
             >
               <Link href="/" className="flex items-center space-x-2 mb-6">
-                {/* <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm"> */}
-                <img
-                  src="/logo.png"
-                  alt="DCG Logo"
-                  className="object-fit self-center max-w-10 max-h-10 "
-                />
-                {/* </div> */}
-                {/* <span className="font-bold text-xl">Data Consulting Group</span> */}
+                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm">
+                  <Image
+                    src="/placeholder.svg?height=40&width=40"
+                    alt="DCG Logo"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
               <p className="max-w-xs mb-6 text-white/80">
-                We create innovative digital solutions by providing expertise in
-                Software Development, Data Science and Artificial Intelligence.
+                Leading AI and data science consultancy specializing in machine
+                learning, predictive analytics, and digital transformation for
+                enterprise clients including BP, Shell, and British Airways.
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (
@@ -169,19 +175,19 @@ export default function Footer() {
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 <a
-                  href="mailto:info@dataconsultinggroup.co.uk"
+                  href="mailto:info@dataconsulting-group.com"
                   className="hover:text-white transition-colors"
                 >
-                  info@dataconsultinggroup.co.uk
+                  info@dataconsulting-group.com
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
                 <a
-                  href="tel:+441234567890"
+                  href="tel:+447123456789"
                   className="hover:text-white transition-colors"
                 >
-                  +44 123 456 7890
+                  +44 712 345 6789
                 </a>
               </div>
             </div>
