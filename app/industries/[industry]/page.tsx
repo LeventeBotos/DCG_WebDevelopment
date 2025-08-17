@@ -1,13 +1,15 @@
-import Link from "next/link"
-import Image from "next/image"
-import { notFound } from "next/navigation"
-import { ArrowLeft, CheckCircle, Factory, Fuel, Landmark } from "lucide-react"
-import { Button } from "@/components/ui/button"
+export const runtime = "edge";
+
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { ArrowLeft, CheckCircle, Factory, Fuel, Landmark } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface IndustryPageProps {
   params: {
-    industry: string
-  }
+    industry: string;
+  };
 }
 
 export default function IndustryPage({ params }: IndustryPageProps) {
@@ -33,17 +35,20 @@ export default function IndustryPage({ params }: IndustryPageProps) {
         },
         {
           title: "Energy Consumption Optimization",
-          description: "Analyze patterns to reduce energy usage while maintaining operational efficiency.",
+          description:
+            "Analyze patterns to reduce energy usage while maintaining operational efficiency.",
         },
         {
           title: "Risk Assessment and Management",
-          description: "Identify and mitigate potential risks using advanced data analysis and predictive modeling.",
+          description:
+            "Identify and mitigate potential risks using advanced data analysis and predictive modeling.",
         },
       ],
       caseStudy: {
         title: "Optimizing Oil Production with AI",
         client: "Major Energy Corporation",
-        challenge: "Unpredictable production levels leading to inefficient resource allocation and increased costs.",
+        challenge:
+          "Unpredictable production levels leading to inefficient resource allocation and increased costs.",
         solution:
           "Implemented an AI-driven forecasting system that analyzed historical data, weather patterns, and equipment performance.",
         results: [
@@ -86,7 +91,8 @@ export default function IndustryPage({ params }: IndustryPageProps) {
       caseStudy: {
         title: "Enhancing Fraud Detection Systems",
         client: "Leading Financial Institution",
-        challenge: "Increasing sophistication of fraud attempts requiring more advanced detection methods.",
+        challenge:
+          "Increasing sophistication of fraud attempts requiring more advanced detection methods.",
         solution:
           "Developed a machine learning system that analyzes transaction patterns and identifies anomalies in real-time.",
         results: [
@@ -99,22 +105,26 @@ export default function IndustryPage({ params }: IndustryPageProps) {
     manufacturing: {
       name: "Manufacturing",
       icon: Factory,
-      description: "Predictive maintenance and supply chain optimization for manufacturing companies.",
+      description:
+        "Predictive maintenance and supply chain optimization for manufacturing companies.",
       longDescription:
         "Our manufacturing solutions focus on optimizing production processes, improving quality control, and streamlining supply chains. We help manufacturing companies implement data-driven strategies that increase efficiency and reduce costs.",
       clients: ["Infosys"],
       solutions: [
         {
           title: "Supply Chain Optimization",
-          description: "Improve inventory management and logistics with predictive analytics and real-time tracking.",
+          description:
+            "Improve inventory management and logistics with predictive analytics and real-time tracking.",
         },
         {
           title: "Predictive Maintenance",
-          description: "Reduce downtime and extend equipment life with AI-powered maintenance scheduling.",
+          description:
+            "Reduce downtime and extend equipment life with AI-powered maintenance scheduling.",
         },
         {
           title: "Quality Control Automation",
-          description: "Enhance product quality with automated inspection systems and defect prediction.",
+          description:
+            "Enhance product quality with automated inspection systems and defect prediction.",
         },
         {
           title: "Production Planning and Scheduling",
@@ -125,7 +135,8 @@ export default function IndustryPage({ params }: IndustryPageProps) {
       caseStudy: {
         title: "Revolutionizing Production Efficiency",
         client: "Global Manufacturing Company",
-        challenge: "Inefficient production processes leading to delays, waste, and increased costs.",
+        challenge:
+          "Inefficient production processes leading to delays, waste, and increased costs.",
         solution:
           "Implemented an integrated AI system for production planning, quality control, and maintenance scheduling.",
         results: [
@@ -135,12 +146,12 @@ export default function IndustryPage({ params }: IndustryPageProps) {
         ],
       },
     },
-  }
+  };
 
-  const industry = industries[params.industry as keyof typeof industries]
+  const industry = industries[params.industry as keyof typeof industries];
 
   if (!industry) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -161,8 +172,12 @@ export default function IndustryPage({ params }: IndustryPageProps) {
                 <div className="inline-block rounded-lg bg-primary p-2 text-primary-foreground">
                   <industry.icon className="h-6 w-6" />
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">{industry.name}</h1>
-                <p className="text-muted-foreground md:text-xl">{industry.longDescription}</p>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  {industry.name}
+                </h1>
+                <p className="text-muted-foreground md:text-xl">
+                  {industry.longDescription}
+                </p>
                 <div className="space-y-2">
                   <h3 className="font-semibold">Key Clients:</h3>
                   <div className="flex flex-wrap gap-2">
@@ -196,9 +211,12 @@ export default function IndustryPage({ params }: IndustryPageProps) {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">Our Solutions</h2>
+              <h2 className="text-3xl font-bold tracking-tighter">
+                Our Solutions
+              </h2>
               <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Tailored AI and data solutions designed specifically for the {industry.name.toLowerCase()} industry.
+                Tailored AI and data solutions designed specifically for the{" "}
+                {industry.name.toLowerCase()} industry.
               </p>
             </div>
           </div>
@@ -210,7 +228,9 @@ export default function IndustryPage({ params }: IndustryPageProps) {
               >
                 <div className="space-y-2">
                   <h3 className="font-bold">{solution.title}</h3>
-                  <p className="text-sm text-muted-foreground">{solution.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {solution.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -223,27 +243,38 @@ export default function IndustryPage({ params }: IndustryPageProps) {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">Case Study</h2>
+              <h2 className="text-3xl font-bold tracking-tighter">
+                Case Study
+              </h2>
               <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                See how we've helped companies in the {industry.name.toLowerCase()} sector achieve remarkable results.
+                See how we've helped companies in the{" "}
+                {industry.name.toLowerCase()} sector achieve remarkable results.
               </p>
             </div>
           </div>
           <div className="mx-auto max-w-4xl py-12">
             <div className="rounded-lg border bg-background p-6">
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold">{industry.caseStudy.title}</h3>
+                <h3 className="text-2xl font-bold">
+                  {industry.caseStudy.title}
+                </h3>
                 <div className="space-y-2">
                   <p className="font-semibold">Client:</p>
-                  <p className="text-muted-foreground">{industry.caseStudy.client}</p>
+                  <p className="text-muted-foreground">
+                    {industry.caseStudy.client}
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <p className="font-semibold">Challenge:</p>
-                  <p className="text-muted-foreground">{industry.caseStudy.challenge}</p>
+                  <p className="text-muted-foreground">
+                    {industry.caseStudy.challenge}
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <p className="font-semibold">Solution:</p>
-                  <p className="text-muted-foreground">{industry.caseStudy.solution}</p>
+                  <p className="text-muted-foreground">
+                    {industry.caseStudy.solution}
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <p className="font-semibold">Results:</p>
@@ -271,7 +302,8 @@ export default function IndustryPage({ params }: IndustryPageProps) {
                 Ready to Transform Your {industry.name} Business?
               </h2>
               <p className="mx-auto max-w-[700px] md:text-xl">
-                Let's discuss how our AI and data solutions can help your organization thrive in the digital age.
+                Let's discuss how our AI and data solutions can help your
+                organization thrive in the digital age.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -283,5 +315,5 @@ export default function IndustryPage({ params }: IndustryPageProps) {
         </div>
       </section>
     </div>
-  )
+  );
 }
