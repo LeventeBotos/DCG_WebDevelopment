@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FuturisticButton } from "./futuristic-button";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +27,6 @@ export default function Header() {
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/projects" },
-    // { label: "Team", href: "/team" },
     { label: "Services", href: "/services" },
     {
       label: "Industries",
@@ -43,19 +41,18 @@ export default function Header() {
         { label: "Banking", href: "/industries/banking" },
       ],
     },
-    // { label: "News Feed", href: "/news" },
     { label: "Contact", href: "/contact" },
   ];
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? "backdrop-blur-md bg-white/10 border-b border-white/10"
+          ? "backdrop-blur-md bg-white/10 dark:bg-black/10 border-b border-white/10 dark:border-black/10"
           : "bg-transparent"
       }`}
     >
-      <div className="container flex h-20 items-center justify-between">
+      <div className="container flex h-16 md:h-20 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
             <motion.div
@@ -64,21 +61,13 @@ export default function Header() {
               transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
               <Image
-                src="/logo2.png"
+                src="/logo.png"
                 alt="DCG Logo"
                 width={40}
                 height={40}
-                className="h-10 w-auto"
+                className="h-10 dark:bg-transparent bg-black p-1 rounded w-auto"
               />
             </motion.div>
-            {/* <motion.span
-              className="hidden font-bold sm:inline-block text-primary text-xl"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Data Consulting Group
-            </motion.span> */}
           </Link>
         </div>
 
@@ -86,10 +75,14 @@ export default function Header() {
           {navItems.map((item, index) => (
             <div key={item.label} className="relative">
               {item.dropdown ? (
-                <div>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                >
                   <button
                     onClick={() => toggleDropdown(item.label)}
-                    className="group flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors hover:text-primary"
+                    className="group flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors hover:text-dcg-lightGreen"
                   >
                     {item.label}
                     <ChevronDown
@@ -123,7 +116,7 @@ export default function Header() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               ) : (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -132,10 +125,10 @@ export default function Header() {
                 >
                   <Link
                     href={item.href}
-                    className="relative px-4 py-2 text-sm font-medium transition-colors hover:text-primary group"
+                    className="relative px-4 py-2 text-sm font-medium transition-colors hover:text-dcg-lightGreen group"
                   >
                     {item.label}
-                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-dcg-lightGreen scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   </Link>
                 </motion.div>
               )}
@@ -143,22 +136,19 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <FuturisticButton className="hidden md:flex">
-            <Link href="/contact">Get Started</Link>
-          </FuturisticButton>
-          <button
-            className="md:hidden flex items-center justify-center h-10 w-10 rounded-full bg-white/10 backdrop-blur-sm"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+        {/* <div className="  items-center gap-2"> */}
+        <button
+          className="items-center md:hidden flex justify-center h-10 w-10 "
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </button>
+        {/* </div> */}
       </div>
 
       <AnimatePresence>
@@ -177,7 +167,7 @@ export default function Header() {
                     <div className="space-y-2">
                       <button
                         onClick={() => toggleDropdown(item.label)}
-                        className="flex w-full items-center justify-between text-sm font-medium transition-colors hover:text-primary"
+                        className="flex w-full items-center justify-between text-sm font-medium transition-colors hover:text-dcg-lightGreen"
                       >
                         {item.label}
                         <ChevronDown
@@ -205,7 +195,7 @@ export default function Header() {
                                   setIsMenuOpen(false);
                                 }}
                               >
-                                <ChevronRight className="mr-2 h-3 w-3 text-primary" />
+                                <ChevronRight className="mr-2 h-3 w-3 text-dcg-lightGreen" />
                                 {dropdownItem.label}
                               </Link>
                             ))}
@@ -216,7 +206,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-sm font-medium transition-colors hover:text-primary"
+                      className="text-sm font-medium transition-colors hover:text-dcg-lightGreen"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.label}
@@ -224,11 +214,6 @@ export default function Header() {
                   )}
                 </div>
               ))}
-              <FuturisticButton className="w-full mt-2">
-                <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
-                  Get Started
-                </Link>
-              </FuturisticButton>
             </nav>
           </motion.div>
         )}

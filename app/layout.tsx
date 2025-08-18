@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900`}
+        className={`${inter.className} min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900 dark:from-[#101010] dark:to-[#303030] dark:text-slate-50`}
       >
         <Header />
         <main className="flex-grow">{children}</main>
