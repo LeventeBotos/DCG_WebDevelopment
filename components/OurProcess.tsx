@@ -7,7 +7,7 @@ const OurProcess = () => {
   return (
     <section className="px-2 md:px-4">
       <motion.div
-        className="border dark:border-white/10 rounded-3xl p-8 lg:p-12"
+        className="border bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen text-white dark:border-white/10 rounded-3xl p-8 lg:p-12"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -56,12 +56,12 @@ const OurProcess = () => {
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <div className="relative mb-6">
-                <div className="w-16 h-16 border dark:border-white/10 rounded-lg flex items-center justify-center mx-auto shadow-lg  transition-colors duration-300">
+                <div className="w-16 h-16 border bg-white dark:bg-black/10 text-black dark:text-white dark:border-white/10 rounded-lg flex items-center justify-center mx-auto shadow-lg  transition-colors duration-300">
                   <span className="text-2xl">{item.icon}</span>
                 </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8  text-white rounded-lg flex items-center justify-center text-sm font-bold">
+                {/* <div className="absolute -top-2 -right-2 w-8 h-8  text-white rounded-lg flex items-center justify-center text-sm font-bold">
                   {item.step}
-                </div>
+                </div> */}
               </div>
 
               <h4 className="text-lg font-bold  mb-2">{item.title}</h4>

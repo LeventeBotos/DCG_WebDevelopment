@@ -23,23 +23,85 @@ import OurImpactInNumbers from "@/components/OurImpactInNumbers";
 import ContactStats from "@/components/ContactStats";
 import Services from "@/components/Services";
 import Industries from "@/components/Industries";
+import SuccessStories from "@/components/SuccessStories";
+import { WorldMap } from "@/components/WorldMap";
+import { AnimatedTestimonials } from "@/components/AnimatedTestimonials";
+import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
+
+const testimonials = [
+  {
+    quote:
+      "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
+    name: "Sarah Chen",
+    title: "Title",
+    designation: "Product Manager at TechFlow",
+    src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    quote:
+      "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
+    name: "Michael Rodriguez",
+    title: "Title",
+    designation: "CTO at InnovateSphere",
+    src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    quote:
+      "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
+    name: "Emily Watson",
+    title: "Title",
+    designation: "Operations Director at CloudScale",
+    src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    quote:
+      "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
+    name: "James Kim",
+    title: "Title",
+    designation: "Engineering Lead at DataPro",
+    src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    quote:
+      "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
+    name: "Lisa Thompson",
+    title: "Title",
+    designation: "VP of Technology at FutureNet",
+    src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+];
 
 export default function Home() {
   return (
     <div className="flex flex-col gap-20 min-h-screen">
       <Hero />
-
       <WhyUs />
-
       <OurProcess />
-
       <OurImpactInNumbers />
-
       {/* <ContactStats /> */}
-
       <Services />
 
+      <WorldMap
+        dots={[
+          {
+            start: { lat: 51.5074, lng: -0.1278 }, // London
+            end: { lat: 6.5244, lng: 3.3792 }, // Lagos, Nigeria
+          },
+          {
+            start: { lat: 51.5074, lng: -0.1278 }, // London
+            end: { lat: 28.6139, lng: 77.209 }, // New Delhi
+          },
+          {
+            start: { lat: 51.5074, lng: -0.1278 }, // London
+            end: { lat: 47.4979, lng: 19.0402 }, // Budapest
+          },
+        ]}
+      />
       <Industries />
+      <SuccessStories />
+      <AnimatedTestimonials testimonials={testimonials} />
+
+      <InfiniteMovingCards items={testimonials} />
 
       {/* Clients Section */}
       {/* <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
@@ -96,7 +158,6 @@ export default function Home() {
           </div>
         </div>
       </section> */}
-
       {/* <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
@@ -145,7 +206,6 @@ export default function Home() {
           </div>
         </div>
       </section> */}
-
       {/* Technology Capabilities Section */}
       {/* <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,16 +238,12 @@ export default function Home() {
           </div>
         </div>
       </section> */}
-
       {/* Stats Showcase */}
       {/* <StatsShowcase /> */}
-
       {/* Services Section */}
-
       {/* Industries Section */}
-
       {/* Process Section */}
-      <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
+      {/* <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -279,144 +335,12 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
+      </section> */}
       {/* Success Stories Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Success Stories
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real results from real projects with industry leaders.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                company: "BP & Shell",
-                industry: "Energy",
-                result: "40% improvement in production forecasting accuracy",
-                impact: "£12M+ annual cost savings",
-                icon: "⚡",
-                delay: 0.1,
-              },
-              {
-                company: "British Airways",
-                industry: "Aviation",
-                result: "60% reduction in fraud detection time",
-                impact: "Enhanced customer security",
-                icon: "✈️",
-                delay: 0.2,
-              },
-              {
-                company: "Infosys",
-                industry: "Manufacturing",
-                result: "35% increase in supply chain efficiency",
-                impact: "Faster time-to-market",
-                icon: "⚙️",
-                delay: 0.3,
-              },
-            ].map((story) => (
-              <motion.div
-                key={story.company}
-                className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: story.delay }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-3xl">{story.icon}</span>
-                    <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                      {story.industry}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-blue-600 mb-2">
-                      {story.company}
-                    </h3>
-                    <p className="text-sm text-slate-600 mb-3">
-                      {story.result}
-                    </p>
-                    <div className="text-sm font-semibold text-blue-700">
-                      {story.impact}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              What Our Clients Say
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Hear from the companies we've helped transform with our AI and
-              data solutions.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                quote:
-                  "DCG's AI solutions have revolutionized our production forecasting, resulting in significant cost savings and improved efficiency.",
-                author: "Sarah Johnson",
-                role: "CTO",
-                company: "Energy Corp",
-                delay: 0.1,
-                glowColor: "rgba(0, 51, 102, 0.3)",
-              },
-              {
-                quote:
-                  "The fraud detection system implemented by DCG has reduced fraudulent transactions by 40%, protecting our customers and our reputation.",
-                author: "Michael Chen",
-                role: "Head of Security",
-                company: "Global Bank",
-                delay: 0.2,
-                glowColor: "rgba(0, 102, 68, 0.3)",
-              },
-              {
-                quote:
-                  "Working with DCG has transformed our manufacturing processes. Their predictive maintenance solution has minimized downtime and extended equipment life.",
-                author: "David Williams",
-                role: "Operations Director",
-                company: "Manufacturing Inc.",
-                delay: 0.3,
-                glowColor: "rgba(0, 51, 102, 0.3)",
-              },
-            ].map((testimonial) => (
-              <FuturisticCard
-                key={testimonial.author}
-                title={`${testimonial.author}, ${testimonial.role}`}
-                description={testimonial.quote}
-                delay={testimonial.delay}
-                glowColor={testimonial.glowColor}
-                className="flex flex-col justify-between"
-              >
-                <div className="mt-4 text-sm text-slate-500">
-                  {testimonial.company}
-                </div>
-              </FuturisticCard>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Quick Start Section */}
-      <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
+      {/* <section className="py-24 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <motion.h2
@@ -504,8 +428,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
+      </section> */}
       {/* CTA Section */}
       {/* <section className="py-24 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

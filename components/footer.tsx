@@ -50,7 +50,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 text-white">
+    <footer className="relative overflow-hidden  bg-black text-white">
       <div className="absolute inset-0 pointer-events-none">
         <FuturisticBlob
           className="-left-40 -top-40"
@@ -87,14 +87,14 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
             >
               <Link href="/" className="flex items-center space-x-2 mb-6">
-                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm">
-                  <Image
-                    src="/placeholder.svg?height=40&width=40"
-                    alt="DCG Logo"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                {/* <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm"> */}
+                <img
+                  src="/logo.png"
+                  alt="DCG Logo"
+                  // fill
+                  className="object-cover h-5"
+                />
+                {/* </div> */}
                 <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
               <p className="max-w-xs mb-6 text-white/80">

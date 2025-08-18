@@ -1,11 +1,15 @@
 import { motion } from "framer-motion";
-import { Database, Link, ArrowRight } from "lucide-react";
+import { Database, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
+import { AiFillThunderbolt, AiOutlineThunderbolt } from "react-icons/ai";
+import { CiSettings } from "react-icons/ci";
+import { IoBarChart, IoCard } from "react-icons/io5";
 
 const Industries = () => {
   return (
-    <section className="">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="px-2 md:px-4">
+      <div className="container mx-auto ">
         <div className="text-center mb-16">
           <motion.h2
             className="md:text-3xl text-xl font-bold  mb-6"
@@ -30,15 +34,15 @@ const Industries = () => {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 max-w-7xl self-center mx-auto lg:grid-cols-4 gap-8">
+      <div className="grid md:grid-cols-2 self-center mx-auto lg:grid-cols-4 gap-8">
         {[
           {
             title: "Energy",
             description:
               "Optimizing production forecasting and operational efficiency for energy companies.",
             href: "/industries/energy",
-            icon: "⚡",
-            color: "from-blue-500 to-blue-600",
+            icon: <AiOutlineThunderbolt />,
+            color: "from-dcg-lightBlue to-[#00AACA]",
             delay: 0.1,
           },
           {
@@ -46,8 +50,8 @@ const Industries = () => {
             description:
               "Advanced analytics and AI solutions for retail optimization and customer experience.",
             href: "/industries/retail",
-            icon: "📊",
-            color: "from-blue-600 to-blue-700",
+            icon: <IoBarChart />,
+            color: "from-[#00AACA] to-[#00BACA]",
             delay: 0.15,
           },
           {
@@ -55,8 +59,8 @@ const Industries = () => {
             description:
               "Predictive maintenance and supply chain optimization for manufacturing companies.",
             href: "/industries/manufacturing",
-            icon: "⚙️",
-            color: "from-blue-700 to-blue-800",
+            icon: <CiSettings />,
+            color: "from-[#00B5CA] to-[#00BACA]",
             delay: 0.2,
           },
           {
@@ -64,8 +68,8 @@ const Industries = () => {
             description:
               "Advanced risk assessment and fraud detection solutions for financial institutions.",
             href: "/industries/banking",
-            icon: "💳",
-            color: "from-blue-800 to-blue-900",
+            icon: <IoCard />,
+            color: "from-[#00BACA] to-dcg-lightGreen",
             delay: 0.25,
           },
         ].map((industry) => (
@@ -79,9 +83,9 @@ const Industries = () => {
             // whileHover={{ y: -8 }}
           >
             <div
-              className={`w-16 h-16 bg-gradient-to-r ${industry.color} rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300`}
+              className={`w-16 h-16 text-2xl bg-gradient-to-r text-white ${industry.color} rounded-2xl flex items-center justify-center mb-4 transition-transform duration-300`}
             >
-              <span className="text-2xl">{industry.icon}</span>
+              {industry.icon}
             </div>
 
             <h3 className="text-lg font-bold  mb-3">{industry.title}</h3>
@@ -98,16 +102,6 @@ const Industries = () => {
             </Link>
           </motion.div>
         ))}
-      </div>
-
-      <div className="flex justify-center mt-12">
-        <Link
-          href="/industries"
-          className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-        >
-          View All Industries
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Link>
       </div>
     </section>
   );
