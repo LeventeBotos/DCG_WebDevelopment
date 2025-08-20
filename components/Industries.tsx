@@ -5,33 +5,16 @@ import React from "react";
 import { AiFillThunderbolt, AiOutlineThunderbolt } from "react-icons/ai";
 import { CiSettings } from "react-icons/ci";
 import { IoBarChart, IoCard } from "react-icons/io5";
+import SectionTitle from "./SectionTitle";
 
 const Industries = () => {
   return (
     <section className="px-2 md:px-4">
       <div className="container mx-auto ">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="md:text-3xl text-xl font-bold  mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            Industries We Serve
-          </motion.h2>
-          <motion.p
-            className="md:text-lg  max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-          >
-            Our projects span across leading industries, delivering
-            transformative AI and data solutions that drive real business value
-            and measurable results.
-          </motion.p>
-        </div>
+        <SectionTitle
+          title={"Industries We Serve"}
+          subtitle="Our projects span across leading industries, delivering transformative AI and data solutions that drive real business value and measurable results."
+        />
       </div>
 
       <div className="grid md:grid-cols-2 self-center mx-auto lg:grid-cols-4 gap-8">

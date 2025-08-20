@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Notebook } from "lucide-react";
 import React from "react";
 import { CiInboxIn, CiSearch, CiSettings } from "react-icons/ci";
+import SectionTitle from "./SectionTitle";
 
 const OurProcess = () => {
   return (
@@ -13,12 +14,10 @@ const OurProcess = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-4">Our Proven Process</h3>
-          <p className="text-lg opacity-75">
-            A systematic approach that ensures success in every project
-          </p>
-        </div>
+        <SectionTitle
+          title="Our Proven Process"
+          subtitle="A systematic approach that ensures success in every project"
+        />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[

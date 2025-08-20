@@ -27,6 +27,7 @@ import SuccessStories from "@/components/SuccessStories";
 import { WorldMap } from "@/components/WorldMap";
 import { AnimatedTestimonials } from "@/components/AnimatedTestimonials";
 import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
+import SectionTitle from "@/components/SectionTitle";
 
 const testimonials = [
   {
@@ -81,6 +82,10 @@ export default function Home() {
       {/* <ContactStats /> */}
       <Services />
 
+      <SectionTitle
+        title="Our Team Spans the Globe"
+        subtitle="Connecting continents with innovative solutions."
+      />
       <WorldMap
         dots={[
           {
@@ -99,6 +104,10 @@ export default function Home() {
       />
       <Industries />
       <SuccessStories />
+      <SectionTitle
+        title="What Our Clients Say"
+        subtitle="Hear from industry leaders who trust us with their digital transformation."
+      />
       <AnimatedTestimonials testimonials={testimonials} />
 
       <InfiniteMovingCards items={testimonials} />

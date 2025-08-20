@@ -1,15 +1,14 @@
 import { motion } from "framer-motion";
 import React from "react";
+import SectionTitle from "./SectionTitle";
 
 const SuccessStories = () => {
   return (
     <section className="container mx-auto px-2 md:px-4 ">
-      <div className="text-center mb-16">
-        <h2 className="text-xl md:text-3xl font-bold  mb-6">Success Stories</h2>
-        <p className="md:text-lg opacity-75 max-w-3xl mx-auto">
-          Real results from real projects with industry leaders.
-        </p>
-      </div>
+      <SectionTitle
+        title={"Success Stories"}
+        subtitle="Real results from real projects with industry leaders."
+      />
 
       <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {[

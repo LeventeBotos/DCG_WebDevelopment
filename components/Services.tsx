@@ -1,32 +1,16 @@
 import { motion } from "framer-motion";
 import { Server, Brain, Database, Cpu, Shield, Zap } from "lucide-react";
 import React from "react";
+import SectionTitle from "./SectionTitle";
 
 const Services = () => {
   return (
     <section className="container mx-auto px-2 md:px-4">
       {/* <div className="container mx-auto px-4 sm:px-6 lg:px-8"> */}
-      <div className="text-center mb-16">
-        <motion.h2
-          className="text-xl md:text-3xl font-bold  mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-        >
-          Our Services
-        </motion.h2>
-        <motion.p
-          className="md:text-lg opacity-75 max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          Comprehensive AI and data solutions tailored to your business needs,
-          delivered with enterprise-grade quality and security.
-        </motion.p>
-      </div>
+      <SectionTitle
+        title="Our Services"
+        subtitle="Comprehensive AI and data solutions tailored to your business needs, delivered with enterprise-grade quality and security."
+      />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[

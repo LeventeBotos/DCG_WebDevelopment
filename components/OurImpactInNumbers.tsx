@@ -20,6 +20,7 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
+import SectionTitle from "./SectionTitle";
 
 interface StatItem {
   value: string;
@@ -129,21 +130,10 @@ const OurImpactInNumbers = () => {
 
   return (
     <section ref={ref}>
-      <motion.div
-        className="text-center mb-16"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="md:text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-          Our Impact in Numbers
-        </h2>
-        <p className="max-w-[700px] mx-auto opacity-75 md:text-lg">
-          Delivering measurable results and building lasting relationships with
-          clients worldwide.
-        </p>
-      </motion.div>
+      <SectionTitle
+        title="Our Impact in Numbers"
+        subtitle="Delivering measurable results and building lasting relationships with clients worldwide."
+      />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-16">
         {stats.map((stat, index) => (

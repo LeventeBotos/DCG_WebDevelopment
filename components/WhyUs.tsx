@@ -4,33 +4,18 @@ import { AiOutlineThunderbolt } from "react-icons/ai";
 import { CiGlobe } from "react-icons/ci";
 import { IoBarChartSharp } from "react-icons/io5";
 import { MdOutlineShield } from "react-icons/md";
+import SectionTitle from "./SectionTitle";
 
 const WhyUs = () => {
   return (
     <section>
       <div className="container mx-auto px-2 md:px-4 ">
-        <div className="text-center mb-16">
-          <motion.h2
-            className=" text-xl md:text-3xl font-bold  mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            Why Industry Leaders Choose DCG
-          </motion.h2>
-          <motion.p
-            className="md:text-lg  max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 0.7, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-          >
-            We're not just another consulting firm. We're your strategic partner
-            in the AI revolution, delivering measurable results that transform
-            businesses.
-          </motion.p>
-        </div>
+        <SectionTitle
+          title={"Why Industry Leaders Choose DCG"}
+          subtitle="We're not just another consulting firm. We're your strategic partner in
+                the AI revolution, delivering measurable results that transform
+                businesses."
+        />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {[
