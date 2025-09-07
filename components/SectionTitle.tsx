@@ -4,12 +4,14 @@ import React from "react";
 const SectionTitle = ({
   title,
   subtitle,
+  nomb = false,
 }: {
   title: String;
   subtitle: string;
+  nomb?: boolean;
 }) => {
   return (
-    <div className="text-center mb-16">
+    <div className={`text-center ${!nomb && "mb-16"}`}>
       <motion.h2
         className=" text-xl md:text-3xl font-bold  mb-6"
         initial={{ opacity: 0, y: 20 }}
