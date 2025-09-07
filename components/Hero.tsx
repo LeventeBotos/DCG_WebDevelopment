@@ -6,8 +6,8 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden ">
-      <BackgroundGradientAnimation className="absolute h-full  flex flex-col justify-between z-10 container mx-auto px-2 md:px-4 pt-40 pb-20 ">
+    <section className="relative min-h-screen flex items-center w-full justify-center overflow-hidden ">
+      <BackgroundGradientAnimation className="absolute h-full w-full flex flex-col justify-between z-10 container mx-auto px-2 md:px-4 pt-40 pb-20 ">
         <div className="gap-6 flex flex-col items-center md:items-start">
           <motion.div
             className="inline-flex items-center px-4 py-2 rounded-full shadow-sm backdrop-blur-3xl border opacity-75 text-xs md:text-sm font-medium"
