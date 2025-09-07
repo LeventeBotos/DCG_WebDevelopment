@@ -69,7 +69,7 @@ const Services = () => {
         ].map((service, index) => (
           <motion.div
             key={service.title}
-            className="group bg-white dark:bg-black/10 border dark:border-white/10 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 "
+            className="group bg-white border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 "
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -93,7 +93,7 @@ const Services = () => {
                   key={idx}
                   className="flex items-center text-sm text-opacity-75"
                 >
-                  <div className="w-1 h-1 bg-black dark:bg-white rounded-full mr-3"></div>
+                  <div className="w-1 h-1 bg-black rounded-full mr-3"></div>
                   {feature}
                 </div>
               ))}

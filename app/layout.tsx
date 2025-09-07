@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${inter.className} min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900 dark:from-[#101010] dark:to-[#303030] dark:text-slate-50`}
+        className={`${inter.className} min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900`}
       >
         <Header />
         <main className="flex-grow">{children}</main>

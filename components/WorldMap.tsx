@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import DottedMap from "dotted-map";
-import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 
 interface MapProps {

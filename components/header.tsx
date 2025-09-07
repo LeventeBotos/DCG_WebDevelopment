@@ -48,7 +48,7 @@ export default function Header() {
     <header
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? "backdrop-blur-md bg-white/10 dark:bg-black/10 border-b border-white/10 dark:border-black/10"
+          ? "backdrop-blur-md bg-white/10 border-b border-white/10"
           : "bg-transparent"
       }`}
     >
@@ -65,7 +65,7 @@ export default function Header() {
                 alt="DCG Logo"
                 width={40}
                 height={40}
-                className="h-10 dark:bg-transparent bg-black p-1 rounded w-auto"
+                className="h-10 bg-black p-1 rounded w-auto"
               />
             </motion.div>
           </Link>

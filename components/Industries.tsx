@@ -58,7 +58,7 @@ const Industries = () => {
         ].map((industry) => (
           <motion.div
             key={industry.title}
-            className="group bg-white border dark:border-white/10 dark:bg-black/10 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 "
+            className="group bg-white border rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 "
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

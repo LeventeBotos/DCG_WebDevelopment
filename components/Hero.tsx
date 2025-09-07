@@ -10,7 +10,7 @@ const Hero = () => {
       <BackgroundGradientAnimation className="absolute h-full  flex flex-col justify-between z-10 container mx-auto px-2 md:px-4 pt-40 pb-20 ">
         <div className="gap-6 flex flex-col items-center md:items-start">
           <motion.div
-            className="inline-flex items-center px-4 py-2 rounded-full shadow-sm backdrop-blur-3xl border dark:border-white/10 opacity-75 text-xs md:text-sm font-medium"
+            className="inline-flex items-center px-4 py-2 rounded-full shadow-sm backdrop-blur-3xl border opacity-75 text-xs md:text-sm font-medium"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}

@@ -42,7 +42,7 @@ const SuccessStories = () => {
         ].map((story) => (
           <motion.div
             key={story.company}
-            className="group relative overflow-hidden rounded-xl border dark:border-white/10 bg-white dark:bg-black/10 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+            className="group relative overflow-hidden rounded-xl border bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

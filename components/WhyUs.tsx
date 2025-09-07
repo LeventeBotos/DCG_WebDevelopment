@@ -52,7 +52,7 @@ const WhyUs = () => {
             >
               <div className="relative mb-6">
                 <div
-                  className={`w-20 text-2xl h-20 border dark:border-white/10 rounded-lg flex items-center justify-center mx-auto transition-transform duration-300 shadow-lg`}
+                  className={`w-20 text-2xl h-20 border rounded-lg flex items-center justify-center mx-auto transition-transform duration-300 shadow-lg`}
                 >
                   {feature.icon}
                 </div>

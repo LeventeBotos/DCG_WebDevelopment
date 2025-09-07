@@ -147,7 +147,7 @@ const OurImpactInNumbers = () => {
             whileHover={{ y: -5 }}
           >
             <motion.div
-              className="mx-auto border dark:border-white/10 p-4 rounded-lg shadow-lg w-16 h-16 flex items-center justify-center mb-4  transition-colors"
+              className="mx-auto border p-4 rounded-lg shadow-lg w-16 h-16 flex items-center justify-center mb-4  transition-colors"
               //   whileHover={{ rotate: 360, scale: 1.1 }}
               transition={{ duration: 0.5 }}
             >
