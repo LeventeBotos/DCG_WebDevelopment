@@ -33,17 +33,19 @@ interface StatItem {
 }
 const stats: StatItem[] = [
   {
-    value: "10+",
+    value: "50",
     label: "Enterprise Clients",
     icon: Users,
     delay: 0.1,
+    suffix: "+",
     isNumber: true,
   },
   {
-    value: "20+",
+    value: "200",
     label: "Projects Completed",
     icon: Target,
     delay: 0.2,
+    suffix: "+",
     isNumber: true,
   },
   {
@@ -55,8 +57,8 @@ const stats: StatItem[] = [
     isNumber: true,
   },
   {
-    value: "10",
-    label: "Million £ Saved",
+    value: "30",
+    label: "Cost Savings Generated",
     icon: TrendingUp,
     delay: 0.4,
     prefix: "£",
@@ -64,7 +66,7 @@ const stats: StatItem[] = [
     isNumber: true,
   },
   {
-    value: "100",
+    value: "1000",
     label: "Emails Responded",
     icon: Mail,
     delay: 0.5,
@@ -81,7 +83,7 @@ const stats: StatItem[] = [
   },
   {
     value: "24",
-    label: "Hours Support",
+    label: "Support Availability",
     icon: Clock,
     delay: 0.7,
     suffix: "/7",

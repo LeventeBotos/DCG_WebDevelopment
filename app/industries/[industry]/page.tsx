@@ -103,7 +103,7 @@ export default function IndustryPage({ params }: IndustryPageProps) {
       },
     },
     manufacturing: {
-      name: "Manufacturing",
+      name: "Manufacturing & Production",
       icon: Factory,
       description:
         "Predictive maintenance and supply chain optimization for manufacturing companies.",

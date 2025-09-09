@@ -26,7 +26,7 @@ export default function Header() {
 
   const navItems = [
     { label: "Home", href: "/" },
-    { label: "Projects", href: "/projects" },
+    { label: "Software Products", href: "/software-products" },
     { label: "Services", href: "/services" },
     {
       label: "Industries",
@@ -41,7 +41,7 @@ export default function Header() {
         { label: "Banking", href: "/industries/banking" },
       ],
     },
-    { label: "Contact", href: "/contact" },
+    { label: "Contacts", href: "/contact" },
   ];
 
   return (
@@ -55,19 +55,13 @@ export default function Header() {
       <div className="container flex h-16 md:h-20 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              initial={{ rotate: -10, scale: 0.9 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            >
-              <Image
-                src="/logo.png"
-                alt="DCG Logo"
-                width={40}
-                height={40}
-                className="h-10 bg-black p-1 rounded w-auto"
-              />
-            </motion.div>
+            <Image
+              src="/logo.png"
+              alt="DCG Logo"
+              width={40}
+              height={40}
+              className="h-10 bg-black p-1 rounded w-auto"
+            />
           </Link>
         </div>
 

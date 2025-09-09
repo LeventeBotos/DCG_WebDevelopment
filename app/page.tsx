@@ -2,6 +2,7 @@
 
 import Hero from "../components/Hero";
 import WhyUs from "@/components/WhyUs";
+import HomeIntro from "@/components/HomeIntro";
 import OurProcess from "@/components/OurProcess";
 import OurImpactInNumbers from "@/components/OurImpactInNumbers";
 import Services from "@/components/Services";
@@ -58,6 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center gap-20 min-h-screen">
       <Hero />
+      <HomeIntro />
       <WhyUs />
       <OurProcess />
       <OurImpactInNumbers />

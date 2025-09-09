@@ -38,9 +38,9 @@ const Industries = () => {
             delay: 0.15,
           },
           {
-            title: "Manufacturing",
+            title: "Manufacturing & Production",
             description:
-              "Predictive maintenance and supply chain optimization for manufacturing companies.",
+              "Predictive maintenance and supply chain optimization for manufacturing and production.",
             href: "/industries/manufacturing",
             icon: <CiSettings />,
             color: "from-[#00B5CA] to-[#00BACA]",
