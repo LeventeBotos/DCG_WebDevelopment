@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
+import SectionTitle from "@/components/SectionTitle"
 
 export default function ContactPage() {
   const { toast } = useToast()
@@ -47,33 +48,28 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col items-center gap-20 min-h-screen">
       {/* Hero Section */}
-      <section className="py-12 md:py-20 bg-muted">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">Contact Us</h1>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Have a question or ready to start your digital transformation journey? Get in touch with our team today.
-              </p>
-            </div>
-          </div>
+      <section className="w-full bg-muted">
+        <div className="container px-4 md:px-6 py-12 md:py-24">
+          <SectionTitle
+            title="Contact Us"
+            subtitle="Have a question or ready to start your digital transformation journey? Get in touch with our team today."
+            nomb={true}
+          />
         </div>
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-12 md:py-20">
+      <section className="w-full">
         <div className="container px-4 md:px-6">
+          <SectionTitle
+            title="Get in Touch"
+            subtitle="Fill out the form and our team will get back to you within 24 hours."
+            nomb={true}
+          />
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tighter md:text-3xl">Get in Touch</h2>
-                <p className="text-muted-foreground">
-                  Fill out the form and our team will get back to you within 24 hours.
-                </p>
-              </div>
-              <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
@@ -125,7 +121,6 @@ export default function ContactPage() {
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
-            </div>
             <div className="space-y-6">
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold tracking-tighter md:text-3xl">Contact Information</h2>
@@ -186,14 +181,13 @@ export default function ContactPage() {
       </section>
 
       {/* Map Section */}
-      <section className="py-12 md:py-20 bg-muted">
+      <section className="w-full bg-muted">
         <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">Our Location</h2>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">Visit our office in the heart of London.</p>
-            </div>
-          </div>
+          <SectionTitle
+            title="Our Location"
+            subtitle="Visit our office in the heart of London."
+            nomb={true}
+          />
           <div className="mx-auto max-w-5xl py-12">
             <div className="aspect-video w-full rounded-lg border bg-background">
               {/* Placeholder for map */}
@@ -206,16 +200,13 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 md:py-20">
+      <section className="w-full">
         <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">Frequently Asked Questions</h2>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Find answers to common questions about our services.
-              </p>
-            </div>
-          </div>
+          <SectionTitle
+            title="Frequently Asked Questions"
+            subtitle="Find answers to common questions about our services."
+            nomb={true}
+          />
           <div className="mx-auto max-w-3xl py-12 space-y-4">
             <div className="rounded-lg border p-6">
               <h3 className="text-lg font-medium mb-2">What industries do you specialize in?</h3>
