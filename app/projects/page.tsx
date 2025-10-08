@@ -1,470 +1,484 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   Brain,
-  Database,
-  Cpu,
-  Server,
-  Zap,
-  Shield,
-  BarChart3,
-  Globe,
+  CalendarCheck,
   Cloud,
-  Network,
-  Bot,
-  TrendingUp,
-  Users,
-  Target,
+  Database,
+  Layers,
   Lightbulb,
+  LineChart,
+  Network,
+  Shield,
+  Sparkles,
+  Target,
+  Users,
 } from "lucide-react";
-import { FuturisticButton } from "@/components/futuristic-button";
-import FuturisticCard from "@/components/futuristic-card";
-import FuturisticSection from "@/components/futuristic-section";
-import FuturisticHeading from "@/components/futuristic-heading";
+
+import SectionTitle from "@/components/SectionTitle";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
+import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
+
+const projects = [
+  {
+    id: "knowledge-graph",
+    title: "Knowledge Graph & Digital Twin",
+    description:
+      "Advanced knowledge graph system with entity relationships, digital twin visualisation, and intelligent retrieval across complex data estates.",
+    features: [
+      "Entity-relationship orchestration",
+      "Graph-powered discovery",
+      "LLMOps & RAG pipelines",
+      "Digital twin integration",
+    ],
+    technologies: ["Python", "Neo4j", "GraphQL", "Machine Learning"],
+    href: "/projects/knowledge-graph",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: Network,
+  },
+  {
+    id: "cloud-migration",
+    title: "Cloud Database Migration",
+    description:
+      "Zero-downtime migration programme that modernised legacy workloads while boosting scalability, resilience, and security posture.",
+    features: [
+      "Automated migration playbooks",
+      "Performance benchmarking",
+      "Cloud-native replatforming",
+      "Security and compliance guardrails",
+    ],
+    technologies: ["AWS", "Azure", "Docker", "Kubernetes"],
+    href: "/projects/cloud-migration",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: Cloud,
+  },
+  {
+    id: "data-analytics",
+    title: "Data Mining & Analytics Platform",
+    description:
+      "Unified analytics hub for IoT, document, and streaming data that unlocks real-time insights for operational and strategic teams.",
+    features: [
+      "Real-time streaming ingestion",
+      "Predictive analytics models",
+      "Executive-ready dashboards",
+      "Automated governance controls",
+    ],
+    technologies: ["Apache Kafka", "Elasticsearch", "TensorFlow", "React"],
+    href: "/projects/data-analytics",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: LineChart,
+  },
+  {
+    id: "customer-habits",
+    title: "Customer Habits Analysis (PI)",
+    description:
+      "Privacy-first behavioural intelligence solution delivering predictive insights with PCI-compliant consent management.",
+    features: [
+      "Deep learning propensity scoring",
+      "PII tokenisation pipeline",
+      "360° behaviour dashboards",
+      "Consent & governance auditing",
+    ],
+    technologies: ["Python", "TensorFlow", "PostgreSQL", "Redis"],
+    href: "/projects/customer-habits",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: Brain,
+  },
+  {
+    id: "supply-chain",
+    title: "Supply Chain Optimisation",
+    description:
+      "Data science programme for global retailers that drives demand forecasting, inventory health, and network-wide optimisation.",
+    features: [
+      "Demand & pricing optimisation",
+      "Scenario planning sandbox",
+      "Inventory risk mitigation",
+      "Revenue impact modelling",
+    ],
+    technologies: ["scikit-learn", "Pandas", "NumPy", "Gradio"],
+    href: "/projects/supply-chain",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: Target,
+  },
+  {
+    id: "data-modeling",
+    title: "Advanced Data Modelling",
+    description:
+      "Enterprise-wide data modelling capability covering relational, graph, and streaming architectures with governance baked in.",
+    features: [
+      "Unified data blueprints",
+      "Performance & cost tuning",
+      "Compliance accelerators",
+      "Hybrid storage strategies",
+    ],
+    technologies: ["PostgreSQL", "MongoDB", "Neo4j", "DBT"],
+    href: "/projects/data-modeling",
+    image: "/placeholder.svg?height=360&width=600",
+    icon: Database,
+  },
+];
+
+const deliveryPillars = [
+  {
+    title: "Strategy to Launch",
+    description:
+      "We partner from discovery workshops through production go-live, aligning business outcomes and technical delivery every step of the way.",
+    icon: Sparkles,
+    highlights: ["Innovation roadmapping", "Rapid proof-of-value", "Executive alignment"],
+  },
+  {
+    title: "Security & Trust",
+    description:
+      "Regulated industries rely on our secure-by-design frameworks, compliance accelerators, and 24/7 monitoring capabilities.",
+    icon: Shield,
+    highlights: ["PCI & GDPR compliant", "Secure MLOps guardrails", "Continuous monitoring"],
+  },
+  {
+    title: "Adoption & Enablement",
+    description:
+      "Change management, training, and co-creation sessions ensure teams are empowered to sustain momentum after launch.",
+    icon: Users,
+    highlights: ["Playbooks & documentation", "Centre of excellence setup", "Capability uplift"],
+  },
+];
+
+const deliveryProcess = [
+  {
+    title: "Discover",
+    description: "Stakeholder workshops, data audits, and value-mapping to prioritise the strongest opportunities.",
+    icon: Lightbulb,
+  },
+  {
+    title: "Design",
+    description: "Architect best-fit solutions, validate data foundations, and prototype the experience quickly.",
+    icon: Layers,
+  },
+  {
+    title: "Deliver",
+    description: "Iterative sprints, production-ready pipelines, and measurable impact tracked from day one.",
+    icon: CalendarCheck,
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Their engineering team moved from concept to production faster than any partner we've worked with, while keeping stakeholders engaged throughout.",
+    name: "Priya Nair",
+    title: "Director of Data",
+    designation: "Global Retail Group",
+    src: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3",
+  },
+  {
+    quote:
+      "The migration playbooks and governance frameworks meant zero downtime and complete confidence in our new cloud platform.",
+    name: "James Walker",
+    title: "CTO",
+    designation: "Fintech Scale-Up",
+    src: "https://images.unsplash.com/photo-1622675253498-51b230fd0de5?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3",
+  },
+  {
+    quote:
+      "Workshops were incredibly collaborative, and the resulting models now underpin our global supply chain decisions.",
+    name: "Elena Rossi",
+    title: "VP Supply Chain",
+    designation: "International Retailer",
+    src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3",
+  },
+  {
+    quote:
+      "The team embedded with our analysts, leaving behind automation and dashboards that our teams use every day.",
+    name: "Ahmed Khan",
+    title: "Head of Analytics",
+    designation: "Energy & Utilities",
+    src: "https://images.unsplash.com/photo-1616680214084-22670de1bc35?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3",
+  },
+];
 
 export default function ProjectsPage() {
-  const projects = [
-    {
-      id: "knowledge-graph",
-      title: "Knowledge Graph & Digital Twin",
-      description:
-        "Advanced knowledge graph system with edges, entities, and their relations for comprehensive data modeling.",
-      icon: Network,
-      features: [
-        "Entity-relationship mapping",
-        "Graph-based data models",
-        "Digital twin integration",
-        "LLMOps and RAG systems",
-        "Transfer learning capabilities",
-      ],
-      technologies: ["Python", "Neo4j", "GraphQL", "Machine Learning"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.1,
-      glowColor: "rgba(0, 51, 102, 0.3)",
-      href: "/projects/knowledge-graph",
-    },
-    {
-      id: "cloud-migration",
-      title: "Cloud Database Migration",
-      description:
-        "Seamless migration of databases to cloud infrastructure with zero downtime and enhanced scalability.",
-      icon: Cloud,
-      features: [
-        "Zero-downtime migration",
-        "Data integrity validation",
-        "Performance optimization",
-        "Security compliance",
-        "Automated rollback",
-      ],
-      technologies: ["AWS", "Azure", "Docker", "Kubernetes"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.2,
-      glowColor: "rgba(0, 102, 68, 0.3)",
-      href: "/projects/cloud-migration",
-    },
-    {
-      id: "data-analytics",
-      title: "Data Mining & Analytics Platform",
-      description:
-        "Comprehensive data mining and centralization platform for IoT, documents, and streaming data.",
-      icon: BarChart3,
-      features: [
-        "IoT data processing",
-        "Document analysis",
-        "Real-time streaming",
-        "Predictive analytics",
-        "Data visualization",
-      ],
-      technologies: ["Apache Kafka", "Elasticsearch", "TensorFlow", "React"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.3,
-      glowColor: "rgba(0, 51, 102, 0.3)",
-      href: "/projects/data-analytics",
-    },
-    {
-      id: "customer-habits",
-      title: "Customer Habits Analysis (PI)",
-      description:
-        "AI-powered customer behavior analysis with PCI compliance and deep learning for predictive insights.",
-      icon: Brain,
-      features: [
-        "PCI compliance",
-        "Proof of consent (POC)",
-        "Deep learning models",
-        "Behavioral prediction",
-        "Security-first approach",
-      ],
-      technologies: ["Python", "TensorFlow", "PostgreSQL", "Redis"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.4,
-      glowColor: "rgba(0, 102, 68, 0.3)",
-      href: "/projects/customer-habits",
-    },
-    {
-      id: "supply-chain",
-      title: "Supply Chain Optimization",
-      description:
-        "ML-powered supply chain optimization for retail and manufacturing with demand forecasting.",
-      icon: TrendingUp,
-      features: [
-        "Demand forecasting",
-        "Inventory optimization",
-        "Price optimization",
-        "Location-based analytics",
-        "Revenue maximization",
-      ],
-      technologies: ["Scikit-learn", "Pandas", "NumPy", "Gradio"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.5,
-      glowColor: "rgba(0, 51, 102, 0.3)",
-      href: "/projects/supply-chain",
-    },
-    {
-      id: "data-modeling",
-      title: "Advanced Data Modeling",
-      description:
-        "Comprehensive data modeling solutions including relational and graph models for enterprise applications.",
-      icon: Database,
-      features: [
-        "Relational modeling",
-        "Graph modeling",
-        "Schema design",
-        "Performance tuning",
-        "Data governance",
-      ],
-      technologies: ["PostgreSQL", "MongoDB", "Neo4j", "ERD tools"],
-      image: "/placeholder.svg?height=300&width=400",
-      delay: 0.6,
-      glowColor: "rgba(0, 102, 68, 0.3)",
-      href: "/projects/data-modeling",
-    },
-  ];
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <FuturisticSection
-        className="py-24 md:py-32"
-        withBlobs
-        blobConfig={{
-          topRight: true,
-          bottomLeft: true,
-          colors: ["#003366", "#006644"],
-        }}
-      >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-          <div className="flex flex-col justify-center space-y-6">
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
+    <div className="flex flex-col gap-24 pb-24">
+      <section className="relative min-h-[70vh] overflow-hidden rounded-b-[3rem] bg-slate-950 text-white">
+        <BackgroundGradientAnimation
+          containerClassName="h-full"
+          className="relative flex h-full items-center"
+        >
+          <div className="container mx-auto flex flex-col gap-12 px-4 py-32">
+            <motion.span
+              className="inline-flex w-fit items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-white/70 backdrop-blur"
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl xl:text-6xl/none">
-                Our
-                <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary">
-                  Projects
+              Proven delivery across industries
+            </motion.span>
+
+            <motion.div
+              className="max-w-4xl space-y-6"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <h1 className="text-4xl font-bold leading-tight md:text-6xl">
+                Projects that turn complex data into
+                <span className="block bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen bg-clip-text text-transparent">
+                  measurable impact
                 </span>
               </h1>
-              <p className="max-w-[600px] text-slate-600 md:text-xl">
-                Discover our cutting-edge AI and data science projects that are
-                transforming industries from energy to retail. Each project
-                showcases our expertise in machine learning, data analytics, and
-                digital transformation.
+              <p className="max-w-2xl text-base text-white/80 md:text-lg">
+                Explore how our AI, data science, and engineering teams deliver end-to-end programmes—from discovery and strategy to secure production deployments and enablement.
               </p>
             </motion.div>
+
             <motion.div
-              className="flex flex-col gap-4 sm:flex-row"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-wrap items-center gap-4"
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <FuturisticButton
-                className="group"
-                icon={
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                }
-                iconPosition="right"
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-dcg-lightBlue/30 transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
               >
-                <Link href="/contact">Start a Project</Link>
-              </FuturisticButton>
-              <FuturisticButton variant="outline">
-                <Link href="/industries">View Industries</Link>
-              </FuturisticButton>
+                Start a project
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link
+                href="/services"
+                className="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white/80 transition-colors duration-200 hover:border-white hover:text-white"
+              >
+                View all services
+              </Link>
+            </motion.div>
+
+            <motion.div
+              className="grid gap-6 md:grid-cols-3"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              {[
+                {
+                  label: "Projects delivered",
+                  value: "120+",
+                  icon: Target,
+                },
+                {
+                  label: "Enterprise teams enabled",
+                  value: "45",
+                  icon: Users,
+                },
+                {
+                  label: "Average go-live",
+                  value: "12 weeks",
+                  icon: CalendarCheck,
+                },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
+                    <stat.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/60">
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </motion.div>
           </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="relative"
-          >
-            {/* Animated project visualization */}
-            <div className="relative h-80 w-full max-w-md mx-auto">
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl"
-                animate={{
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              />
+        </BackgroundGradientAnimation>
+      </section>
 
-              <div className="absolute inset-2 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <Brain className="h-16 w-16 text-primary mx-auto" />
-                  </motion.div>
-                  <p className="text-lg font-semibold text-primary">
-                    AI Projects
-                  </p>
-                  <p className="text-sm text-slate-600">
-                    Transforming Industries
-                  </p>
+      <section className="container mx-auto px-4">
+        <SectionTitle
+          title="Featured Projects"
+          subtitle="A selection of programmes that showcase how we connect strategy, engineering, and adoption to deliver real-world impact."
+        />
+
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project, index) => (
+            <motion.article
+              key={project.id}
+              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+            >
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute bottom-4 left-4 flex items-center gap-3 text-white">
+                  <project.icon className="h-6 w-6" />
+                  <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">
+                    {project.id.replace(/-/g, " ")}
+                  </span>
                 </div>
               </div>
 
-              {/* Floating elements */}
-              <motion.div
-                className="absolute -top-4 -right-4 h-12 w-12 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center"
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <Database className="h-6 w-6 text-primary" />
-              </motion.div>
+              <div className="flex flex-1 flex-col gap-6 p-6">
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold text-slate-900">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    {project.description}
+                  </p>
+                </div>
 
-              <motion.div
-                className="absolute -bottom-4 -left-4 h-10 w-10 rounded-full bg-secondary/20 backdrop-blur-sm flex items-center justify-center"
-                animate={{
-                  y: [0, 10, 0],
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <Cpu className="h-5 w-5 text-secondary" />
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </FuturisticSection>
-
-      {/* Projects Grid */}
-      <FuturisticSection className="py-20">
-        <FuturisticHeading
-          title="Featured Projects"
-          description="Explore our portfolio of innovative AI and data science solutions that are driving digital transformation across industries."
-          align="center"
-          withGradient
-        />
-
-        <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: project.delay }}
-              whileHover={{ y: -5 }}
-              className="group"
-            >
-              <FuturisticCard
-                icon={project.icon}
-                title={project.title}
-                description={project.description}
-                delay={project.delay}
-                glowColor={project.glowColor}
-                className="h-full"
-              >
-                <div className="mt-6 space-y-4">
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-sm text-primary">
-                      Key Features:
-                    </h4>
-                    <ul className="space-y-1">
-                      {project.features.slice(0, 3).map((feature, index) => (
-                        <li
-                          key={index}
-                          className="text-xs text-slate-600 flex items-center"
-                        >
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2" />
-                          {feature}
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Key Moments
+                    </p>
+                    <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                      {project.features.slice(0, 3).map((feature) => (
+                        <li key={feature} className="flex items-start gap-2">
+                          <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen" />
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-sm text-primary">
-                      Technologies:
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {project.technologies.slice(0, 3).map((tech, index) => (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Tooling
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {project.technologies.map((tech) => (
                         <span
-                          key={index}
-                          className="inline-block px-2 py-1 text-xs bg-primary/10 text-primary rounded-md"
+                          key={tech}
+                          className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
                   </div>
-
-                  <div className="pt-4">
-                    <FuturisticButton
-                      variant="outline"
-                      size="sm"
-                      className="w-full group"
-                      icon={
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      }
-                      iconPosition="right"
-                    >
-                      <Link href={project.href}>View Project</Link>
-                    </FuturisticButton>
-                  </div>
                 </div>
-              </FuturisticCard>
-            </motion.div>
+
+                <div className="mt-auto">
+                  <Link
+                    href={project.href}
+                    className="inline-flex items-center text-sm font-semibold text-dcg-lightBlue transition-colors duration-200 hover:text-dcg-lightGreen"
+                  >
+                    View full case study
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </motion.article>
           ))}
         </div>
-      </FuturisticSection>
+      </section>
 
-      {/* Statistics Section */}
-      <FuturisticSection className="py-20 bg-gradient-to-r from-primary to-primary/90 text-white">
-        <FuturisticHeading
-          title="Project Impact"
-          description="Numbers that speak to our success in delivering transformative solutions."
-          align="center"
-          withGradient={false}
-          withLine
-          lineColor="rgba(255, 255, 255, 0.3)"
+      <section className="bg-slate-950 py-24 text-white">
+        <div className="container mx-auto grid gap-12 px-4 lg:grid-cols-[1.2fr,1fr] lg:items-center">
+          <div className="space-y-6">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-dcg-lightGreen">
+                Delivery blueprint
+              </p>
+              <h2 className="text-3xl font-bold md:text-4xl">
+                How we deliver projects
+              </h2>
+              <p className="text-white/70">
+                From day one we align product, data, and engineering teams around measurable objectives, secure architectures, and adoption plans.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {deliveryProcess.map((step) => (
+                <div
+                  key={step.title}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+                >
+                  <step.icon className="mb-4 h-8 w-8 text-dcg-lightGreen" />
+                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
+                  <p className="mt-2 text-sm text-white/70">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {deliveryPillars.map((pillar) => (
+              <div
+                key={pillar.title}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur transition-transform duration-300 hover:-translate-y-1"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                    <pillar.icon className="h-6 w-6 text-dcg-lightGreen" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{pillar.title}</h3>
+                </div>
+                <p className="mt-3 text-sm text-white/70">{pillar.description}</p>
+                <ul className="mt-4 space-y-2 text-sm text-white/70">
+                  {pillar.highlights.map((highlight) => (
+                    <li key={highlight} className="flex items-start gap-2">
+                      <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4">
+        <SectionTitle
+          title="Partnerships that scale"
+          subtitle="Client teams trust us to co-create the right solutions and stay engaged long after launch."
         />
+        <InfiniteMovingCards items={testimonials} />
+      </section>
 
-        <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
-          {[
-            {
-              value: "25+",
-              label: "Projects Delivered",
-              icon: Target,
-              delay: 0.1,
-            },
-            {
-              value: "95%",
-              label: "Client Satisfaction",
-              icon: Users,
-              delay: 0.2,
-            },
-            {
-              value: "£15M+",
-              label: "Cost Savings",
-              icon: TrendingUp,
-              delay: 0.3,
-            },
-            {
-              value: "24/7",
-              label: "Support Available",
-              icon: Shield,
-              delay: 0.4,
-            },
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
-              className="flex flex-col items-center justify-center space-y-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: stat.delay }}
-              whileHover={{ y: -5 }}
-            >
-              <motion.div
-                className="p-3 rounded-full bg-white/10"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                <stat.icon className="h-6 w-6 text-white" />
-              </motion.div>
-              <motion.span
-                className="text-3xl font-bold tracking-tight sm:text-4xl"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: stat.delay + 0.2 }}
-              >
-                {stat.value}
-              </motion.span>
-              <p className="text-sm font-medium text-white/80">{stat.label}</p>
-            </motion.div>
-          ))}
+      <section className="container mx-auto px-4">
+        <div className="rounded-3xl bg-gradient-to-r from-dcg-lightBlue via-[#00b1b5] to-dcg-lightGreen p-[1px]">
+          <div className="rounded-3xl bg-white p-12 text-center shadow-lg md:p-16">
+            <div className="mx-auto flex max-w-3xl flex-col gap-6">
+              <h2 className="text-3xl font-bold md:text-4xl">
+                Ready to design your next data-driven initiative?
+              </h2>
+              <p className="text-base text-slate-600 md:text-lg">
+                We partner with enterprise and scale-up teams to bring clarity, velocity, and measurable outcomes to AI and data programmes.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-6 py-3 text-sm font-semibold text-white shadow-lg transition-transform duration-200 hover:-translate-y-1"
+                >
+                  Book a discovery call
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:border-dcg-lightBlue hover:text-dcg-lightBlue"
+                >
+                  Meet our team
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </FuturisticSection>
-
-      {/* CTA Section */}
-      <FuturisticSection className="py-20">
-        <div className="flex flex-col items-center justify-center space-y-6 text-center">
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Ready to Start Your Project?
-            </h2>
-            <p className="mx-auto max-w-[700px] text-slate-600 md:text-xl">
-              Let's discuss how our AI and data science expertise can transform
-              your business operations.
-            </p>
-          </motion.div>
-          <motion.div
-            className="flex flex-col gap-4 sm:flex-row"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <FuturisticButton
-              className="group"
-              icon={
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              }
-              iconPosition="right"
-            >
-              <Link href="/contact">Start Your Project</Link>
-            </FuturisticButton>
-            <FuturisticButton variant="outline">
-              <Link href="/industries">Explore Industries</Link>
-            </FuturisticButton>
-          </motion.div>
-        </div>
-      </FuturisticSection>
+      </section>
     </div>
   );
 }
+
