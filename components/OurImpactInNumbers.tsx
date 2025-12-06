@@ -32,14 +32,14 @@ interface StatItem {
   isNumber?: boolean;
 }
 const stats: StatItem[] = [
-  {
-    value: "50",
-    label: "Enterprise Clients",
-    icon: Users,
-    delay: 0.1,
-    suffix: "+",
-    isNumber: true,
-  },
+  // {
+  //   value: "50",
+  //   label: "Enterprise Clients",
+  //   icon: Users,
+  //   delay: 0.1,
+  //   suffix: "+",
+  //   isNumber: true,
+  // },
   {
     value: "200",
     label: "Projects Completed",
@@ -49,7 +49,7 @@ const stats: StatItem[] = [
     isNumber: true,
   },
   {
-    value: "95",
+    value: "100",
     label: "Client Satisfaction %",
     icon: Award,
     delay: 0.3,
@@ -73,29 +73,21 @@ const stats: StatItem[] = [
     suffix: "+",
     isNumber: true,
   },
-  {
-    value: "500+",
-    label: "WhatsApp Chats",
-    icon: MessageCircle,
-    delay: 0.6,
-    suffix: "+",
-    isNumber: true,
-  },
-  {
-    value: "24",
-    label: "Support Availability",
-    icon: Clock,
-    delay: 0.7,
-    suffix: "/7",
-    isNumber: true,
-  },
-  {
-    value: "3",
-    label: "Countries Involved",
-    icon: Globe,
-    delay: 0.8,
-    isNumber: true,
-  },
+  // {
+  //   value: "24",
+  //   label: "Support Availability",
+  //   icon: Clock,
+  //   delay: 0.7,
+  //   suffix: "/7",
+  //   isNumber: true,
+  // },
+  // {
+  //   value: "3",
+  //   label: "Countries Involved",
+  //   icon: Globe,
+  //   delay: 0.8,
+  //   isNumber: true,
+  // },
 ];
 
 const OurImpactInNumbers = () => {
