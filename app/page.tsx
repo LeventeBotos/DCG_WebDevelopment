@@ -11,6 +11,7 @@ import SuccessStories from "@/components/SuccessStories";
 import { WorldMap } from "@/components/WorldMap";
 import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
 import SectionTitle from "@/components/SectionTitle";
+import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 
 const testimonials = [
   {
@@ -60,11 +61,11 @@ export default function Home() {
     <div className="flex flex-col items-center gap-20 min-h-screen">
       <Hero />
       {/* <HomeIntro /> */}
-      <WhyUs />
-      <OurProcess />
-      <OurImpactInNumbers />
+      {/* <WhyUs /> */}
+      {/* <OurProcess /> */}
+      {/* <OurImpactInNumbers /> */}
       {/* <ContactStats /> */}
-      <Services />
+      {/* <Services /> */}
 
       <SectionTitle
         title="Our Team Spans the Globe"
@@ -85,9 +86,13 @@ export default function Home() {
             start: { lat: 51.5074, lng: -0.1278 }, // London
             end: { lat: 47.4979, lng: 19.0402 }, // Budapest
           },
+          {
+            start: { lat: 51.5074, lng: -0.1278 }, // London
+            end: { lat: 40.7128, lng: -74.006 }, // New york
+          },
         ]}
       />
-      <Industries />
+      {/* <Industries /> */}
       <SuccessStories />
       <SectionTitle
         title="What Our Clients Say"
@@ -96,6 +101,17 @@ export default function Home() {
       />
 
       <InfiniteMovingCards items={testimonials} />
+      {/* <div className=""> */}
+      <div className=" flex flex-col items-center font-semibold text-5xl md:w-2/3 self-center text-center">
+        <TextHoverEffect text="Only 5%" />
+
+        <p className="pb-10">of firms are AI future-built</p>
+        <p className="opacity-50 ">
+          yet they capture five times the revenue increases and three times the
+          cost reductions of other firms
+        </p>
+      </div>
+      {/* </div> */}
     </div>
   );
 }
