@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import FuturisticBlob from "./futuristic-blob";
 
@@ -12,56 +12,48 @@ export default function Footer() {
       title: "Company",
       links: [
         { label: "About Us", href: "/about" },
-        { label: "Projects", href: "/projects" },
         { label: "Team", href: "/team" },
         { label: "Services", href: "/services" },
+        { label: "Careers", href: "/careers" },
+        { label: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "Services & Solutions",
+      links: [
+        { label: "Services Overview", href: "/services" },
+        { label: "Solutions / Projects", href: "/projects" },
         { label: "Industries", href: "/industries" },
+        { label: "Insights", href: "/insights" },
       ],
     },
     {
-      title: "Projects",
+      title: "Legal",
       links: [
-        { label: "Knowledge Graph", href: "/projects/knowledge-graph" },
-        { label: "Cloud Migration", href: "/projects/cloud-migration" },
-        { label: "Data Analytics", href: "/projects/data-analytics" },
-        { label: "Customer Habits", href: "/projects/customer-habits" },
-        { label: "Supply Chain", href: "/projects/supply-chain" },
-      ],
-    },
-    {
-      title: "Contact",
-      links: [
-        { label: "Get Started", href: "/contact" },
-        { label: "WhatsApp Chat", href: "#" },
-        {
-          label: "Email Support",
-          href: "mailto:info@dataconsulting-group.com",
-        },
-        { label: "Phone Support", href: "tel:+447123456789" },
-        { label: "Business Hours", href: "#" },
+        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Terms of Service", href: "/terms" },
       ],
     },
   ];
 
   const socialLinks = [
-    { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+    { icon: Twitter, href: "https://twitter.com", label: "X (Twitter)" },
     { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Github, href: "https://github.com", label: "GitHub" },
   ];
 
   return (
-    <footer className="relative overflow-hidden  bg-black text-white">
+    <footer className="relative overflow-hidden bg-gradient-to-br from-dcg-blue to-dcg-darkGreen text-white">
       <div className="absolute inset-0 pointer-events-none">
         <FuturisticBlob
           className="-left-40 -top-40"
-          color="#006644"
+          color="#0F3D2E"
           opacity={0.1}
           size={500}
           blur={80}
         />
         <FuturisticBlob
           className="-right-40 -bottom-40"
-          color="#003366"
+          color="#0A4C8A"
           opacity={0.1}
           size={500}
           blur={80}
@@ -98,9 +90,8 @@ export default function Footer() {
                 <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
               <p className="max-w-xs mb-6 text-white/80">
-                Leading AI and data science consultancy specializing in machine
-                learning, predictive analytics, and digital transformation for
-                enterprise clients including BP, Shell, and British Airways.
+                Transforming ambition into AI-driven impact across data
+                platforms, analytics, and cloud for global enterprises.
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (
@@ -170,7 +161,7 @@ export default function Footer() {
             <div className="space-y-2 text-white/80">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>London, United Kingdom</span>
+                <span>London, United Kingdom (global presence)</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
@@ -183,13 +174,20 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
+                <span>+44 (0) 712 345 6789</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {/* <span className="text-xs uppercase tracking-wide">Web</span> */}
                 <a
-                  href="tel:+447123456789"
+                  href="https://www.dataconsulting-group.com"
                   className="hover:text-white transition-colors"
                 >
-                  +44 712 345 6789
+                  www.dataconsulting-group.com
                 </a>
               </div>
+              <p className="text-sm text-white/70">
+                Let&apos;s build tomorrow together.
+              </p>
             </div>
             <div className="text-right text-sm text-white/60">
               <p>
