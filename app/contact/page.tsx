@@ -24,7 +24,7 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen">
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-4">
+        <div className="relative dcg-section py-20 md:py-28 space-y-4">
           <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
             Contact
           </p>
@@ -40,11 +40,11 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="container px-4 md:px-6 py-16 md:py-20 space-y-10">
+      <section className="dcg-section py-16 md:py-20 space-y-10">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
           <form
             onSubmit={handleSubmit}
-            className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg space-y-4"
+            className="dcg-card space-y-4"
           >
             <div className="grid gap-4 md:grid-cols-2">
               <label className="space-y-1 text-sm text-dcg-ink">
@@ -108,7 +108,7 @@ export default function ContactPage() {
             </label>
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
+              className="dcg-cta justify-center"
             >
               {status === "submitted" ? "Message sent — we’ll reply soon" : "Submit"}
             </button>
@@ -118,7 +118,7 @@ export default function ContactPage() {
             </p>
           </form>
 
-          <div className="space-y-4 rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg">
+          <div className="space-y-4 dcg-card">
             <h2 className="text-lg font-semibold text-dcg-ink">
               Contact information
             </h2>

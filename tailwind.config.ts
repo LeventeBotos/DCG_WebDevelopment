@@ -25,11 +25,11 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#003366",
+          DEFAULT: "#009ACA",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#006644",
+          DEFAULT: "#00CACA",
           foreground: "#ffffff",
         },
         destructive: {
@@ -53,10 +53,13 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         dcg: {
-          blue: "#01115A",
+          blue: "#0A4C8A",
           lightBlue: "#009ACA",
-          green: "#004A5A",
           lightGreen: "#00CACA",
+          darkGreen: "#0F3D2E",
+          sand: "#F5F7FA",
+          ink: "#0F172A",
+          slate: "#4B5563",
         },
       },
       borderRadius: {

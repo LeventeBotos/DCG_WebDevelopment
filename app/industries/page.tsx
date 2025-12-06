@@ -29,7 +29,7 @@ export default function IndustriesPage() {
     <div className="flex flex-col min-h-screen">
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-6">
+        <div className="relative dcg-section py-20 md:py-28 space-y-6">
           <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
             Industries
           </p>
@@ -45,7 +45,7 @@ export default function IndustriesPage() {
             {industryNotes.map((note) => (
               <div
                 key={note.title}
-                className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md"
+                className="dcg-card-compact"
               >
                 <h3 className="text-lg font-semibold text-dcg-ink">
                   {note.title}

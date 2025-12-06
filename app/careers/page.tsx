@@ -37,7 +37,7 @@ export default function CareersPage() {
     <div className="flex flex-col min-h-screen">
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-6">
+        <div className="relative dcg-section py-20 md:py-28 space-y-6">
           <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
             Careers
           </p>
@@ -52,7 +52,7 @@ export default function CareersPage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="mailto:info@dataconsulting-group.com?subject=Careers%20at%20DCG"
-              className="inline-flex items-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
+              className="dcg-cta"
             >
               Email your resume
             </Link>
@@ -60,12 +60,12 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <section className="container px-4 md:px-6 py-16 md:py-20 space-y-8">
+      <section className="dcg-section py-16 md:py-20 space-y-8">
         <div className="grid gap-6 md:grid-cols-3">
           {roles.map((role) => (
             <div
               key={role.title}
-              className="flex h-full flex-col gap-4 rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg"
+              className="flex h-full flex-col gap-4 dcg-card"
             >
               <div>
                 <p className="text-lg font-semibold text-dcg-ink">

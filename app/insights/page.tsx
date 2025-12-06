@@ -56,7 +56,7 @@ export default function InsightsPage() {
     <div className="flex flex-col min-h-screen">
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-6">
+        <div className="relative dcg-section py-20 md:py-28 space-y-6">
           <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
             Insights
           </p>
@@ -70,12 +70,12 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      <section className="container px-4 md:px-6 py-16 md:py-20 space-y-8">
+      <section className="dcg-section py-16 md:py-20 space-y-8">
         <div className="grid gap-6 md:grid-cols-2">
           {articles.map((article) => (
             <div
               key={article.title}
-              className="flex h-full flex-col gap-4 rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg"
+              className="flex h-full flex-col gap-4 dcg-card"
             >
               <div>
                 <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.18em]">
@@ -98,7 +98,7 @@ export default function InsightsPage() {
           ))}
         </div>
 
-        <div className="rounded-3xl border border-dcg-lightBlue/20 bg-gradient-to-r from-white via-dcg-sand to-white p-6 shadow-md">
+        <div className="dcg-card-muted">
           <h2 className="text-xl font-semibold text-dcg-ink">
             The vision of humans and AI working together in B2B is real.
           </h2>
@@ -122,7 +122,7 @@ export default function InsightsPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg space-y-4">
+        <div className="dcg-card space-y-4">
           <h2 className="text-xl font-semibold text-dcg-ink">
             DCG AI Platform (Personalization AI)
           </h2>

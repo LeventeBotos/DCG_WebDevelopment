@@ -37,6 +37,30 @@
   }
 }
 
+@layer components {
+  .dcg-section {
+    @apply container px-4 md:px-6;
+  }
+  .dcg-card {
+    @apply rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg;
+  }
+  .dcg-card-compact {
+    @apply rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md;
+  }
+  .dcg-card-muted {
+    @apply rounded-3xl border border-dcg-lightBlue/20 bg-gradient-to-r from-white via-dcg-lightGreen/10 to-white p-6 shadow-md;
+  }
+  .dcg-cta {
+    @apply inline-flex items-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl;
+  }
+  .dcg-cta-outline {
+    @apply inline-flex items-center rounded-full border border-dcg-lightBlue/30 bg-white px-5 py-3 text-sm font-semibold text-dcg-lightBlue shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg;
+  }
+  .dcg-chip {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold text-dcg-lightBlue shadow-sm;
+  }
+}
+
 /* Futuristic animations */
 @keyframes shimmer {
   0% {

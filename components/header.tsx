@@ -25,12 +25,12 @@ export default function Header() {
   };
 
   const navItems = [
-    { label: "Carreers", href: "/careers" },
-    { label: "Contact", href: "/contact" },
     { label: "Services", href: "/services" },
-    { label: "Solutions", href: "/solutions" },
+    { label: "Projects", href: "/projects" },
     { label: "Industries", href: "/industries" },
     { label: "Insights", href: "/insights" },
+    { label: "Carreers", href: "/careers" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (

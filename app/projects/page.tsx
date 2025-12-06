@@ -14,7 +14,7 @@ export default function ProjectsPage() {
     <div className="flex flex-col min-h-screen">
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-6">
+        <div className="relative dcg-section py-20 md:py-28 space-y-6">
           <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
             Solutions &amp; Projects
           </p>
@@ -38,15 +38,12 @@ export default function ProjectsPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="inline-flex items-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
-            >
+            <Link href="/contact" className="dcg-cta">
               Start a project
             </Link>
             <Link
               href="/services"
-              className="inline-flex items-center rounded-full border border-dcg-lightBlue/30 bg-white px-5 py-3 text-sm font-semibold text-dcg-lightBlue shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+              className="dcg-cta-outline"
             >
               View services
             </Link>
