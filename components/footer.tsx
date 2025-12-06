@@ -11,11 +11,12 @@ export default function Footer() {
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "/about" },
-        { label: "Team", href: "/team" },
-        { label: "Services", href: "/services" },
+        // { label: "Services", href: "/services" },
         { label: "Careers", href: "/careers" },
         { label: "Contact", href: "/contact" },
+        // { label: "Industries", href: "/industries" },
+        // { label: "Insights", href: "/insights" },
+        // { label: "Projects", href: "/projects" },
       ],
     },
     {
@@ -42,7 +43,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-dcg-blue to-dcg-darkGreen text-white">
+    <footer className="relative overflow-hidden bg-black bg-gradient-to-br from-dcg-lightBlue to-dcg-lightGreen text-white">
       <div className="absolute inset-0 pointer-events-none">
         <FuturisticBlob
           className="-left-40 -top-40"

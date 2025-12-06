@@ -1,238 +1,166 @@
-"use client"
+"use client";
 
-import type React from "react"
+import { useState } from "react";
+import { Mail, MapPin, Globe2 } from "lucide-react";
 
-import { useState } from "react"
-import { Mail, MapPin, Phone } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/hooks/use-toast"
-import SectionTitle from "@/components/SectionTitle"
+const topics = [
+  "AI Strategy",
+  "Retail AI",
+  "Knowledge Graphs & Digital Twins",
+  "Cloud Migration",
+  "Other",
+];
 
 export default function ContactPage() {
-  const { toast } = useToast()
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [status, setStatus] = useState<"idle" | "submitted">("idle");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    toast({
-      title: "Message Sent",
-      description: "Thank you for contacting us. We'll get back to you soon!",
-    })
-
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      message: "",
-    })
-    setIsSubmitting(false)
-  }
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("submitted");
+    // TODO: wire up form submission endpoint and CRM handoff.
+  };
 
   return (
-    <div className="flex flex-col items-center gap-20 min-h-screen">
-      {/* Hero Section */}
-      <section className="w-full bg-muted">
-        <div className="container px-4 md:px-6 py-12 md:py-24">
-          <SectionTitle
-            title="Contact Us"
-            subtitle="Have a question or ready to start your digital transformation journey? Get in touch with our team today."
-            nomb={true}
-          />
+    <div className="flex flex-col min-h-screen">
+      <section className="relative overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
+        <div className="relative container px-4 md:px-6 py-20 md:py-28 space-y-4">
+          <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
+            Contact
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-3xl leading-tight">
+            Web Pages &amp; Website Design – Digital, Technology &amp; Data
+            Consulting.
+          </h1>
+          <p className="text-lg text-dcg-slate max-w-3xl">
+            Ready to explore what AI can do for your business? Let’s build
+            tomorrow together. Tell us about your goals and we’ll set up a
+            consultation.
+          </p>
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section className="w-full">
-        <div className="container px-4 md:px-6">
-          <SectionTitle
-            title="Get in Touch"
-            subtitle="Fill out the form and our team will get back to you within 24 hours."
-            nomb={true}
-          />
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Your name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      placeholder="Your email"
-                      required
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    placeholder="Your company"
-                    value={formData.company}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    placeholder="How can we help you?"
-                    required
-                    className="min-h-32"
-                    value={formData.message}
-                    onChange={handleChange}
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tighter md:text-3xl">Contact Information</h2>
-                <p className="text-muted-foreground">
-                  You can also reach out to us directly using the information below.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <MapPin className="h-6 w-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h3 className="font-medium">Address</h3>
-                    <p className="text-muted-foreground">123 AI Street, London, UK</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Mail className="h-6 w-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h3 className="font-medium">Email</h3>
-                    <a
-                      href="mailto:info@dataconsultinggroup.co.uk"
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      info@dataconsultinggroup.co.uk
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Phone className="h-6 w-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h3 className="font-medium">Phone</h3>
-                    <a href="tel:+441234567890" className="text-muted-foreground hover:text-foreground">
-                      +44 123 456 7890
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-lg border p-6">
-                <h3 className="text-lg font-medium mb-4">Office Hours</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Monday - Friday</span>
-                    <span>9:00 AM - 6:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Saturday</span>
-                    <span>10:00 AM - 2:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sunday</span>
-                    <span>Closed</span>
-                  </div>
-                </div>
-              </div>
+      <section className="container px-4 md:px-6 py-16 md:py-20 space-y-10">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <form
+            onSubmit={handleSubmit}
+            className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg space-y-4"
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="space-y-1 text-sm text-dcg-ink">
+                Name
+                <input
+                  required
+                  name="name"
+                  className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                  placeholder="Your name"
+                />
+              </label>
+              <label className="space-y-1 text-sm text-dcg-ink">
+                Work email
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                  placeholder="you@company.com"
+                />
+              </label>
             </div>
-          </div>
-        </div>
-      </section>
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="space-y-1 text-sm text-dcg-ink">
+                Company
+                <input
+                  name="company"
+                  className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                  placeholder="Organization name"
+                />
+              </label>
+              <label className="space-y-1 text-sm text-dcg-ink">
+                Country
+                <input
+                  name="country"
+                  className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                  placeholder="Where you're based"
+                />
+              </label>
+            </div>
+            <label className="space-y-1 text-sm text-dcg-ink">
+              Topic
+              <select
+                name="topic"
+                className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+              >
+                {topics.map((topic) => (
+                  <option key={topic}>{topic}</option>
+                ))}
+              </select>
+            </label>
+            <label className="space-y-1 text-sm text-dcg-ink">
+              Message
+              <textarea
+                required
+                name="message"
+                className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-3 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                rows={5}
+                placeholder="Tell us about your AI, data, or cloud goals"
+              />
+            </label>
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
+            >
+              {status === "submitted" ? "Message sent — we’ll reply soon" : "Submit"}
+            </button>
+            <p className="text-xs text-dcg-slate">
+              We respond quickly. You can also book a 30-min consultation using
+              the link below.
+            </p>
+          </form>
 
-      {/* Map Section */}
-      <section className="w-full bg-muted">
-        <div className="container px-4 md:px-6">
-          <SectionTitle
-            title="Our Location"
-            subtitle="Visit our office in the heart of London."
-            nomb={true}
-          />
-          <div className="mx-auto max-w-5xl py-12">
-            <div className="aspect-video w-full rounded-lg border bg-background">
-              {/* Placeholder for map */}
-              <div className="flex h-full items-center justify-center">
-                <p className="text-muted-foreground">Interactive map will be displayed here</p>
+          <div className="space-y-4 rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg">
+            <h2 className="text-lg font-semibold text-dcg-ink">
+              Contact information
+            </h2>
+            <div className="space-y-3 text-sm text-dcg-ink">
+              <div className="flex items-center gap-2">
+                <Globe2 className="h-4 w-4 text-dcg-lightBlue" />
+                <a
+                  className="underline-offset-4 hover:underline"
+                  href="https://www.dataconsulting-group.com"
+                >
+                  www.dataconsulting-group.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-dcg-lightBlue" />
+                <a
+                  className="underline-offset-4 hover:underline"
+                  href="mailto:info@dataconsulting-group.com"
+                >
+                  info@dataconsulting-group.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-dcg-lightBlue" />
+                <span>London, UK (global presence)</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="w-full">
-        <div className="container px-4 md:px-6">
-          <SectionTitle
-            title="Frequently Asked Questions"
-            subtitle="Find answers to common questions about our services."
-            nomb={true}
-          />
-          <div className="mx-auto max-w-3xl py-12 space-y-4">
-            <div className="rounded-lg border p-6">
-              <h3 className="text-lg font-medium mb-2">What industries do you specialize in?</h3>
-              <p className="text-muted-foreground">
-                We specialize in providing AI and data solutions for the energy, banking, and manufacturing sectors,
-                though we also work with clients in other industries.
+            <div className="rounded-2xl bg-dcg-sand p-4 text-sm text-dcg-ink">
+              <p className="font-semibold">Book a 30-min consultation</p>
+              <p className="text-dcg-slate">
+                Share a topic and we’ll pair you with the right expert.
               </p>
-            </div>
-            <div className="rounded-lg border p-6">
-              <h3 className="text-lg font-medium mb-2">How long does a typical project take?</h3>
-              <p className="text-muted-foreground">
-                Project timelines vary depending on scope and complexity. Small projects may take a few weeks, while
-                larger implementations can take several months. We'll provide a detailed timeline during our initial
-                consultation.
-              </p>
-            </div>
-            <div className="rounded-lg border p-6">
-              <h3 className="text-lg font-medium mb-2">Do you offer ongoing support after project completion?</h3>
-              <p className="text-muted-foreground">
-                Yes, we offer various support and maintenance packages to ensure your solutions continue to perform
-                optimally. We can also provide training for your team.
-              </p>
+              <a
+                className="mt-3 inline-flex items-center rounded-full bg-white px-4 py-2 font-semibold text-dcg-lightBlue shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+                href="/contact"
+              >
+                Pick a time
+              </a>
             </div>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

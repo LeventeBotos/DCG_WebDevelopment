@@ -9,48 +9,37 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center w-full justify-center overflow-hidden ">
       <BackgroundGradientAnimation className="absolute h-full w-full flex flex-col justify-between z-10 container mx-auto px-2 md:px-4 pt-40 pb-20 ">
         <div className="gap-6 flex flex-col items-center md:items-start">
-          <div className="inline-flex items-center px-4 py-2 rounded-full shadow-sm backdrop-blur-3xl  opacity-75 text-xs md:text-sm font-medium">
+          <div className="glass inline-flex items-center px-4 py-2 rounded-full shadow-sm  opacity-75 text-xs md:text-sm font-medium">
             ⚡ Leading AI & Data Science Consultancy
           </div>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-            <span className="">Transform Your</span>
+            <span className="">Transform ambition into</span>
             <br />
             <span className="bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen bg-clip-text text-transparent">
-              Business with AI
+              AI-driven impact
             </span>
           </h1>
 
           <p className="md:text-lg px-4 text-sm opacity-75 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            We help enterprises leverage cutting-edge AI and machine learning to
-            drive innovation, optimize operations, and achieve breakthrough
-            results.
+            Data Consulting Group helps enterprises turn technology, data, and
+            AI into measurable outcomes across retail, energy, finance, IT,
+            transportation, aviation, and oil &amp; gas.
           </p>
-          <motion.div
-            className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start"
-            // initial={{ opacity: 0, y: 20 }}
-            // animate={{ opacity: 1, y: 0 }}
-            // transition={{ duration: 0.4, delay: 0.4 }}
-          >
+          <motion.div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
             <Link
-              href="/projects"
+              href="/contact"
               className=" group inline-flex text-center text-xs md:text-sm items-center p-4 px-8  bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen text-white font-semibold rounded-xl transform transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Explore Our Projects
+              Get Started
               <ArrowRight className="ml-4 h-4 w-4  group-hover:translate-x-2 transition-all transform" />
             </Link>
             <Link
-              href="/contact"
+              href="/projects"
               className=" group inline-flex text-center text-xs md:text-sm items-center p-4 px-8  backdrop-blur-3xl  rounded-xl transform transition-all duration-200  hover:shadow-xl"
             >
-              Get Started
+              Go to Our Projects
             </Link>
-            {/* <Link
-              href="/contact"
-              className="inline-flex  text-xs md:text-sm items-center md:px-8 p-3 md:py-4 border-[0.5px] opacity-75 hover:border-dcg-lightGreen hover:text-dcg-lightGreen font-semibold rounded-xl  transition-all duration-200"
-            >
-              Get Started
-            </Link> */}
           </motion.div>
         </div>
 
