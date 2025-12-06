@@ -77,12 +77,12 @@ export default function ProjectsShowcase() {
         >
           Go to Our Projects
         </a>
-        <a
+        {/* <a
           href="/insights"
           className="inline-flex items-center rounded-full border border-dcg-blue/20 bg-white px-5 py-3 text-sm font-semibold text-dcg-blue shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
         >
           Explore the Insights Library
-        </a>
+        </a> */}
       </div>
     </section>
   );

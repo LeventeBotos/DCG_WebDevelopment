@@ -1,17 +1,21 @@
 "use client";
 
-import Hero from "../components/Hero";
 import WhyUs from "@/components/WhyUs";
-import HomeIntro from "@/components/HomeIntro";
 import OurProcess from "@/components/OurProcess";
-import OurImpactInNumbers from "@/components/OurImpactInNumbers";
-import Services from "@/components/Services";
-import Industries from "@/components/Industries";
 import SuccessStories from "@/components/SuccessStories";
 import { WorldMap } from "@/components/WorldMap";
 import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
 import SectionTitle from "@/components/SectionTitle";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
+import AgenticEnterpriseSection from "@/components/home/AgenticEnterpriseSection";
+import DCGAIPlatformSection from "@/components/home/DCGAIPlatformSection";
+import FinalCTASection from "@/components/home/FinalCTASection";
+import HeroSection from "@/components/home/HeroSection";
+import ServicesSection from "@/components/home/ServicesSection";
+import StrategicQuestionsSection from "@/components/home/StrategicQuestionsSection";
+import ValuePropositionSection from "@/components/home/ValuePropositionSection";
+import AIAtWorkSection from "@/components/home/AIAtWorkSection";
+import Hero from "@/components/Hero";
 
 const testimonials = [
   {
@@ -59,13 +63,28 @@ const testimonials = [
 export default function Home() {
   return (
     <div className="flex flex-col items-center gap-20 min-h-screen">
+      {/* <HeroSection /> */}
       <Hero />
-      {/* <HomeIntro /> */}
-      {/* <WhyUs /> */}
-      {/* <OurProcess /> */}
-      {/* <OurImpactInNumbers /> */}
-      {/* <ContactStats /> */}
-      {/* <Services /> */}
+      <WhyUs />
+
+      <ValuePropositionSection />
+      <StrategicQuestionsSection />
+
+      <DCGAIPlatformSection />
+      <AgenticEnterpriseSection />
+      <AIAtWorkSection />
+
+      <div className="flex flex-col items-center font-semibold text-5xl md:w-2/3 self-center text-center">
+        <TextHoverEffect text="Only 5%" />
+        <p className="pb-10">of firms are AI future-built</p>
+        <p className="opacity-50">
+          yet they capture five times the revenue increases and three times the
+          cost reductions of other firms
+        </p>
+      </div>
+
+      <ServicesSection />
+      <OurProcess />
 
       <SectionTitle
         title="Our Team Spans the Globe"
@@ -92,26 +111,18 @@ export default function Home() {
           },
         ]}
       />
-      {/* <Industries /> */}
+
       <SuccessStories />
+
       <SectionTitle
         title="What Our Clients Say"
         subtitle="Hear from industry leaders who trust us with their digital transformation."
         nomb={true}
       />
-
       <InfiniteMovingCards items={testimonials} />
-      {/* <div className=""> */}
-      <div className=" flex flex-col items-center font-semibold text-5xl md:w-2/3 self-center text-center">
-        <TextHoverEffect text="Only 5%" />
 
-        <p className="pb-10">of firms are AI future-built</p>
-        <p className="opacity-50 ">
-          yet they capture five times the revenue increases and three times the
-          cost reductions of other firms
-        </p>
-      </div>
-      {/* </div> */}
+      {/* <AIFutureBuiltSection /> */}
+      <FinalCTASection />
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function Header() {
     { label: "Services", href: "/services" },
     { label: "Projects", href: "/projects" },
     { label: "Industries", href: "/industries" },
-    { label: "Insights", href: "/insights" },
+    // { label: "Insights", href: "/insights" },
     { label: "Carreers", href: "/careers" },
     { label: "Contact", href: "/contact" },
   ];
@@ -49,7 +49,7 @@ export default function Header() {
               alt="DCG Logo"
               width={40}
               height={40}
-              className="h-10 bg-black p-1 rounded w-auto"
+              className="h-10 invert p-1 rounded w-auto"
             />
           </Link>
         </div>
