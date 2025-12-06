@@ -3,8 +3,8 @@ import { ServiceCard } from "./shared";
 
 export default function ServicesSection() {
   return (
-    <section className="border-t border-dcg-lightBlue/20 bg-dcg-sand">
-      <div className="mx-auto max-w-6xl px-4 py-16">
+    <section className="">
+      <div className="">
         <div className="mb-10 max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-blue">
             Data & engineering services

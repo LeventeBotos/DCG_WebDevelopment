@@ -12,7 +12,7 @@ export default function Footer() {
       title: "Company",
       links: [
         // { label: "Services", href: "/services" },
-        { label: "Careers", href: "/careers" },
+        { label: "Career", href: "/careers" },
         { label: "Contact", href: "/contact" },
         // { label: "Industries", href: "/industries" },
         // { label: "Insights", href: "/insights" },
@@ -162,7 +162,7 @@ export default function Footer() {
             <div className="space-y-2 text-white/80">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>London, United Kingdom (global presence)</span>
+                <span>London, United Kingdom</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />

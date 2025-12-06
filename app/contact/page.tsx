@@ -42,10 +42,7 @@ export default function ContactPage() {
 
       <section className="dcg-section py-16 md:py-20 space-y-10">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-          <form
-            onSubmit={handleSubmit}
-            className="dcg-card space-y-4"
-          >
+          <form onSubmit={handleSubmit} className="dcg-card space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <label className="space-y-1 text-sm text-dcg-ink">
                 Name
@@ -106,11 +103,10 @@ export default function ContactPage() {
                 placeholder="Tell us about your AI, data, or cloud goals"
               />
             </label>
-            <button
-              type="submit"
-              className="dcg-cta justify-center"
-            >
-              {status === "submitted" ? "Message sent — we’ll reply soon" : "Submit"}
+            <button type="submit" className="dcg-cta justify-center">
+              {status === "submitted"
+                ? "Message sent — we’ll reply soon"
+                : "Submit"}
             </button>
             <p className="text-xs text-dcg-slate">
               We respond quickly. You can also book a 30-min consultation using
@@ -143,7 +139,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-dcg-lightBlue" />
-                <span>London, UK (global presence)</span>
+                <span>London, UK</span>
               </div>
             </div>
             <div className="rounded-2xl bg-dcg-sand p-4 text-sm text-dcg-ink">

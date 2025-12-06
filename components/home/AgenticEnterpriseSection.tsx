@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function AgenticEnterpriseSection() {
   return (
-    <section className="border-t border-dcg-lightBlue/20 bg-dcg-sand">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 md:flex-row md:items-center">
+    <section>
+      <div className="flex  flex-col gap-10 md:flex-row md:items-center">
         <div className="flex-1 space-y-4">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-blue">
             Agentic Enterprise

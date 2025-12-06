@@ -16,6 +16,8 @@ import StrategicQuestionsSection from "@/components/home/StrategicQuestionsSecti
 import ValuePropositionSection from "@/components/home/ValuePropositionSection";
 import AIAtWorkSection from "@/components/home/AIAtWorkSection";
 import Hero from "@/components/Hero";
+import { WhyDcgBento } from "@/components/home/WhyDcgBento";
+import { AgenticEnterpriseForB2BSalesSection } from "@/components/home/EveryoneNeeds";
 
 const testimonials = [
   {
@@ -65,26 +67,36 @@ export default function Home() {
     <div className="flex flex-col items-center gap-20 min-h-screen">
       {/* <HeroSection /> */}
       <Hero />
-      <WhyUs />
+      <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-20">
+        <SectionTitle title="Why Choose DCG?" subtitle="" nomb={true} />
+        <WhyDcgBento />
+        {/* <WhyUs /> */}
 
-      <ValuePropositionSection />
-      <StrategicQuestionsSection />
+        {/* <ValuePropositionSection /> */}
+        <StrategicQuestionsSection />
 
-      <DCGAIPlatformSection />
-      <AgenticEnterpriseSection />
-      <AIAtWorkSection />
+        <DCGAIPlatformSection />
+        {/* <AgenticEnterpriseSection /> */}
+        <AgenticEnterpriseForB2BSalesSection />
+        <AIAtWorkSection />
 
-      <div className="flex flex-col items-center font-semibold text-5xl md:w-2/3 self-center text-center">
-        <TextHoverEffect text="Only 5%" />
-        <p className="pb-10">of firms are AI future-built</p>
-        <p className="opacity-50">
-          yet they capture five times the revenue increases and three times the
-          cost reductions of other firms
-        </p>
+        <div className="flex flex-col items-center  self-center text-center">
+          <TextHoverEffect text="Only 5%" />
+          <div className="w-2/3 self-center flex flex-col items-center">
+            <p className="pb-10 text-5xl font-semibold">
+              of firms are AI future-built
+            </p>
+            <p className="opacity-50 text-3xl">
+              yet they capture five times the revenue increases and three times
+              the cost reductions of other firms
+            </p>
+          </div>
+        </div>
+
+        <ServicesSection />
       </div>
 
-      <ServicesSection />
-      <OurProcess />
+      {/* <OurProcess /> */}
 
       <SectionTitle
         title="Our Team Spans the Globe"
