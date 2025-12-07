@@ -82,11 +82,11 @@ export default function Home() {
 
         <div className="flex flex-col items-center  self-center text-center">
           <TextHoverEffect text="Only 5%" />
-          <div className="w-2/3 self-center flex flex-col items-center">
-            <p className="pb-10 text-5xl font-semibold">
+          <div className="md:w-2/3 self-center flex flex-col items-center">
+            <p className="pb-10 text-3xl md:text-5xl font-semibold">
               of firms are AI future-built
             </p>
-            <p className="opacity-50 text-3xl">
+            <p className="opacity-50 text-xl md:text-3xl">
               yet they capture five times the revenue increases and three times
               the cost reductions of other firms
             </p>

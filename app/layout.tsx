@@ -2,7 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header";
+import Header from "@/components/Navbar";
 import Footer from "@/components/footer";
 import WhatsAppChat from "@/components/whatsapp-chat";
 
@@ -22,8 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900`}
+        className={`${inter.className} min-h-screen flex relative flex-col bg-gradient-to-br from-slate-50 to-white text-slate-900`}
       >
+        {/* <Header /> */}
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
