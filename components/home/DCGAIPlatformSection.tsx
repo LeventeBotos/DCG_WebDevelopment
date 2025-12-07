@@ -98,7 +98,7 @@ function PlatformCanvasCard({
               animationSpeed={4}
               containerClassName="bg-white"
               colors={colors}
-              dotSize={2}
+              dotSize={3}
               opacities={[0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.6, 0.8, 1]}
               showGradient={false}
             />

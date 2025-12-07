@@ -173,10 +173,13 @@ export default function Footer() {
                   info@dataconsulting-group.com
                 </a>
               </div>
-              <div className="flex items-center gap-2">
+              <a
+                href="tel:+44 (0) 20 80639958"
+                className="flex items-center gap-2"
+              >
                 <Phone className="h-4 w-4" />
-                <span>+44 (0) 712 345 6789</span>
-              </div>
+                <span>+44 (0) 20 80639958</span>
+              </a>
               <div className="flex items-center gap-2">
                 {/* <span className="text-xs uppercase tracking-wide">Web</span> */}
                 <a

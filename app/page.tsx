@@ -141,7 +141,7 @@ export default function Home() {
     <div className="flex flex-col items-center gap-10 min-h-screen">
       {/* <HeroSection /> */}
       <HeroVideoSection />
-      <Hero />
+      {/* <Hero /> */}
 
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
@@ -189,15 +189,20 @@ export default function Home() {
         />
         <AIAtWorkSection />
 
-        <div className="flex flex-col mt-10 md:mt-20 items-center  self-center text-center">
+        <div className="flex flex-col mt-10 md:mt-20 items-center self-center text-center">
           <TextHoverEffect text="Only 5%" />
+
           <div className="md:w-2/3 self-center flex flex-col items-center">
-            <p className="pb-10 text-3xl md:text-5xl font-semibold">
-              of firms are AI future-built
+            <p className="pb-6 md:pb-8 text-3xl md:text-5xl font-semibold">
+              of companies are AI future-built
             </p>
-            <p className="opacity-50 text-xl md:text-3xl">
-              yet they capture five times the revenue increases and three times
-              the cost reductions of other firms
+
+            <p className="opacity-70 text-lg md:text-2xl leading-relaxed">
+              Yet these leaders achieve{" "}
+              <span className="font-semibold">5× higher revenue growth</span>{" "}
+              and{" "}
+              <span className="font-semibold">3× greater cost reductions</span>{" "}
+              than their peers.
             </p>
           </div>
         </div>
