@@ -75,29 +75,29 @@ export function StatCard({
   label,
   value,
   note,
+  className = "",
 }: {
   label: string;
   value: string;
   note?: string;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md">
+    <div
+      className={`flex h-full flex-col gap-2 rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md ${className}`}
+    >
       <div className="text-xs font-semibold uppercase tracking-[0.15em] text-dcg-slate">
         {label}
       </div>
+
       <div className="text-3xl font-semibold text-dcg-ink">{value}</div>
+
       {note && <p className="text-xs text-dcg-slate md:text-sm">{note}</p>}
     </div>
   );
 }
 
-export function ServiceCard({
-  title,
-  body,
-}: {
-  title: string;
-  body: string;
-}) {
+export function ServiceCard({ title, body }: { title: string; body: string }) {
   return (
     <div className="flex flex-col gap-3 rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md">
       <h3 className="text-sm font-semibold text-dcg-ink md:text-base">

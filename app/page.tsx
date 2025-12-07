@@ -163,7 +163,7 @@ export default function Home() {
         <StrategicQuestionsSection />
 
         <SectionTitle
-          title=" Productized AI capabilities, tuned for your industry"
+          title="Productized AI capabilities, tuned for your industry"
           subtitle="Pre-built accelerators that combine reusable AI components with
           sector-specific know-how reducing time-to-value from years to weeks."
           nomb={true}
@@ -181,7 +181,7 @@ export default function Home() {
         <Timeline data={timeline} />
 
         <SectionTitle
-          title="  Momentum is real. So are the capability gaps."
+          title="Momentum is real. So are the capability gaps."
           subtitle=" Employees are rapidly adopting AI, but training, workflow integration
           and trust are lagging. We help organizations move beyond pilots and
           point tools to system-level impact."
@@ -203,8 +203,8 @@ export default function Home() {
         </div>
 
         <SectionTitle
-          title=" From strategy to implementation, with data at the core"
-          subtitle="  We design, build and operate the data, AI and technology foundations
+          title="From strategy to implementation, with data at the core"
+          subtitle="We design, build and operate the data, AI and technology foundations
             you need to launch new products, experiences and business models."
           nomb={true}
         />

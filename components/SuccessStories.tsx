@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import React from "react";
-import SectionTitle from "./SectionTitle";
 
 const SuccessStories = () => {
   return (
