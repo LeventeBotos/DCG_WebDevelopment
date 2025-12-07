@@ -5,14 +5,27 @@ const SectionTitle = ({
   title,
   subtitle,
   nomb = false,
+  center = false,
 }: {
   title: String;
   subtitle: string;
   nomb?: boolean;
+  center?: boolean;
 }) => {
   return (
-    <div className={`text-center ${!nomb && "mb-16"}`}>
-      <motion.h2
+    <div
+      className={`${center && "text-center items-center"}${
+        !nomb && "mb-16"
+      } mt-10 md:mt-20`}
+    >
+      <h2 className="text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
+        {title}
+      </h2>
+      <p className="mt-3 max-w-xl text-sm text-dcg-slate md:text-base">
+        {subtitle}
+      </p>
+
+      {/* <motion.h2
         className=" text-xl md:text-3xl font-bold  mb-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -29,7 +42,7 @@ const SectionTitle = ({
         transition={{ duration: 0.4, delay: 0.1 }}
       >
         {subtitle}
-      </motion.p>
+      </motion.p> */}
     </div>
   );
 };

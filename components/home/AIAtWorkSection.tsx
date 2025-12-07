@@ -4,20 +4,6 @@ import { StatCard } from "./shared";
 export default function AIAtWorkSection() {
   return (
     <section>
-      <div className="mb-10 max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-blue">
-          AI at work
-        </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
-          Momentum is real. So are the capability gaps.
-        </h2>
-        <p className="mt-3 text-sm text-dcg-slate md:text-base">
-          Employees are rapidly adopting AI, but training, workflow integration
-          and trust are lagging. We help organizations move beyond pilots and
-          point tools to system-level impact.
-        </p>
-      </div>
-
       <div className="grid gap-6 md:grid-cols-4">
         <StatCard
           label="Regular AI users"

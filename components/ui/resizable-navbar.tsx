@@ -90,20 +90,23 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "40%" : "100%",
+        width: visible ? "50%" : "100%",
         y: visible ? 20 : 0,
       }}
       transition={{
-        type: "spring",
-        stiffness: 200,
-        damping: 50,
+        // spring just for width (and y)
+        width: { type: "spring", stiffness: 150, damping: 30 },
+        y: { type: "spring", stiffness: 150, damping: 30 },
+        // everything else uses this
+        default: { type: "tween", duration: 0.5 },
       }}
       style={{
         minWidth: "800px",
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex ",
-        visible && "bg-white/80 ",
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
+        visible && "bg-white/80",
+
         className
       )}
     >
@@ -147,25 +150,8 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
   return (
     <motion.div
-      animate={{
-        backdropFilter: visible ? "blur(10px)" : "none",
-        boxShadow: visible
-          ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
-          : "none",
-        width: visible ? "90%" : "100%",
-        paddingRight: visible ? "12px" : "0px",
-        paddingLeft: visible ? "12px" : "0px",
-        borderRadius: visible ? "12px" : "2rem",
-        y: visible ? 20 : 0,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 200,
-        damping: 50,
-      }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-        visible && "bg-white/80 ",
+        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 bg-white px-4 py-3 shadow-sm lg:hidden",
         className
       )}
     >
@@ -190,21 +176,43 @@ export const MobileNavHeader = ({
   );
 };
 
+const variants = {
+  collapsed: {
+    opacity: 0,
+    height: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  open: {
+    opacity: 1,
+    height: "auto",
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+};
+
 export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  onClose,
 }: MobileNavMenuProps) => {
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          key="mobile-nav-menu"
+          initial="collapsed"
+          animate="open"
+          exit="collapsed"
+          variants={variants}
+          transition={{
+            duration: 0.5,
+            ease: "easeInOut",
+          }}
+          style={{ overflow: "hidden" }}
           className={cn(
-            "absolute inset-x-0 rounded-xl top-16 z-50 flex w-full flex-col items-start justify-start gap-4  bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] ",
+            "flex w-full flex-col items-start justify-start gap-4 rounded-md border border-neutral-100 bg-white px-2 shadow-none",
+            // ⬆️ note: no py-* here, padding is animated
             className
           )}
         >
@@ -214,7 +222,6 @@ export const MobileNavMenu = ({
     </AnimatePresence>
   );
 };
-
 export const MobileNavToggle = ({
   isOpen,
   onClick,
@@ -233,14 +240,12 @@ export const NavbarLogo = () => {
   return (
     <a
       href="/"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+      className="relative z-20  mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
       <img
         src="/logo.png"
         alt="logo"
-        className="invert h-8 md:h-6"
-        // width={30}
-        // height={50}
+        className="h-8 invert md:invert-0 md:brightness-[25%] md:h-8"
       />
       {/* <span className="font-medium text-black ">Startup</span> */}
     </a>

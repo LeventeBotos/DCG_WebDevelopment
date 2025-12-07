@@ -5,19 +5,6 @@ export default function ServicesSection() {
   return (
     <section className="">
       <div className="">
-        <div className="mb-10 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-blue">
-            Data & engineering services
-          </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
-            From strategy to implementation, with data at the core
-          </h2>
-          <p className="mt-3 text-sm text-dcg-slate md:text-base">
-            We design, build and operate the data, AI and technology foundations
-            you need to launch new products, experiences and business models.
-          </p>
-        </div>
-
         <div className="grid gap-6 md:grid-cols-3">
           <ServiceCard
             title="Data & Analytics"

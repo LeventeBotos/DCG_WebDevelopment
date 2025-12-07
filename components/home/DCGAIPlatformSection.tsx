@@ -3,19 +3,6 @@ import { PlatformCard } from "./shared";
 export default function DCGAIPlatformSection() {
   return (
     <section>
-      <div className="mb-10 max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-blue">
-          DCG AI Platform
-        </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
-          Productized AI capabilities, tuned for your industry
-        </h2>
-        <p className="mt-3 text-sm text-dcg-slate md:text-base">
-          Pre-built accelerators that combine reusable AI components with
-          sector-specific know-how – reducing time-to-value from years to weeks.
-        </p>
-      </div>
-
       <div className="grid gap-6 md:grid-cols-2">
         <PlatformCard
           title="Personalization AI"
