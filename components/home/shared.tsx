@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React from "react";
 
+type ServiceCardProps = { title: string; body: string; href?: string };
+
 export function StatRow({
   label,
   value,
@@ -97,13 +99,28 @@ export function StatCard({
   );
 }
 
-export function ServiceCard({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md">
+export function ServiceCard({ title, body, href }: ServiceCardProps) {
+  const card = (
+    <div className="flex h-full flex-col gap-3 rounded-3xl border border-dcg-lightBlue/20 bg-white p-5 shadow-md transition hover:-translate-y-0.5 hover:shadow-lg">
       <h3 className="text-sm font-semibold text-dcg-ink md:text-base">
         {title}
       </h3>
       <p className="text-xs text-dcg-slate md:text-sm">{body}</p>
+      {href && (
+        <span className="text-xs font-semibold text-dcg-blue">
+          View service →
+        </span>
+      )}
     </div>
+  );
+
+  if (!href) {
+    return card;
+  }
+
+  return (
+    <Link href={href} className="block focus-visible:outline-none">
+      {card}
+    </Link>
   );
 }
