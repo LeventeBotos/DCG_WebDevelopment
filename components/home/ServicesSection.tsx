@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import Link from "next/link";
 import { useMemo, useRef } from "react";
 import { MathUtils, type Mesh } from "three";
+import { servicesBySlug } from "@/lib/services";
 
 type DemoService = {
   slug: string;
@@ -12,26 +13,8 @@ type DemoService = {
   accent: string;
 };
 
-const demoServices: DemoService[] = [
-  {
-    slug: "data",
-    title: "Data Platforms & Products",
-    body: "Design and run lakehouse architectures, governed data products, and realtime pipelines that keep analytics and AI reliable.",
-    accent: "#0b5cff",
-  },
-  {
-    slug: "ai",
-    title: "Applied AI & Agents",
-    body: "Ship AI features—from RAG to agentic workflows—with evaluation, safety, and MLOps so they stay accurate and cost-aware in production.",
-    accent: "#16a34a",
-  },
-  {
-    slug: "cloud-operations",
-    title: "Cloud Operations",
-    body: "SRE, security, and FinOps practices that make Azure, AWS, and GCP estates resilient, auditable, and budget-friendly.",
-    accent: "#0f172a",
-  },
-];
+const featuredSlugs = ["digital-twin", "deep-learning", "computer-vision"];
+const accents = ["#0b5cff", "#0f172a", "#16a34a"];
 
 function CubeScene({ accent }: { accent: string }) {
   function AnimatedCube() {
@@ -69,7 +52,20 @@ function CubeScene({ accent }: { accent: string }) {
 }
 
 export default function ServicesSection() {
-  const services = useMemo(() => demoServices, []);
+  const services = useMemo(() => {
+    return featuredSlugs
+      .map((slug, idx) => {
+        const svc = servicesBySlug[slug];
+        if (!svc) return null;
+        return {
+          slug,
+          title: svc.title,
+          body: svc.summary ?? svc.intro ?? "",
+          accent: accents[idx % accents.length],
+        };
+      })
+      .filter(Boolean) as DemoService[];
+  }, []);
 
   return (
     <section className="space-y-8  w-full px-4 md:px-10">

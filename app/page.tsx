@@ -208,20 +208,20 @@ export default function Home() {
         </div>
 
         <SectionTitle
-          title="From strategy to implementation, with data at the core"
-          subtitle="We design, build and operate the data, AI and technology foundations
-            you need to launch new products, experiences and business models."
-          nomb={true}
-        />
-        <ServicesSection />
-
-        <SectionTitle
           title={"Success Stories"}
           subtitle="Real results from real projects with industry leaders."
           nomb={true}
         />
         <SuccessStories />
+
+        <SectionTitle
+          title="From strategy to implementation, with data at the core"
+          subtitle="We design, build and operate the data, AI and technology foundations you need to launch new products, experiences and business models."
+          nomb={true}
+          center={true}
+        />
       </div>
+      <ServicesSection />
 
       {/* <OurProcess /> */}
 

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 const SectionTitle = ({
@@ -14,14 +14,20 @@ const SectionTitle = ({
 }) => {
   return (
     <div
-      className={`${center && "text-center items-center"}${
-        !nomb && "mb-16"
-      } mt-10 md:mt-20`}
+      className={cn("mt-10 md:mt-20", {
+        "mb-16": !nomb,
+        "text-center": center,
+      })}
     >
       <h2 className="text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
         {title}
       </h2>
-      <p className="mt-3 max-w-xl text-sm text-dcg-slate md:text-base">
+      <p
+        className={cn(
+          "mt-3 max-w-xl text-sm text-dcg-slate md:text-base",
+          center && "mx-auto",
+        )}
+      >
         {subtitle}
       </p>
 
