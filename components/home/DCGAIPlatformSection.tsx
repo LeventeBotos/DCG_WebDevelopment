@@ -10,36 +10,40 @@ const PLATFORM_CARDS = [
     title: "Personalization AI",
     body: "Design and orchestrate intelligent, automated and personalized customer journeys across web, app, marketing and service.",
     href: "/solutions/dcg-ai-platform",
+    // Bright sky → cyan (on-brand, energetic start)
     colors: [
-      [0, 154, 202],
-      [0, 202, 202],
+      [0, 154, 202], // #009ACA
+      [0, 202, 202], // #00CACA
     ] as [number, number, number][],
   },
   {
     title: "Conversational Analytics & Commerce",
     body: "Use AI-driven conversations to acquire, convert and support customers, while capturing rich behavioral and intent data.",
     href: "/solutions/dcg-ai-platform",
+    // Cyan → teal (more “human/interactive”)
     colors: [
-      [59, 130, 246],
-      [139, 92, 246],
-    ] as [number, number, number][],
-  },
-  {
-    title: "Smart Banking AI",
-    body: "Provide bankers and relationship managers with a 360° view of clients, opportunities, risks and recommended next best actions.",
-    href: "/solutions/dcg-ai-platform",
-    colors: [
-      [56, 189, 248],
-      [45, 212, 191],
+      [0, 202, 202], // cyan/teal bridge
+      [0, 176, 132], // teal-green
     ] as [number, number, number][],
   },
   {
     title: "DCG 360 Salesforce Assessment",
     body: "Automate diagnostics on your CRM landscape and generate a prioritized roadmap for process, data and AI improvements.",
     href: "/solutions/dcg-ai-platform",
+    // Teal → emerald (diagnostic / tooling feel)
     colors: [
-      [94, 234, 212],
-      [129, 140, 248],
+      [0, 176, 132], // teal-green bridge
+      [16, 185, 129], // emerald
+    ] as [number, number, number][],
+  },
+  {
+    title: "Smart Banking AI",
+    body: "Provide bankers and relationship managers with a 360° view of clients, opportunities, risks and recommended next best actions.",
+    href: "/solutions/dcg-ai-platform",
+    // Emerald → deep indigo (most “serious/finance” end)
+    colors: [
+      [16, 185, 129], // emerald bridge
+      [79, 70, 229], // indigo
     ] as [number, number, number][],
   },
 ];
@@ -141,7 +145,7 @@ function PlatformCanvasCard({
         <div className="mt-4 flex items-center justify-between gap-3">
           <Link
             href={href}
-            className="inline-flex items-center gap-2 text-sm font-medium text-sky-600"
+            className="inline-flex items-center gap-2 text-sm font-medium text-black"
           >
             Explore this capability
             <motion.span

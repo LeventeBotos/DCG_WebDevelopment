@@ -68,7 +68,7 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section className="space-y-8  w-full px-4 md:px-10">
+    <section className="space-y-8  w-full ">
       {services.map((service, index) => {
         const isEven = index % 2 === 1;
         return (

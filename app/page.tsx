@@ -10,7 +10,6 @@ import FinalCTASection from "@/components/home/FinalCTASection";
 import ServicesSection from "@/components/home/ServicesSection";
 import StrategicQuestionsSection from "@/components/home/StrategicQuestionsSection";
 import AIAtWorkSection from "@/components/home/AIAtWorkSection";
-import Hero from "@/components/Hero";
 import { WhyDcgBento } from "@/components/home/WhyDcgBento";
 import HeroVideoSection from "@/components/HeroVideo";
 import { Timeline } from "@/components/ui/timeline";
@@ -189,7 +188,7 @@ export default function Home() {
         />
         <AIAtWorkSection />
 
-        <div className="flex flex-col mt-10 md:mt-20 items-center self-center text-center">
+        <div className="flex flex-col min-h-[80vh] justify-evenly mt-10 md:mt-20 items-center self-center text-center">
           <TextHoverEffect text="Only 5%" />
 
           <div className="md:w-2/3 self-center flex flex-col items-center">
@@ -220,9 +219,9 @@ export default function Home() {
           nomb={true}
           center={true}
         />
-      </div>
-      <ServicesSection />
 
+        <ServicesSection />
+      </div>
       {/* <OurProcess /> */}
 
       <SectionTitle

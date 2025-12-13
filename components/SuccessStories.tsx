@@ -42,7 +42,7 @@ const SuccessStories = () => {
             transition={{ duration: 0.3, delay: story.delay }}
             // whileHover={{ y: -5 }}
           >
-            <div className="space-y-4">
+            <div className="h-full">
               <div className="flex items-center justify-between">
                 {/* <span className="text-3xl">{story.icon}</span> */}
                 <img
@@ -55,7 +55,7 @@ const SuccessStories = () => {
                 </span>
               </div>
 
-              <div>
+              <div className="h-full flex flex-col justify-between py-6">
                 <h3 className="text-lg font-bold  mb-2">{story.company}</h3>
                 <p className="text-sm opacity-75 mb-3">{story.result}</p>
                 <div className="text-sm font-semibold ">{story.impact}</div>

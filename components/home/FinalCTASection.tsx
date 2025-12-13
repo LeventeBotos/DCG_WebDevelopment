@@ -5,18 +5,10 @@ import { DottedGlowBackground } from "../ui/dotted-glow-background";
 export default function FinalCTASection() {
   return (
     <section className="w-full py-20 px-2 md:px-4 mx-auto flex flex-row justify-center relative">
-      <DottedGlowBackground
+      {/* <DottedGlowBackground
         className="pointer-events-none h-full w-full bg-gradient-to-b from-white to-transparent"
-        // gap={10}
-        // radius={2}
-        // colorLightVar="dcg-lightBlue"
-        // glowColorLightVar="dcg-lightGreen"
-        // backgroundOpacity={1}
-        // backgroundColor="rgba(255, 255, 255, 1)"
-        // speedMin={0.3}
-        // speedMax={1.6}
-        // speedScale={1}
-      />
+     
+      /> */}
 
       <div className="rounded-3xl z-10 max-w-7xl border border-dcg-lightBlue/25 bg-white self-center px-6 py-10 shadow-lg md:px-10 md:py-12">
         <div className="grid gap-6 md:grid-cols-[2fr_1fr] md:items-center">
