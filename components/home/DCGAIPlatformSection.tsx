@@ -4,55 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
-
-const PLATFORM_CARDS = [
-  {
-    title: "Personalization AI",
-    body: "Design and orchestrate intelligent, automated and personalized customer journeys across web, app, marketing and service.",
-    href: "/solutions/dcg-ai-platform",
-    // Bright sky → cyan (on-brand, energetic start)
-    colors: [
-      [0, 154, 202], // #009ACA
-      [0, 202, 202], // #00CACA
-    ] as [number, number, number][],
-  },
-  {
-    title: "Conversational Analytics & Commerce",
-    body: "Use AI-driven conversations to acquire, convert and support customers, while capturing rich behavioral and intent data.",
-    href: "/solutions/dcg-ai-platform",
-    // Cyan → teal (more “human/interactive”)
-    colors: [
-      [0, 202, 202], // cyan/teal bridge
-      [0, 176, 132], // teal-green
-    ] as [number, number, number][],
-  },
-  {
-    title: "DCG 360 Salesforce Assessment",
-    body: "Automate diagnostics on your CRM landscape and generate a prioritized roadmap for process, data and AI improvements.",
-    href: "/solutions/dcg-ai-platform",
-    // Teal → emerald (diagnostic / tooling feel)
-    colors: [
-      [0, 176, 132], // teal-green bridge
-      [16, 185, 129], // emerald
-    ] as [number, number, number][],
-  },
-  {
-    title: "Smart Banking AI",
-    body: "Provide bankers and relationship managers with a 360° view of clients, opportunities, risks and recommended next best actions.",
-    href: "/solutions/dcg-ai-platform",
-    // Emerald → deep indigo (most “serious/finance” end)
-    colors: [
-      [16, 185, 129], // emerald bridge
-      [79, 70, 229], // indigo
-    ] as [number, number, number][],
-  },
-];
+import { platformCards } from "@/lib/platforms";
 
 export default function DCGAIPlatformSection() {
   return (
     <section className="w-full ">
       <div className="mx-auto grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {PLATFORM_CARDS.map((card) => (
+        {platformCards.map((card) => (
           <PlatformCanvasCard key={card.title} {...card} />
         ))}
       </div>

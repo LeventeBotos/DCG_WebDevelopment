@@ -8,6 +8,7 @@ import {
   servicesBySlug,
 } from "@/lib/services";
 import { platformCards } from "@/lib/platforms";
+import DCGAIPlatformSection from "@/components/home/DCGAIPlatformSection";
 
 const engagement = [
   {
@@ -57,8 +58,8 @@ const categories: Array<keyof typeof categoryCopy> = [
 
 const featuredServices = homepageFeaturedServices
   .map((slug) => servicesBySlug[slug])
-  .filter(
-    (service): service is (typeof servicesBySlug)[string] => Boolean(service),
+  .filter((service): service is (typeof servicesBySlug)[string] =>
+    Boolean(service)
   );
 
 const withAlpha = (rgb: [number, number, number], alpha: number) =>
@@ -67,10 +68,10 @@ const withAlpha = (rgb: [number, number, number], alpha: number) =>
 const solutionCardStyle = (colors: [number, number, number][]) => {
   const [start, end] = colors;
   return {
-    background: `linear-gradient(135deg, ${withAlpha(
-      start,
-      0.08,
-    )}, ${withAlpha(end, 0.14)})`,
+    background: `linear-gradient(135deg, ${withAlpha(start, 0.08)}, ${withAlpha(
+      end,
+      0.14
+    )})`,
     borderColor: withAlpha(start, 0.25),
     textColor: `rgb(${end[0]}, ${end[1]}, ${end[2]})`,
   };
@@ -128,36 +129,7 @@ export default function ServicesPage() {
             plays to prove value fast. Pick one to see what’s inside.
           </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {platformCards.map((card) => {
-            const styles = solutionCardStyle(card.colors);
-            return (
-              <Link
-                key={card.href}
-                href={card.href}
-                className="group relative h-full overflow-hidden rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                style={{ borderColor: styles.borderColor, background: styles.background }}
-              >
-                <div className="relative flex h-full flex-col gap-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-dcg-slate">
-                    DCG AI Platform
-                  </p>
-                  <h3 className="text-xl font-semibold text-dcg-ink">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-dcg-slate">{card.body}</p>
-                  <div
-                    className="mt-auto inline-flex items-center gap-2 text-sm font-semibold"
-                    style={{ color: styles.textColor }}
-                  >
-                    Explore
-                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+        <DCGAIPlatformSection />
       </section>
 
       <section className="dcg-section py-12 md:py-16 space-y-6">
