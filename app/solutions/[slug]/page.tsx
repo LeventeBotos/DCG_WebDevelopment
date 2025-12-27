@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { platformBySlug, platforms } from "@/lib/platforms";
+import { Vortex } from "@/components/ui/vortex";
 
 type PageProps = {
   params: Promise<{
@@ -44,7 +45,7 @@ const withAlpha = (rgb: [number, number, number], alpha: number) =>
 
 const buildHeroBackground = (
   start: [number, number, number],
-  end: [number, number, number],
+  end: [number, number, number]
 ) => ({
   backgroundImage: `
     radial-gradient(circle at 15% 20%, ${withAlpha(
@@ -65,7 +66,7 @@ const buildHeroBackground = (
 
 const cardBackground = (
   start: [number, number, number],
-  end: [number, number, number],
+  end: [number, number, number]
 ) => ({
   background: `linear-gradient(135deg, ${withAlpha(start, 0.08)}, ${withAlpha(
     end,
@@ -76,6 +77,54 @@ const cardBackground = (
 
 const toRgb = (rgb: [number, number, number]) =>
   `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+const buttonGradient = (
+  start: [number, number, number],
+  end: [number, number, number],
+  alpha = 1
+) =>
+  `linear-gradient(90deg, ${withAlpha(start, alpha)}, ${withAlpha(
+    end,
+    alpha
+  )})`;
+
+const rgbToHue = ([r, g, b]: [number, number, number]) => {
+  const nr = r / 255;
+  const ng = g / 255;
+  const nb = b / 255;
+  const max = Math.max(nr, ng, nb);
+  const min = Math.min(nr, ng, nb);
+  const delta = max - min;
+
+  if (delta === 0) return 0;
+
+  let hue =
+    max === nr
+      ? (ng - nb) / delta
+      : max === ng
+      ? 2 + (nb - nr) / delta
+      : 4 + (nr - ng) / delta;
+
+  hue *= 60;
+  if (hue < 0) hue += 360;
+  return hue;
+};
+
+const hueRange = (
+  start: [number, number, number],
+  end: [number, number, number]
+) => {
+  const h1 = rgbToHue(start);
+  const h2 = rgbToHue(end);
+  const diffClockwise = (h2 - h1 + 360) % 360;
+  const diffCounter = 360 - diffClockwise;
+
+  if (diffClockwise <= diffCounter) {
+    return { baseHue: h1, rangeHue: diffClockwise };
+  }
+
+  return { baseHue: h2, rangeHue: diffCounter };
+};
 
 export default async function PlatformPage({ params }: PageProps) {
   const { slug } = await params;
@@ -95,73 +144,87 @@ export default async function PlatformPage({ params }: PageProps) {
   const accent = cardBackground(startColor, endColor);
   const accentTextColor = toRgb(endColor);
   const accentBorderColor = withAlpha(startColor, 0.25);
+  const { baseHue: heroHue, rangeHue: heroHueRange } = hueRange(
+    startColor,
+    endColor
+  );
   const primaryButtonStyle = {
-    background: `linear-gradient(90deg, ${withAlpha(
-      startColor,
-      0.92,
-    )}, ${withAlpha(endColor, 0.92)})`,
+    background: buttonGradient(startColor, endColor),
     borderColor: accentBorderColor,
     color: "#ffffff",
   };
   const secondaryButtonStyle = {
+    background: buttonGradient(startColor, endColor, 0.16),
     borderColor: accentBorderColor,
     color: accentTextColor,
-    background: withAlpha(startColor, 0.08),
   };
 
   return (
     <div className="flex min-h-screen flex-col" data-footer-black>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0" style={heroBackground} />
-        <div className="absolute inset-0 bg-white/70" />
-        <div className="relative dcg-section py-16 md:py-24 space-y-10">
-          <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-            <div className="space-y-6">
-              <span className="text-xs font-semibold uppercase tracking-[0.24em] text-dcg-slate">
-                {platform.hero.kicker}
-              </span>
-              <div className="space-y-4">
-                <h1 className="text-4xl font-bold leading-tight text-dcg-ink md:text-5xl">
-                  {platform.hero.headline}
-                </h1>
-                <p className="text-lg text-dcg-slate md:text-xl max-w-3xl">
-                  {platform.hero.description}
-                </p>
-              </div>
+        <Vortex
+          backgroundColor="#ffffff"
+          containerClassName="bg-white"
+          baseHue={heroHue}
+          rangeHue={heroHueRange}
+          baseRadius={2}
+          rangeY={150}
+          className="flex items-center flex-col justify-center px-2 md:px-10  py-4 w-full h-full"
+        >
+          {/* <div className="absolute inset-0 bg-white/70" /> */}
+          <div className="relative dcg-section py-16 md:py-24 space-y-10">
+            <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+              <div className="space-y-12 text-black">
+                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-opacity-50">
+                  {platform.hero.kicker}
+                </span>
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-bold leading-tight  md:text-5xl">
+                    {platform.hero.headline}
+                  </h1>
+                  <p className="text-lg text-opacity-70 md:text-xl max-w-3xl">
+                    {platform.hero.description}
+                  </p>
+                </div>
 
-              <div className="flex flex-wrap gap-3">
-                <Link href="/contact" className="dcg-cta" style={primaryButtonStyle}>
-                  Book a working session
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-                <Link
-                  href="/projects"
-                  className="dcg-cta-outline"
-                  style={secondaryButtonStyle}
-                >
-                  See how we deliver
-                </Link>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {platform.stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-2xl border bg-white p-4 shadow-sm"
-                    style={accent}
+                <div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
+                  <Link
+                    href="/contact"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl border text-center text-xs font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl md:text-sm px-6 py-3"
+                    style={primaryButtonStyle}
                   >
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-slate">
-                      {stat.label}
-                    </p>
-                    <p className="text-2xl font-semibold text-dcg-ink">
-                      {stat.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+                    Book a working session
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl border text-center text-xs font-semibold transform transition-all duration-200 hover:shadow-xl md:text-sm px-6 py-3"
+                    // style={secondaryButtonStyle}
+                  >
+                    See how we deliver
+                  </Link>
+                </div>
 
-            <div className="grid gap-4">
+                {/* <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {platform.stats.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-2xl border bg-white p-4 shadow-sm"
+                      style={accent}
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-slate">
+                        {stat.label}
+                      </p>
+                      <p className="text-2xl font-semibold text-dcg-ink">
+                        {stat.value}
+                      </p>
+                    </div>
+                  ))}
+                </div> */}
+              </div>
+
+              {/* <div className="grid gap-4">
               <div
                 className="rounded-3xl border bg-white/80 p-6 shadow-lg backdrop-blur"
                 style={{ borderColor: accentBorderColor }}
@@ -191,9 +254,10 @@ export default async function PlatformPage({ params }: PageProps) {
                   ))}
                 </div>
               </div>
+            </div> */}
             </div>
           </div>
-        </div>
+        </Vortex>
       </section>
 
       <section className="dcg-section py-12 md:py-16 space-y-8">
@@ -388,7 +452,11 @@ export default async function PlatformPage({ params }: PageProps) {
             </p>
           </div>
           <div className="flex flex-col gap-3 md:flex-row">
-            <Link href="/contact" className="dcg-cta" style={primaryButtonStyle}>
+            <Link
+              href="/contact"
+              className="dcg-cta"
+              style={primaryButtonStyle}
+            >
               Schedule a call
             </Link>
             <Link

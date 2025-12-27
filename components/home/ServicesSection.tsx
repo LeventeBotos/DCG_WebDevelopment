@@ -2,18 +2,22 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from "react";
 import {
   Box3,
-  EdgesGeometry,
-  LineBasicMaterial,
-  LineSegments,
+  MeshBasicMaterial,
   MathUtils,
   Vector3,
   type Group,
   type Mesh,
 } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { servicesBySlug } from "@/lib/services";
@@ -22,13 +26,64 @@ type DemoService = {
   slug: string;
   title: string;
   body: string;
-  accent: string;
 };
 
-const featuredSlugs = ["digital-twin", "deep-learning", "computer-vision"];
-const accents = ["#000000", "#0f172a", "#16a34a"];
+type SceneCamera = {
+  position: [number, number, number];
+  fov?: number;
+};
 
-function AnimatedCube({ accent }: { accent: string }) {
+type ServiceVisualConfig = {
+  slug: string;
+  visualFile?: string;
+  camera?: SceneCamera;
+  targetSize?: number;
+  spinSpeed?: number;
+  restRotationX?: number;
+  orbit?: boolean;
+  baseRotation?: [number, number, number];
+};
+
+type ServiceCard = DemoService & {
+  visual: ServiceVisualConfig;
+};
+
+const WIRE_COLOR = "#000000";
+// const WIRE_COLOR = "#009aca";
+const WIRE_OPACITY = 0.25;
+
+// Add new featured services here; provide the slug and, if desired, the model filename to render.
+const SERVICE_VISUALS: ServiceVisualConfig[] = [
+  {
+    slug: "digital-twin",
+    visualFile: "/oilrig.obj",
+    camera: { position: [8, 5, 10], fov: 70 },
+    targetSize: 15,
+    spinSpeed: 0.1,
+    restRotationX: -0.2,
+    baseRotation: [-0.1, MathUtils.degToRad(20), 0],
+  },
+  {
+    slug: "deep-learning",
+    visualFile: "/nn_visualization.obj",
+    camera: { position: [6, 4, 8], fov: 70 },
+    targetSize: 15,
+    spinSpeed: 0.1,
+    restRotationX: -0.2,
+    baseRotation: [-0.1, MathUtils.degToRad(20), 0],
+  },
+  {
+    slug: "computer-vision",
+    visualFile: "/computervision.obj",
+    camera: { position: [8, 5, 10], fov: 70 },
+    targetSize: 15,
+    spinSpeed: 0.1,
+    restRotationX: -0.2,
+    baseRotation: [-0.1, MathUtils.degToRad(20), 0],
+  },
+];
+
+function AnimatedCube() {
   const meshRef = useRef<Mesh>(null);
 
   useFrame((_, delta) => {
@@ -43,185 +98,37 @@ function AnimatedCube({ accent }: { accent: string }) {
   return (
     <mesh ref={meshRef} castShadow receiveShadow>
       <boxGeometry args={[1.8, 1.8, 1.8]} />
-      <meshStandardMaterial color={accent} wireframe />
+      <meshBasicMaterial
+        color={WIRE_COLOR}
+        wireframe
+        transparent={WIRE_OPACITY < 1}
+        opacity={WIRE_OPACITY}
+      />
     </mesh>
   );
 }
 
-function CubeScene({ accent }: { accent: string }) {
-  return (
-    <Canvas
-      dpr={[1, 2]}
-      camera={{ position: [2.8, 1.8, 3.2], fov: 45 }}
-      className="w-full h-full"
-    >
-      <ambientLight intensity={0.4} />
-      <pointLight position={[4, 6, 5]} intensity={1} />
-      <pointLight position={[-4, -4, -3]} intensity={0.4} color={accent} />
-      <AnimatedCube accent={accent} />
-    </Canvas>
-  );
-}
-
-function OilRigModel({ onError }: { onError: () => void }) {
-  const wireColor = "#000000";
-  const [scene, setScene] = useState<Group | null>(null);
-  const groupRef = useRef<Group>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    const loader = new GLTFLoader();
-    loader.setResourcePath("/"); // look for textures relative to public root
-
-    loader.load(
-      "/oilrig.gltf",
-      (gltf) => {
-        if (cancelled) return;
-        const loadedScene = gltf.scene;
-
-        // normalize size and center the model so it stays in view
-        const box = new Box3().setFromObject(loadedScene);
-        const size = new Vector3();
-        box.getSize(size);
-        const center = new Vector3();
-        box.getCenter(center);
-
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = maxDim ? 9 / maxDim : 1; // enlarge model in view
-
-        loadedScene.scale.setScalar(scale);
-        loadedScene.position.sub(center.multiplyScalar(scale));
-        loadedScene.rotation.set(-0.1, MathUtils.degToRad(20), 0);
-
-        loadedScene.traverse((child) => {
-          if ((child as Mesh).isMesh) {
-            const mesh = child as Mesh;
-            const parent = mesh.parent;
-            if (!parent || !mesh.geometry) return;
-
-            const edges = new EdgesGeometry(mesh.geometry, 80); // much higher threshold leaves only the broadest silhouette edges
-            const lineMaterial = new LineBasicMaterial({ color: wireColor });
-            const wireframe = new LineSegments(edges, lineMaterial);
-
-            wireframe.position.copy(mesh.position);
-            wireframe.rotation.copy(mesh.rotation);
-            wireframe.scale.copy(mesh.scale);
-
-            parent.add(wireframe);
-            parent.remove(mesh);
-          }
-        });
-
-        setScene(loadedScene);
-      },
-      undefined,
-      () => {
-        if (!cancelled) onError();
-      }
+function SceneLights({ preset = "model" }: { preset?: "model" | "cube" }) {
+  if (preset === "cube") {
+    return (
+      <>
+        <ambientLight intensity={0.4} />
+        <pointLight position={[4, 6, 5]} intensity={1} />
+        <pointLight
+          position={[-4, -4, -3]}
+          intensity={0.4}
+          color={WIRE_COLOR}
+        />
+      </>
     );
-
-    return () => {
-      cancelled = true;
-    };
-  }, [onError]);
-
-  useFrame((_, delta) => {
-    const group = groupRef.current;
-    if (!group) return;
-    group.rotation.y += delta * 0.22;
-    group.rotation.x = MathUtils.lerp(group.rotation.x, -0.2, 0.03);
-  });
-
-  if (!scene) {
-    return <AnimatedCube accent={wireColor} />;
   }
 
   return (
-    <group ref={groupRef} dispose={null}>
-      <primitive object={scene} />
-    </group>
-  );
-}
-
-function DeepLearningModel({
-  accent,
-  onError,
-}: {
-  accent: string;
-  onError: () => void;
-}) {
-  const [scene, setScene] = useState<Group | null>(null);
-  const groupRef = useRef<Group>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    const loader = new OBJLoader();
-
-    loader.load(
-      "/dl_network.obj",
-      (obj) => {
-        if (cancelled) return;
-
-        // normalize and center
-        const box = new Box3().setFromObject(obj);
-        const size = new Vector3();
-        const center = new Vector3();
-        box.getSize(size);
-        box.getCenter(center);
-        const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = maxDim ? 8 / maxDim : 1;
-
-        obj.scale.setScalar(scale);
-        obj.position.sub(center.multiplyScalar(scale));
-        obj.rotation.set(0.2, MathUtils.degToRad(25), 0);
-
-        obj.traverse((child) => {
-          if ((child as Mesh).isMesh) {
-            const mesh = child as Mesh;
-            const parent = mesh.parent;
-            if (!parent || !mesh.geometry) return;
-
-            const edges = new EdgesGeometry(mesh.geometry, 50);
-            const lineMaterial = new LineBasicMaterial({ color: accent });
-            const wireframe = new LineSegments(edges, lineMaterial);
-
-            wireframe.position.copy(mesh.position);
-            wireframe.rotation.copy(mesh.rotation);
-            wireframe.scale.copy(mesh.scale);
-
-            parent.add(wireframe);
-            parent.remove(mesh);
-          }
-        });
-
-        setScene(obj);
-      },
-      undefined,
-      () => {
-        if (!cancelled) onError();
-      }
-    );
-
-    return () => {
-      cancelled = true;
-    };
-  }, [accent, onError]);
-
-  useFrame((_, delta) => {
-    const group = groupRef.current;
-    if (!group) return;
-    group.rotation.y += delta * 0.16;
-    group.rotation.x = MathUtils.lerp(group.rotation.x, 0.12, 0.02);
-  });
-
-  if (!scene) {
-    return <AnimatedCube accent={accent} />;
-  }
-
-  return (
-    <group ref={groupRef} dispose={null}>
-      <primitive object={scene} />
-    </group>
+    <>
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[6, 10, 6]} intensity={1} castShadow />
+      <pointLight position={[-6, -4, -6]} intensity={0.45} color={WIRE_COLOR} />
+    </>
   );
 }
 
@@ -248,81 +155,186 @@ function OrbitControlsWrapper() {
   return null;
 }
 
-function DigitalTwinScene() {
-  const [hasError, setHasError] = useState(false);
-  const wireColor = "#000000";
-
+function SceneShell({
+  children,
+  camera,
+  lightPreset = "model",
+  orbit = true,
+}: PropsWithChildren<{
+  camera: SceneCamera;
+  lightPreset?: "model" | "cube";
+  orbit?: boolean;
+}>) {
   return (
     <Canvas
       dpr={[1, 2]}
-      camera={{ position: [8, 5, 10], fov: 45 }}
+      camera={{ position: camera.position, fov: camera.fov ?? 45 }}
       className="w-full h-full"
     >
-      <ambientLight intensity={0.6} />
-      <directionalLight
-        position={[6, 10, 6]}
-        intensity={1.1}
-        castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-      />
-      <pointLight position={[-6, -4, -6]} intensity={0.45} color={wireColor} />
-      {hasError ? (
-        <AnimatedCube accent={wireColor} />
-      ) : (
-        <OilRigModel onError={() => setHasError(true)} />
-      )}
-      <OrbitControlsWrapper />
+      <SceneLights preset={lightPreset} />
+      {children}
+      {orbit ? <OrbitControlsWrapper /> : null}
     </Canvas>
   );
 }
 
-function DeepLearningScene({ accent }: { accent: string }) {
-  const [hasError, setHasError] = useState(false);
+function convertMeshesToWireframe(scene: Group) {
+  scene.traverse((child) => {
+    if ((child as Mesh).isMesh) {
+      const mesh = child as Mesh;
+      if (!mesh.geometry) return;
+
+      // Dispose original materials to prevent leaks, then enforce a single unlit wireframe material.
+      const originalMaterials = Array.isArray(mesh.material)
+        ? mesh.material
+        : [mesh.material];
+      originalMaterials.forEach((material) => {
+        if (material && "dispose" in material) {
+          (material as unknown as { dispose: () => void }).dispose();
+        }
+      });
+
+      mesh.material = new MeshBasicMaterial({
+        color: WIRE_COLOR,
+        wireframe: true,
+        transparent: WIRE_OPACITY < 1,
+        opacity: WIRE_OPACITY,
+      });
+    }
+  });
+}
+
+function normalizeModel(
+  scene: Group,
+  targetSize: number,
+  baseRotation?: [number, number, number]
+) {
+  const box = new Box3().setFromObject(scene);
+  const size = new Vector3();
+  const center = new Vector3();
+  box.getSize(size);
+  box.getCenter(center);
+
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+  const scale = targetSize / maxDim;
+  scene.scale.setScalar(scale);
+  scene.position.sub(center.multiplyScalar(scale));
+
+  if (baseRotation) {
+    scene.rotation.set(...baseRotation);
+  }
+
+  convertMeshesToWireframe(scene);
+  return scene;
+}
+
+function WireframeModel({
+  fileName,
+  targetSize = 8,
+  spinSpeed = 0.2,
+  restRotationX = 0.12,
+  baseRotation,
+  onError,
+}: {
+  fileName: string;
+  targetSize?: number;
+  spinSpeed?: number;
+  restRotationX?: number;
+  baseRotation?: [number, number, number];
+  onError: () => void;
+}) {
+  const groupRef = useRef<Group>(null);
+  const [scene, setScene] = useState<Group | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const isObj = fileName.toLowerCase().endsWith(".obj");
+    const loader = isObj ? new OBJLoader() : new GLTFLoader();
+    if (!isObj) {
+      (loader as GLTFLoader).setResourcePath("/");
+    }
+
+    loader.load(
+      fileName,
+      (loaded) => {
+        if (cancelled) return;
+        const root =
+          "scene" in loaded ? (loaded as GLTF).scene : (loaded as Group);
+        const prepared = normalizeModel(root, targetSize, baseRotation);
+        setScene(prepared);
+      },
+      undefined,
+      () => {
+        if (!cancelled) onError();
+      }
+    );
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fileName, targetSize, baseRotation, onError]);
+
+  useFrame((_, delta) => {
+    const group = groupRef.current;
+    if (!group) return;
+    group.rotation.y += delta * spinSpeed;
+    group.rotation.x = MathUtils.lerp(group.rotation.x, restRotationX, 0.03);
+  });
+
+  if (!scene) {
+    return <AnimatedCube />;
+  }
 
   return (
-    <Canvas
-      dpr={[1, 2]}
-      camera={{ position: [6, 4, 8], fov: 45 }}
-      className="w-full h-full"
-    >
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[6, 10, 6]} intensity={1} />
-      <pointLight position={[-6, -4, -6]} intensity={0.4} color={accent} />
-      {hasError ? (
-        <AnimatedCube accent={accent} />
-      ) : (
-        <DeepLearningModel accent={accent} onError={() => setHasError(true)} />
-      )}
-      <OrbitControlsWrapper />
-    </Canvas>
+    <group ref={groupRef} dispose={null}>
+      <primitive object={scene} />
+    </group>
   );
 }
 
-function ServiceVisual({ slug, accent }: { slug: string; accent: string }) {
-  if (slug === "digital-twin") {
-    return <DigitalTwinScene />;
-  }
-  if (slug === "deep-learning") {
-    return <DeepLearningScene accent={accent} />;
-  }
-  return <CubeScene accent={accent} />;
+function ServiceVisual({ visual }: { visual: ServiceVisualConfig }) {
+  const [hasError, setHasError] = useState(false);
+  const isCube = hasError || !visual.visualFile;
+
+  const camera = visual.camera ?? {
+    position: isCube ? [2.8, 1.8, 3.2] : [6, 4, 8],
+    fov: 45,
+  };
+
+  return (
+    <SceneShell
+      camera={camera}
+      lightPreset={isCube ? "cube" : "model"}
+      orbit={visual.orbit ?? !isCube}
+    >
+      {isCube ? (
+        <AnimatedCube />
+      ) : (
+        <WireframeModel
+          fileName={visual.visualFile!}
+          targetSize={visual.targetSize}
+          spinSpeed={visual.spinSpeed}
+          restRotationX={visual.restRotationX}
+          baseRotation={visual.baseRotation}
+          onError={() => setHasError(true)}
+        />
+      )}
+    </SceneShell>
+  );
 }
 
 export default function ServicesSection() {
   const services = useMemo(() => {
-    return featuredSlugs
-      .map((slug, idx) => {
-        const svc = servicesBySlug[slug];
-        if (!svc) return null;
-        return {
-          slug,
-          title: svc.title,
-          body: svc.summary ?? svc.intro ?? "",
-          accent: accents[idx % accents.length],
-        };
-      })
-      .filter(Boolean) as DemoService[];
+    return SERVICE_VISUALS.map((visual) => {
+      const svc = servicesBySlug[visual.slug];
+      if (!svc) return null;
+      return {
+        slug: visual.slug,
+        title: svc.title,
+        body: svc.summary ?? svc.intro ?? "",
+        visual,
+      };
+    }).filter(Boolean) as ServiceCard[];
   }, []);
 
   return (
@@ -332,12 +344,12 @@ export default function ServicesSection() {
         return (
           <div
             key={service.slug}
-            className="relative flex h-[36rem] w-full flex-col overflow-hidden lg:flex-row"
+            className="relative flex h-96 w-full flex-col overflow-hidden lg:flex-row"
           >
             <div
               className={`relative flex-1  ${isEven ? "lg:order-last" : ""}`}
             >
-              <ServiceVisual slug={service.slug} accent={service.accent} />
+              <ServiceVisual visual={service.visual} />
             </div>
             <div
               className={`relative flex-1 px-6 py-10 md:px-10 lg:px-14 lg:py-16 ${
