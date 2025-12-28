@@ -49,8 +49,8 @@ type ServiceCard = DemoService & {
   visual: ServiceVisualConfig;
 };
 
-const WIRE_COLOR = "#000000";
-// const WIRE_COLOR = "#009aca";
+// const WIRE_COLOR = "#000000";
+const WIRE_COLOR = "#009aca";
 const WIRE_OPACITY = 0.25;
 
 // Add new featured services here; provide the slug and, if desired, the model filename to render.

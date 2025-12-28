@@ -2208,6 +2208,22 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 6
+      },
+      {
+        "date": "2025-12-28T23:18:25.934Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 17
+      },
+      {
+        "date": "2025-12-28T23:18:41.573Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 16
       }
     ],
     "components/SuccessStories.tsx": [
