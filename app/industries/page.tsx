@@ -2,6 +2,7 @@
 
 import IndustriesGrid from "@/components/IndustriesGrid";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const industryNotes = [
   {
@@ -43,10 +44,7 @@ export default function IndustriesPage() {
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {industryNotes.map((note) => (
-              <div
-                key={note.title}
-                className="dcg-card-compact"
-              >
+              <div key={note.title} className="dcg-card-compact">
                 <h3 className="text-lg font-semibold text-dcg-ink">
                   {note.title}
                 </h3>
@@ -62,18 +60,17 @@ export default function IndustriesPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/projects"
-              className="inline-flex items-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
+            <Button asChild variant="primary" size="lg">
+              <Link href="/projects">Explore case studies</Link>
+            </Button>
+            <Button
+              asChild
+              variant="secondary"
+              size="lg"
+              // className="border-dcg-lightBlue/30 bg-white text-dcg-lightBlue hover:-translate-y-0.5 hover:shadow-lg hover:border-dcg-lightBlue/40 hover:text-dcg-lightBlue"
             >
-              Explore case studies
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center rounded-full border border-dcg-lightBlue/30 bg-white px-5 py-3 text-sm font-semibold text-dcg-lightBlue shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              Start a conversation
-            </Link>
+              <Link href="/contact">Start a conversation</Link>
+            </Button>
           </div>
         </div>
       </section>

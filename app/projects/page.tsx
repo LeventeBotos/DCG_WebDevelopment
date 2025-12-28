@@ -2,6 +2,7 @@
 
 import ProjectsShowcase from "@/components/ProjectsShowcase";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const callouts = [
   "Agentic AI interfaces embedded into workflows, not just dashboards.",
@@ -38,15 +39,12 @@ export default function ProjectsPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className="dcg-cta">
-              Start a project
-            </Link>
-            <Link
-              href="/services"
-              className="dcg-cta-outline"
-            >
-              View services
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Start a project</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/services">View services</Link>
+            </Button>
           </div>
         </div>
       </section>

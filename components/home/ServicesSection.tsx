@@ -21,6 +21,7 @@ import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { servicesBySlug } from "@/lib/services";
+import { Button } from "@/components/ui/button";
 
 type DemoService = {
   slug: string;
@@ -67,7 +68,7 @@ const SERVICE_VISUALS: ServiceVisualConfig[] = [
     slug: "deep-learning",
     visualFile: "/nn_visualization.obj",
     camera: { position: [6, 4, 8], fov: 70 },
-    targetSize: 15,
+    targetSize: 12,
     spinSpeed: 0.1,
     restRotationX: -0.2,
     baseRotation: [-0.1, MathUtils.degToRad(20), 0],
@@ -378,12 +379,9 @@ export default function ServicesSection() {
       })}
 
       <div className="flex justify-center pt-4">
-        <Link
-          href="/services"
-          className="rounded-full border border-dcg-ink/15 px-5 py-2 text-sm font-semibold text-dcg-ink transition hover:-translate-y-0.5 hover:shadow-md"
-        >
-          Explore all services
-        </Link>
+        <Button asChild variant="secondary" size="lg">
+          <Link href="/services">Explore all services</Link>
+        </Button>
       </div>
     </section>
   );

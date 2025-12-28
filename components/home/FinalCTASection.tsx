@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DottedGlowBackground } from "../ui/dotted-glow-background";
+import { Button } from "@/components/ui/button";
 // import { DottedGlowBackground } from "./ui/dotted-glow-background";
 
 export default function FinalCTASection() {
@@ -23,9 +23,9 @@ export default function FinalCTASection() {
             </p>
           </div>
           <div className="flex flex-col gap-3 md:items-end">
-            <Link href="/contact" className="dcg-cta">
-              Schedule a conversation
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Schedule a conversation</Link>
+            </Button>
             <p className="text-xs text-dcg-slate">
               Or email us at{" "}
               <a

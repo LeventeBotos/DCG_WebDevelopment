@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 const projects = [
   {
     title: "Retail AI – Demand Forecasting & Dynamic Pricing",
@@ -71,12 +74,9 @@ export default function ProjectsShowcase() {
         ))}
       </div>
       <div className="flex flex-wrap gap-3">
-        <a
-          href="/projects"
-          className="inline-flex items-center rounded-full bg-gradient-to-r from-dcg-blue to-dcg-lightBlue px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl"
-        >
-          Go to Our Projects
-        </a>
+        <Button asChild variant="primary" size="lg">
+          <Link href="/projects">Go to Our Projects</Link>
+        </Button>
         {/* <a
           href="/insights"
           className="inline-flex items-center rounded-full border border-dcg-blue/20 bg-white px-5 py-3 text-sm font-semibold text-dcg-blue shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"

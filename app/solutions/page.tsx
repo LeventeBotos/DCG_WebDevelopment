@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { platformCards } from "@/lib/platforms";
+import { Button } from "@/components/ui/button";
 
 export default function SolutionsIndexPage() {
   return (
@@ -23,9 +23,8 @@ export default function SolutionsIndexPage() {
       <section className="dcg-section pb-16">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {platformCards.map((card) => (
-            <Link
+            <div
               key={card.href}
-              href={card.href}
               className="group relative overflow-hidden rounded-2xl border border-dcg-lightBlue/20 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
               <div
@@ -40,12 +39,13 @@ export default function SolutionsIndexPage() {
                 </p>
                 <h3 className="text-xl font-semibold text-dcg-ink">{card.title}</h3>
                 <p className="text-sm text-dcg-slate">{card.body}</p>
-                <div className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-dcg-lightBlue">
-                  Explore
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                <div className="mt-auto">
+                  <Button asChild variant="ghost" size="sm" showArrow>
+                    <Link href={card.href}>Explore</Link>
+                  </Button>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>

@@ -1,8 +1,8 @@
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
@@ -54,19 +54,16 @@ const Hero = () => {
             transportation, aviation, and oil &amp; gas.
           </p>
           <motion.div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
-            <Link
-              href="/contact"
-              className=" group inline-flex text-center text-xs md:text-sm items-center p-3 px-6  bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen text-white font-semibold rounded-xl transform transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              Get Started
-              <ArrowRight className="ml-4 h-4 w-4  group-hover:translate-x-2 transition-all transform" />
-            </Link>
-            <Link
-              href="/projects"
-              className=" group inline-flex text-center text-xs md:text-sm items-center p-3 px-6   transform transition-all duration-200  hover:shadow-xl"
-            >
-              Go to Our Projects
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact" className="text-xs md:text-sm">
+                Get Started
+              </Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/projects" className="text-xs md:text-sm">
+                Go to Our Projects
+              </Link>
+            </Button>
           </motion.div>
         </div>
 

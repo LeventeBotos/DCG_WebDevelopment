@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const roles = [
   {
@@ -50,12 +51,11 @@ export default function CareersPage() {
             clients, and shape how enterprises use data and AI every day.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="mailto:info@dataconsulting-group.com?subject=Careers%20at%20DCG"
-              className="dcg-cta"
-            >
-              Email your resume
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="mailto:info@dataconsulting-group.com?subject=Careers%20at%20DCG">
+                Email your resume
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -81,12 +81,16 @@ export default function CareersPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href="mailto:info@dataconsulting-group.com?subject=Role%20application"
-                className="mt-auto inline-flex items-center rounded-full border border-dcg-lightBlue/30 bg-white px-4 py-2 text-sm font-semibold text-dcg-lightBlue transition hover:-translate-y-0.5 hover:shadow"
+              <Button
+                asChild
+                variant="secondary"
+                size="lg"
+                // className="mt-auto px-4 py-2"
               >
-                Apply
-              </Link>
+                <Link href="mailto:info@dataconsulting-group.com?subject=Role%20application">
+                  Apply
+                </Link>
+              </Button>
             </div>
           ))}
         </div>

@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { platformBySlug, platforms } from "@/lib/platforms";
 import { Vortex } from "@/components/ui/vortex";
+import { Button } from "@/components/ui/button";
 
 type PageProps = {
   params: Promise<{
@@ -144,20 +145,18 @@ export default async function PlatformPage({ params }: PageProps) {
   const accent = cardBackground(startColor, endColor);
   const accentTextColor = toRgb(endColor);
   const accentBorderColor = withAlpha(startColor, 0.25);
+  const primaryButtonStyle = {
+    backgroundImage: buttonGradient(startColor, endColor),
+  };
+  const secondaryButtonStyle = {
+    backgroundImage: buttonGradient(startColor, endColor, 0.12),
+    borderColor: accentBorderColor,
+    color: accentTextColor,
+  };
   const { baseHue: heroHue, rangeHue: heroHueRange } = hueRange(
     startColor,
     endColor
   );
-  const primaryButtonStyle = {
-    background: buttonGradient(startColor, endColor),
-    borderColor: accentBorderColor,
-    color: "#ffffff",
-  };
-  const secondaryButtonStyle = {
-    background: buttonGradient(startColor, endColor, 0.16),
-    borderColor: accentBorderColor,
-    color: accentTextColor,
-  };
 
   return (
     <div className="flex min-h-screen flex-col" data-footer-black>
@@ -189,21 +188,21 @@ export default async function PlatformPage({ params }: PageProps) {
                 </div>
 
                 <div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
-                  <Link
-                    href="/contact"
-                    className="group inline-flex items-center justify-center gap-2 rounded-xl border text-center text-xs font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl md:text-sm px-6 py-3"
+                  <Button
+                    asChild
+                    variant="primary"
+                    showArrow
                     style={primaryButtonStyle}
                   >
-                    Book a working session
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    href="/projects"
-                    className="group inline-flex items-center justify-center gap-2 rounded-xl border text-center text-xs font-semibold transform transition-all duration-200 hover:shadow-xl md:text-sm px-6 py-3"
-                    // style={secondaryButtonStyle}
+                    <Link href="/contact">Book a working session</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="secondary"
+                    style={secondaryButtonStyle}
                   >
-                    See how we deliver
-                  </Link>
+                    <Link href="/projects">See how we deliver</Link>
+                  </Button>
                 </div>
 
                 {/* <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -452,20 +451,12 @@ export default async function PlatformPage({ params }: PageProps) {
             </p>
           </div>
           <div className="flex flex-col gap-3 md:flex-row">
-            <Link
-              href="/contact"
-              className="dcg-cta"
-              style={primaryButtonStyle}
-            >
-              Schedule a call
-            </Link>
-            <Link
-              href="/services"
-              className="dcg-cta-outline"
-              style={secondaryButtonStyle}
-            >
-              Explore our services
-            </Link>
+            <Button asChild variant="primary" style={primaryButtonStyle}>
+              <Link href="/contact">Schedule a call</Link>
+            </Button>
+            <Button asChild variant="secondary" style={secondaryButtonStyle}>
+              <Link href="/services">Explore our services</Link>
+            </Button>
           </div>
         </div>
       </section>

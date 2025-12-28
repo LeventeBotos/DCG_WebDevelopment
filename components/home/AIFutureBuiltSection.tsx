@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function AIFutureBuiltSection() {
   return (
@@ -24,12 +25,16 @@ export default function AIFutureBuiltSection() {
               <li>• Embedded AI agents across key workflows</li>
               <li>• Strong governance, risk and responsible AI</li>
             </ul>
-            <Link
-              href="/solutions/ai-future-built-assessment"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg shadow-dcg-lightBlue/30 transition hover:shadow-xl"
+            <Button
+              asChild
+              variant="primary"
+              size="lg"
+              // className="text-xs font-semibold uppercase tracking-[0.18em]"
             >
-              Assess your AI maturity
-            </Link>
+              <Link href="/solutions/ai-future-built-assessment">
+                Assess your AI maturity
+              </Link>
+            </Button>
           </div>
           <div className="rounded-3xl border border-dcg-lightBlue/20 bg-dcg-sand p-5 text-sm text-dcg-slate shadow-md">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-dcg-slate">

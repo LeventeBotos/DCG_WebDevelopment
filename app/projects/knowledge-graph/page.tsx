@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
-  ArrowRight,
   Brain,
   Database,
   Network,
@@ -19,10 +17,10 @@ import {
   Server,
   Cloud,
 } from "lucide-react";
-import { FuturisticButton } from "@/components/futuristic-button";
 import FuturisticCard from "@/components/futuristic-card";
 import FuturisticSection from "@/components/futuristic-section";
 import FuturisticHeading from "@/components/futuristic-heading";
+import { Button } from "@/components/ui/button";
 
 export default function KnowledgeGraphProject() {
   const features = [
@@ -135,18 +133,17 @@ export default function KnowledgeGraphProject() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <FuturisticButton
-                className="group"
-                icon={
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                }
-                iconPosition="right"
+              <Button
+                asChild
+                variant="primary"
+                size="lg"
+                // className="group"
               >
                 <Link href="/contact">Start Similar Project</Link>
-              </FuturisticButton>
-              <FuturisticButton variant="outline">
+              </Button>
+              <Button asChild variant="secondary" size="lg">
                 <Link href="/projects">View All Projects</Link>
-              </FuturisticButton>
+              </Button>
             </motion.div>
           </div>
           <motion.div
@@ -411,18 +408,17 @@ export default function KnowledgeGraphProject() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <FuturisticButton
-              className="group"
-              icon={
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              }
-              iconPosition="right"
+            <Button
+              asChild
+              variant="primary"
+              size="lg"
+              // className="group"
             >
               <Link href="/contact">Start Your Project</Link>
-            </FuturisticButton>
-            <FuturisticButton variant="outline">
+            </Button>
+            <Button asChild variant="secondary" size="lg">
               <Link href="/projects">Explore More Projects</Link>
-            </FuturisticButton>
+            </Button>
           </motion.div>
         </div>
       </FuturisticSection>

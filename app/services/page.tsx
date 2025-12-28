@@ -7,8 +7,8 @@ import {
   services,
   servicesBySlug,
 } from "@/lib/services";
-import { platformCards } from "@/lib/platforms";
 import DCGAIPlatformSection from "@/components/home/DCGAIPlatformSection";
+import { Button } from "@/components/ui/button";
 
 const engagement = [
   {
@@ -95,12 +95,12 @@ export default function ServicesPage() {
             and cloud operations with security and cost control baked in.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className="dcg-cta">
-              Talk with us
-            </Link>
-            <Link href="/projects" className="dcg-cta-outline">
-              View solutions &amp; projects
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Talk with us</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/projects">View solutions &amp; projects</Link>
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2 pt-4">
             {featuredServices.map((service) => (

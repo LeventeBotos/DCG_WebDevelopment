@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Mail, MapPin, Globe2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const topics = [
   "AI Strategy",
@@ -103,11 +105,15 @@ export default function ContactPage() {
                 placeholder="Tell us about your AI, data, or cloud goals"
               />
             </label>
-            <button type="submit" className="dcg-cta justify-center">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+            >
               {status === "submitted"
                 ? "Message sent — we’ll reply soon"
                 : "Submit"}
-            </button>
+            </Button>
             <p className="text-xs text-dcg-slate">
               We respond quickly. You can also book a 30-min consultation using
               the link below.
@@ -147,12 +153,11 @@ export default function ContactPage() {
               <p className="text-dcg-slate">
                 Share a topic and we’ll pair you with the right expert.
               </p>
-              <a
-                className="mt-3 inline-flex items-center rounded-full bg-white px-4 py-2 font-semibold text-dcg-lightBlue shadow-sm transition hover:-translate-y-0.5 hover:shadow"
-                href="/contact"
-              >
-                Pick a time
-              </a>
+              <div className="mt-3">
+                <Button asChild variant="secondary">
+                  <Link href="/contact">Pick a time</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

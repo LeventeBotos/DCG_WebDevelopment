@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { StatRow } from "./shared";
 
 export default function HeroSection() {
@@ -25,18 +26,12 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <Link
-              href="/contact"
-              className="dcg-cta"
-            >
-              Talk to an expert
-            </Link>
-            <Link
-              href="/solutions"
-              className="dcg-cta-outline"
-            >
-              Explore our solutions
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Talk to an expert</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/solutions">Explore our solutions</Link>
+            </Button>
           </div>
 
           <p className="pt-4 text-xs uppercase tracking-[0.2em] text-dcg-slate">

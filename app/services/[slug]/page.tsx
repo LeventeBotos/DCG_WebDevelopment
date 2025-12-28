@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { services, servicesBySlug } from "@/lib/services";
 
 export const dynamicParams = true;
@@ -35,12 +36,12 @@ export default async function ServiceDetailPage({
           <p className="text-lg text-dcg-slate max-w-3xl">{service.intro}</p>
           <p className="text-sm text-dcg-ink max-w-4xl">{service.summary}</p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/services" className="dcg-cta-outline">
-              Back to services
-            </Link>
-            <Link href="/contact" className="dcg-cta">
-              Talk with us
-            </Link>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/services">Back to services</Link>
+            </Button>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Talk with us</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -120,12 +121,12 @@ export default async function ServiceDetailPage({
             </p>
           </div>
           <div className="flex gap-2">
-            <Link href="/contact" className="dcg-cta">
-              Book a conversation
-            </Link>
-            <Link href="/projects" className="dcg-cta-outline">
-              View projects
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/contact">Book a conversation</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/projects">View projects</Link>
+            </Button>
           </div>
         </div>
       </section>
