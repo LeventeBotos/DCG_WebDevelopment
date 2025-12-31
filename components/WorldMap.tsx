@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import DottedMap from "dotted-map";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 interface MapProps {
   dots?: Array<{
@@ -13,7 +13,8 @@ interface MapProps {
 }
 
 export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true });
   const map = new DottedMap({ height: 100, grid: "diagonal" });
 
   const svgMap = map.getSVG({
@@ -41,6 +42,7 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
 
   return (
     <div
+      ref={containerRef}
       className="w-full rounded-lg relative font-sans"
       style={{ aspectRatio: `${mapWidth} / ${mapHeight}` }}
     >
@@ -53,7 +55,6 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
         draggable={false}
       />
       <svg
-        ref={svgRef}
         viewBox={`0 0 ${mapWidth} ${mapHeight}`}
         className="w-full h-full absolute inset-0 pointer-events-none select-none"
       >
@@ -70,12 +71,18 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
                 initial={{
                   pathLength: 0,
                 }}
-                animate={{
-                  pathLength: 1,
-                }}
+                animate={
+                  isInView
+                    ? {
+                        pathLength: 1,
+                      }
+                    : {
+                        pathLength: 0,
+                      }
+                }
                 transition={{
-                  duration: 1,
-                  delay: 0.5 * i,
+                  duration: isInView ? 1 : 0,
+                  delay: isInView ? 0.5 * i : 0,
                   ease: "easeOut",
                 }}
                 key={`start-upper-${i}`}
@@ -86,10 +93,10 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
 
         <defs>
           <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="5%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
+            <stop offset="0%" stopColor="#009ACA" stopOpacity="0" />
+            <stop offset="10%" stopColor="#009ACA" stopOpacity="1" />
+            <stop offset="90%" stopColor="#00CACA" stopOpacity="1" />
+            <stop offset="100%" stopColor="#00CACA" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -113,22 +120,26 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
                   fill={lineColor}
                   opacity="0.4"
                 >
-                  <animate
-                    attributeName="r"
-                    from="0.5"
-                    to="4"
-                    dur="1.2s"
-                    begin="0s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    from="0.4"
-                    to="0"
-                    dur="1.2s"
-                    begin="0s"
-                    repeatCount="indefinite"
-                  />
+                  {isInView && (
+                    <>
+                      <animate
+                        attributeName="r"
+                        from="0.5"
+                        to="4"
+                        dur="1.2s"
+                        begin="0s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="opacity"
+                        from="0.4"
+                        to="0"
+                        dur="1.2s"
+                        begin="0s"
+                        repeatCount="indefinite"
+                      />
+                    </>
+                  )}
                 </circle>
               </g>
               <g key={`end-${i}`}>
@@ -145,22 +156,26 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
                   fill={lineColor}
                   opacity="0.4"
                 >
-                  <animate
-                    attributeName="r"
-                    from="0.5"
-                    to="4"
-                    dur="1.2s"
-                    begin="0s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    from="0.4"
-                    to="0"
-                    dur="1.2s"
-                    begin="0s"
-                    repeatCount="indefinite"
-                  />
+                  {isInView && (
+                    <>
+                      <animate
+                        attributeName="r"
+                        from="0.5"
+                        to="4"
+                        dur="1.2s"
+                        begin="0s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="opacity"
+                        from="0.4"
+                        to="0"
+                        dur="1.2s"
+                        begin="0s"
+                        repeatCount="indefinite"
+                      />
+                    </>
+                  )}
                 </circle>
               </g>
             </g>

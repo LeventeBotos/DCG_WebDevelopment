@@ -6,7 +6,7 @@ export type PlatformDefinition = {
     start: string;
     end: string;
   };
-  hoverColors: [number, number, number][];
+  hoverColors?: [number, number, number][];
   hero: {
     headline: string;
     description: string;
@@ -21,6 +21,15 @@ export type PlatformDefinition = {
   signals: string[];
 };
 
+export const hexToRgb = (hex: string): [number, number, number] => {
+  const normalized = hex.replace("#", "");
+  const full = normalized.length === 3
+    ? normalized.split("").map((c) => c + c).join("")
+    : normalized;
+  const intVal = parseInt(full, 16);
+  return [(intVal >> 16) & 255, (intVal >> 8) & 255, intVal & 255];
+};
+
 export const platforms: PlatformDefinition[] = [
   {
     slug: "personalization-ai",
@@ -28,13 +37,9 @@ export const platforms: PlatformDefinition[] = [
     cardBody:
       "Design and orchestrate intelligent, automated and personalized customer journeys across web, app, marketing and service.",
     gradient: {
-      start: "#009ACA",
-      end: "#00CACA",
+      start: "#ED4264",
+      end: "#FFB347",
     },
-    hoverColors: [
-      [0, 154, 202],
-      [0, 190, 215],
-    ],
     hero: {
       headline: "Personalization AI",
       description:
@@ -116,13 +121,9 @@ export const platforms: PlatformDefinition[] = [
     cardBody:
       "Use AI-driven conversations to acquire, convert and support customers, while capturing rich behavioral and intent data.",
     gradient: {
-      start: "#00CACA",
-      end: "#00B084",
+      start: "#1CD8D2",
+      end: "#93EDC7",
     },
-    hoverColors: [
-      [0, 190, 215],
-      [90, 120, 220],
-    ],
     hero: {
       headline: "Conversational Analytics & Commerce",
       description:
@@ -204,13 +205,9 @@ export const platforms: PlatformDefinition[] = [
     cardBody:
       "Automate diagnostics on your CRM landscape and generate a prioritized roadmap for process, data and AI improvements.",
     gradient: {
-      start: "#00B084",
-      end: "#10B981",
+      start: "#4776E6",
+      end: "#8E54E9",
     },
-    hoverColors: [
-      [90, 120, 220],
-      [150, 110, 220],
-    ],
     hero: {
       headline: "DCG 360 Salesforce Assessment",
       description:
@@ -292,13 +289,11 @@ export const platforms: PlatformDefinition[] = [
     cardBody:
       "Provide bankers and relationship managers with a 360° view of clients, opportunities, risks and recommended next best actions.",
     gradient: {
-      start: "#10B981",
-      end: "#4F46E5",
+
+
+      start: "#ff0099",
+      end: "#493240",
     },
-    hoverColors: [
-      [150, 110, 220],
-      [200, 120, 170],
-    ],
     hero: {
       headline: "Smart Banking AI",
       description:
@@ -388,5 +383,8 @@ export const platformCards = platforms.map((platform) => ({
   title: platform.title,
   body: platform.cardBody,
   href: `/solutions/${platform.slug}`,
-  colors: platform.hoverColors,
+  colors: [
+    hexToRgb(platform.gradient.start),
+    hexToRgb(platform.gradient.end),
+  ],
 }));

@@ -181,9 +181,9 @@ export default function Home() {
           nomb={true}
         />
         <AIAtWorkSection />
-
-        <AiCompanies />
-
+      </div>
+      <AiCompanies />
+      <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title={"Success Stories"}
           subtitle="Real results from real projects with industry leaders."
@@ -200,6 +200,7 @@ export default function Home() {
 
         <ServicesSection />
       </div>
+
       {/* <OurProcess /> */}
 
       <SectionTitle

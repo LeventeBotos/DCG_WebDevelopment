@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
-import { platformBySlug, platforms } from "@/lib/platforms";
+import { hexToRgb, platformBySlug, platforms } from "@/lib/platforms";
 import { Vortex } from "@/components/ui/vortex";
 import { Button } from "@/components/ui/button";
 
@@ -140,7 +140,8 @@ export default async function PlatformPage({ params }: PageProps) {
     redirect(`/solutions/${targetSlug}`);
   }
 
-  const [startColor, endColor] = platform.hoverColors;
+  const startColor = hexToRgb(platform.gradient.start);
+  const endColor = hexToRgb(platform.gradient.end);
   const heroBackground = buildHeroBackground(startColor, endColor);
   const accent = cardBackground(startColor, endColor);
   const accentTextColor = toRgb(endColor);
@@ -149,9 +150,9 @@ export default async function PlatformPage({ params }: PageProps) {
     backgroundImage: buttonGradient(startColor, endColor),
   };
   const secondaryButtonStyle = {
-    backgroundImage: buttonGradient(startColor, endColor, 0.12),
-    borderColor: accentBorderColor,
-    color: accentTextColor,
+    // backgroundImage: buttonGradient(startColor, endColor, 0.12),
+    borderColor: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.5)",
   };
   const { baseHue: heroHue, rangeHue: heroHueRange } = hueRange(
     startColor,
