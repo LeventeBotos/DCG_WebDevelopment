@@ -1,28 +1,45 @@
 "use client";
-import {
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  motion,
-} from "motion/react";
+import { useScroll, useTransform, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import {
+  BackgroundRippleEffect,
+  type BackgroundRippleHandle,
+} from "./background-ripple-effect";
+import SectionTitle from "../SectionTitle";
 
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
 
+const CELL_SIZE = 50;
+
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const rippleRef = useRef<BackgroundRippleHandle>(null);
   const [height, setHeight] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [cols, setCols] = useState(40);
 
   useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setHeight(rect.height);
-    }
-  }, [ref]);
+    const updateMeasurements = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect();
+        setHeight(rect.height);
+
+        // Ensure the ripple grid spans the full timeline area.
+        const nextRows = Math.max(10, Math.ceil(rect.height / CELL_SIZE) + 6);
+        const nextCols = Math.max(24, Math.ceil(rect.width / CELL_SIZE) + 6);
+        setRows(nextRows);
+        setCols(nextCols);
+      }
+    };
+
+    updateMeasurements();
+    window.addEventListener("resize", updateMeasurements);
+    return () => window.removeEventListener("resize", updateMeasurements);
+  }, [ref, data]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -33,14 +50,50 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div className="w-full " ref={containerRef}>
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
+    <div
+      className="relative flex min-h-screen w-full flex-col items-start justify-start overflow-hidden"
+      ref={containerRef}
+      onMouseDownCapture={(event) =>
+        rippleRef.current?.triggerAt({
+          x: event.clientX,
+          y: event.clientY,
+        })
+      }
+      onMouseMoveCapture={(event) =>
+        rippleRef.current?.hoverAt({
+          x: event.clientX,
+          y: event.clientY,
+        })
+      }
+      onMouseLeave={() => rippleRef.current?.clearHover()}
+    >
+      <BackgroundRippleEffect
+        ref={rippleRef}
+        rows={rows}
+        cols={cols}
+        cellSize={CELL_SIZE}
+        interactive
+        className="opacity-100 [--cell-fill-color:#ffffff] [--cell-hover-color:rgba(0,0,0,0.08)] [--cell-ripple-color:rgba(0,0,0,0.16)] [--cell-border-color:rgba(0,0,0,0.16)] [--cell-shadow-color:rgba(0,0,0,0.3)] [mask-image:linear-gradient(to_left,rgba(0,0,0,1)_0%,transparent_100%)]"
+      />
+      <div
+        ref={ref}
+        className="relative z-10 mx-auto max-w-7xl px-4 pb-20 md:px-0 pointer-events-none"
+      >
+        <SectionTitle
+          title="Five AI Agents Every Sales Leader Needs to Know"
+          subtitle=" Humans and AI are beginning to work as coordinated systems.
+          Specialized AI agents now connect across the revenue stack to
+          orchestrate workflows, uncover opportunities, and drive customer
+          adoption with precision."
+          nomb={false}
+          center={true}
+        />
         {data.map((item, index) => (
           <div
             key={index}
-            className="flex justify-start pt-10 md:pt-40 md:gap-10"
+            className="flex justify-start pt-10 md:pt-40 md:gap-10 pointer-events-auto"
           >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
+            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full pointer-events-auto">
               <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white  flex items-center justify-center">
                 <div className="h-4 w-4 rounded-full bg-neutral-200  border border-neutral-300  p-2" />
               </div>
@@ -49,8 +102,8 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               </h3>
             </div>
 
-            <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-3xl mb-4 text-left font-bold text-neutral-500 ">
+            <div className="relative pl-20 pr-4 md:pl-4 w-full pointer-events-auto">
+              <h3 className="md:hidden block text-3xl mb-4 text-left font-bold text-neutral-500">
                 {item.title}
               </h3>
               {item.content}{" "}

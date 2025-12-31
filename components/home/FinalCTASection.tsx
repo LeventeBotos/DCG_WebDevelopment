@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function FinalCTASection() {
   return (
-    <section className="w-full py-20 px-2 md:px-4 mx-auto flex flex-row justify-center relative">
+    <section className="w-full  px-2 md:px-4 mx-auto flex flex-row justify-center relative">
       {/* <DottedGlowBackground
         className="pointer-events-none h-full w-full bg-gradient-to-b from-white to-transparent"
      

@@ -13,6 +13,9 @@ import AIAtWorkSection from "@/components/home/AIAtWorkSection";
 import { WhyDcgBento } from "@/components/home/WhyDcgBento";
 import HeroVideoSection from "@/components/HeroVideo";
 import { Timeline } from "@/components/ui/timeline";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
+import { BackgroundRippleEffectDemo } from "@/components/Rippletest";
 
 const testimonials = [
   {
@@ -61,8 +64,8 @@ const timeline = [
   {
     title: "1",
     content: (
-      <div>
-        <h3 className="mb-1 text-2xl font-semibold text-dcg-ink">
+      <div className=" ">
+        <h3 className="mb-3 text-2xl font-semibold text-dcg-ink">
           Pipeline Orchestration & Forecasting Agent
         </h3>
         <p className="text-xs leading-relaxed text-dcg-slate md:text-sm">
@@ -77,7 +80,7 @@ const timeline = [
     title: "2",
     content: (
       <div>
-        <h3 className="mb-1 text-2xl font-semibold text-dcg-ink">
+        <h3 className="mb-3 text-2xl font-semibold text-dcg-ink">
           Lead Generation & Qualification Agent
         </h3>
         <p className="text-xs leading-relaxed text-dcg-slate md:text-sm">
@@ -92,7 +95,7 @@ const timeline = [
     title: "3",
     content: (
       <div>
-        <h3 className="mb-1 text-2xl font-semibold text-dcg-ink">
+        <h3 className="mb-3 text-2xl font-semibold text-dcg-ink">
           Deal Conversion & Pricing Agent
         </h3>
         <p className="text-xs leading-relaxed text-dcg-slate md:text-sm">
@@ -107,7 +110,7 @@ const timeline = [
     title: "4",
     content: (
       <div>
-        <h3 className="mb-1 text-2xl font-semibold text-dcg-ink">
+        <h3 className="mb-3 text-2xl font-semibold text-dcg-ink">
           Account Intelligence & Opportunity Mapping Agent
         </h3>
         <p className="text-xs leading-relaxed text-dcg-slate md:text-sm">
@@ -122,7 +125,7 @@ const timeline = [
     title: "5",
     content: (
       <div>
-        <h3 className="mb-1 text-2xl font-semibold text-dcg-ink">
+        <h3 className="mb-3 text-2xl font-semibold text-dcg-ink">
           Customer Success & Retention Agent
         </h3>
         <p className="text-xs leading-relaxed text-dcg-slate md:text-sm">
@@ -168,17 +171,10 @@ export default function Home() {
           nomb={true}
         />
         <DCGAIPlatformSection />
-
-        <SectionTitle
-          title="Five AI Agents Every Sales Leader Needs to Know"
-          subtitle=" Humans and AI are beginning to work as coordinated systems.
-          Specialized AI agents now connect across the revenue stack to
-          orchestrate workflows, uncover opportunities, and drive customer
-          adoption with precision."
-          nomb={true}
-        />
-        <Timeline data={timeline} />
-
+      </div>
+     
+      <Timeline data={timeline} />
+      <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title="Momentum is real. So are the capability gaps."
           subtitle=" Employees are rapidly adopting AI, but training, workflow integration
@@ -259,9 +255,11 @@ export default function Home() {
       />
 
       <InfiniteMovingCards items={testimonials} />
-
+      {/* <BackgroundRippleEffectDemo /> */}
       {/* <AIFutureBuiltSection /> */}
-      <FinalCTASection />
+      <BackgroundBeamsWithCollision>
+        <FinalCTASection />
+      </BackgroundBeamsWithCollision>
     </div>
   );
 }

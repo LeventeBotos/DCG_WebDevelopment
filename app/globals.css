@@ -26,6 +26,14 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-500: #737373;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+    --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
+      var(--delay, 0ms);
   }
 }
 
@@ -81,6 +89,30 @@
   /* Per-page footer theming */
   main:has([data-footer-black]) + footer {
     background: #000;
+  }
+
+  .animate-cell-ripple {
+    animation-name: cell-ripple;
+    animation-duration: var(--duration, 200ms);
+    animation-timing-function: ease-out;
+    animation-delay: var(--delay, 0ms);
+    animation-iteration-count: 1;
+    animation-fill-mode: none;
+  }
+}
+
+@keyframes cell-ripple {
+  0% {
+    opacity: 0.4;
+    background-color: var(--cell-fill-color, #ffffff);
+  }
+  50% {
+    opacity: 0.8;
+    background-color: var(--cell-ripple-color, rgba(0, 0, 0, 0.12));
+  }
+  100% {
+    opacity: 0.4;
+    background-color: var(--cell-fill-color, #ffffff);
   }
 }
 
