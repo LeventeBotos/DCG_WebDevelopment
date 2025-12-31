@@ -73,7 +73,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         cols={cols}
         cellSize={CELL_SIZE}
         interactive
-        className="opacity-100 [--cell-fill-color:#ffffff] [--cell-hover-color:rgba(0,0,0,0.08)] [--cell-ripple-color:rgba(0,0,0,0.16)] [--cell-border-color:rgba(0,0,0,0.16)] [--cell-shadow-color:rgba(0,0,0,0.3)] [mask-image:linear-gradient(to_left,rgba(0,0,0,1)_0%,transparent_100%)]"
+        className="opacity-100 [--cell-fill-color:#ffffff] [--cell-hover-color:rgba(0,154,202,0.3)] [--cell-ripple-color:rgba(0,154,202,0.25)] [--cell-border-color:rgba(0,0,0,0.16)] [--cell-shadow-color:rgba(0,0,0,0.3)] [mask-image:linear-gradient(to_left,rgba(0,0,0,1)_0%,transparent_100%)]"
       />
       <div
         ref={ref}

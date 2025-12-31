@@ -7,7 +7,7 @@ import {
   services,
   servicesBySlug,
 } from "@/lib/services";
-import DCGAIPlatformSection from "@/components/home/DCGAIPlatformSection";
+import DCGAIPlatformSection from "@/components/DCGAIPlatformSection";
 import { Button } from "@/components/ui/button";
 
 const engagement = [

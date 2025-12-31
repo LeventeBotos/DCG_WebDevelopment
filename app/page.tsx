@@ -4,18 +4,16 @@ import SuccessStories from "@/components/SuccessStories";
 import { WorldMap } from "@/components/WorldMap";
 import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
 import SectionTitle from "@/components/SectionTitle";
-import { TextHoverEffect } from "@/components/ui/text-hover-effect";
-import DCGAIPlatformSection from "@/components/home/DCGAIPlatformSection";
-import FinalCTASection from "@/components/home/FinalCTASection";
-import ServicesSection from "@/components/home/ServicesSection";
-import StrategicQuestionsSection from "@/components/home/StrategicQuestionsSection";
-import AIAtWorkSection from "@/components/home/AIAtWorkSection";
-import { WhyDcgBento } from "@/components/home/WhyDcgBento";
+import DCGAIPlatformSection from "@/components/DCGAIPlatformSection";
+import FinalCTASection from "@/components/FinalCTASection";
+import ServicesSection from "@/components/ServicesSection";
+import StrategicQuestionsSection from "@/components/StrategicQuestionsSection";
+import AIAtWorkSection from "@/components/AIAtWorkSection";
+import { WhyDcgBento } from "@/components/WhyDcgBento";
 import HeroVideoSection from "@/components/HeroVideo";
 import { Timeline } from "@/components/ui/timeline";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
-import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
-import { BackgroundRippleEffectDemo } from "@/components/Rippletest";
+import AiCompanies from "@/components/AiCompanies";
 
 const testimonials = [
   {
@@ -172,7 +170,7 @@ export default function Home() {
         />
         <DCGAIPlatformSection />
       </div>
-     
+
       <Timeline data={timeline} />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
@@ -184,23 +182,7 @@ export default function Home() {
         />
         <AIAtWorkSection />
 
-        <div className="flex flex-col min-h-[80vh] justify-evenly mt-10 md:mt-20 items-center self-center text-center">
-          <TextHoverEffect text="Only 5%" />
-
-          <div className="md:w-2/3 self-center flex flex-col items-center">
-            <p className="pb-6 md:pb-8 text-3xl md:text-5xl font-semibold">
-              of companies are AI future-built
-            </p>
-
-            <p className="opacity-70 text-lg md:text-2xl leading-relaxed">
-              Yet these leaders achieve{" "}
-              <span className="font-semibold">5× higher revenue growth</span>{" "}
-              and{" "}
-              <span className="font-semibold">3× greater cost reductions</span>{" "}
-              than their peers.
-            </p>
-          </div>
-        </div>
+        <AiCompanies />
 
         <SectionTitle
           title={"Success Stories"}

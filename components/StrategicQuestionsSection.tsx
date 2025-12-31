@@ -115,7 +115,7 @@ export default function StrategicQuestionsSection() {
         </div>
       </motion.div>
 
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3 md:flex hidden">
+      <div className="mx-auto md:grid max-w-5xl gap-6 md:grid-cols-3  hidden">
         {questions.map((question, index) => (
           <div
             key={index}
