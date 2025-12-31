@@ -14,6 +14,7 @@ import HeroVideoSection from "@/components/HeroVideo";
 import { Timeline } from "@/components/ui/timeline";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import AiCompanies from "@/components/AiCompanies";
+import ServicesFullScreenScroll from "@/components/ThreeScroll";
 
 const testimonials = [
   {
@@ -200,7 +201,7 @@ export default function Home() {
 
         <ServicesSection />
       </div>
-
+      <ServicesFullScreenScroll />
       {/* <OurProcess /> */}
 
       <SectionTitle
