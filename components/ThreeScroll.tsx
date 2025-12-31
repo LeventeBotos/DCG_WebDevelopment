@@ -18,6 +18,9 @@ import { servicesBySlug } from "@/lib/services";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "./ui/button";
 
+const MOBILE_NAV_HEIGHT = 72;
+const MOBILE_BOTTOM_BAR_HEIGHT = 72;
+
 type SceneCamera = {
   position: [number, number, number];
   fov?: number;
@@ -319,6 +322,9 @@ function ModelRig({
 export default function ServicesFullScreenScrollPerf() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const [mobileViewportHeight, setMobileViewportHeight] = useState<
+    number | null
+  >(null);
 
   const services = useMemo(() => {
     return SERVICE_VISUALS.map((visual) => {
@@ -340,6 +346,20 @@ export default function ServicesFullScreenScrollPerf() {
   const active = services[activeIndex];
   if (!active) return null;
 
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const updateHeight = () => {
+      const available =
+        window.innerHeight - MOBILE_NAV_HEIGHT - MOBILE_BOTTOM_BAR_HEIGHT;
+      setMobileViewportHeight(Math.max(available, 360));
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, [isMobile]);
+
   const camera = active.visual.camera ?? { position: [6, 4, 8], fov: 55 };
 
   const maxDpr = isMobile ? 1.25 : 1.75;
@@ -348,12 +368,24 @@ export default function ServicesFullScreenScrollPerf() {
       ? 1
       : Math.min(window.devicePixelRatio || 1, maxDpr);
 
+  const mobileSizingStyle =
+    isMobile && mobileViewportHeight
+      ? {
+          minHeight: `${mobileViewportHeight}px`,
+          paddingTop: `${MOBILE_NAV_HEIGHT}px`,
+          paddingBottom: `${MOBILE_BOTTOM_BAR_HEIGHT}px`,
+        }
+      : undefined;
+
   return (
     <section className="w-full bg-black">
       <div ref={sectionRef} className="relative">
         <div className="relative h-[240vh] sm:h-[300vh] lg:h-[320vh]">
           <div className="sticky top-0 w-full">
-            <div className="flex min-h-screen flex-col gap-8 px-4 py-10 sm:px-6 md:h-screen md:flex-row md:items-center md:gap-12 lg:px-12">
+            <div
+              className="flex min-h-screen flex-col gap-8 px-4 py-10 sm:px-6 md:h-screen md:flex-row md:items-stretch md:gap-12 lg:px-12"
+              style={mobileSizingStyle}
+            >
               <div className="flex w-full flex-col items-center justify-center text-center md:w-1/2 md:items-start md:text-left">
                 <div className="flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold tracking-[0.15em] text-white/70">
                   <span>Service</span>
@@ -378,7 +410,7 @@ export default function ServicesFullScreenScrollPerf() {
                 </div>
               </div>
 
-              <div className="relative h-[320px] w-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 via-white/0 to-transparent sm:h-[420px] md:h-[70vh] md:min-h-[520px] md:w-1/2 lg:rounded-3xl">
+              <div className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-white/5 via-white/0 to-transparent sm:h-[420px] md:h-full md:min-h-0 md:w-1/2 lg:rounded-3xl">
                 <Canvas
                   dpr={[1, dpr]}
                   camera={{ position: camera.position, fov: camera.fov ?? 45 }}
