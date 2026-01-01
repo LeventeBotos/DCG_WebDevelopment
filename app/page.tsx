@@ -16,6 +16,7 @@ import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-w
 import AiCompanies from "@/components/AiCompanies";
 import ServicesFullScreenScroll from "@/components/ThreeScroll";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
+import AiCompaniesVideo from "@/components/AiCompaniesVideo";
 
 const testimonials = [
   {
@@ -185,6 +186,7 @@ export default function Home() {
         <AIAtWorkSection />
       </div>
       <AiCompanies />
+      <AiCompaniesVideo />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title={"Success Stories"}
@@ -249,10 +251,10 @@ export default function Home() {
           opacity={0.5}
           gap={10}
           radius={1.6}
-          colorLightVar="--color-neutral-500"
-          glowColorLightVar="--color-neutral-600"
-          colorDarkVar="--color-neutral-500"
-          glowColorDarkVar="--color-sky-800"
+          colorLightVar="--dcg-lightBlue"
+          glowColorLightVar="--dcg-lightGreen"
+          colorDarkVar="--dcg-lightBlue"
+          glowColorDarkVar="--dcg-lightGreen"
           backgroundOpacity={0}
           speedMin={0.3}
           speedMax={1.6}
