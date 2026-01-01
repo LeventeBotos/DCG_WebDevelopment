@@ -15,6 +15,7 @@ import { Timeline } from "@/components/ui/timeline";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import AiCompanies from "@/components/AiCompanies";
 import ServicesFullScreenScroll from "@/components/ThreeScroll";
+import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 
 const testimonials = [
   {
@@ -241,9 +242,25 @@ export default function Home() {
       <InfiniteMovingCards items={testimonials} />
       {/* <BackgroundRippleEffectDemo /> */}
       {/* <AIFutureBuiltSection /> */}
-      <BackgroundBeamsWithCollision>
+      {/* <BackgroundBeamsWithCollision> */}
+      <div className="relative w-full min-h-96">
+        <DottedGlowBackground
+          className="pointer-events-none [mask-image:radial-gradient(circle_at_center,black_0%,black_40%,transparent_95%)]"
+          opacity={0.5}
+          gap={10}
+          radius={1.6}
+          colorLightVar="--color-neutral-500"
+          glowColorLightVar="--color-neutral-600"
+          colorDarkVar="--color-neutral-500"
+          glowColorDarkVar="--color-sky-800"
+          backgroundOpacity={0}
+          speedMin={0.3}
+          speedMax={1.6}
+          speedScale={1}
+        />
         <FinalCTASection />
-      </BackgroundBeamsWithCollision>
+      </div>
+      {/* </BackgroundBeamsWithCollision> */}
     </div>
   );
 }

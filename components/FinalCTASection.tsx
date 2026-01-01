@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 
 export default function FinalCTASection() {
   return (
-    <section className="w-full  px-2 md:px-4 mx-auto flex flex-row justify-center relative">
+    <section className="w-full min-h-96 flex flex-col px-2 md:px-4 mx-auto  items-center justify-center relative">
       {/* <DottedGlowBackground
         className="pointer-events-none h-full w-full bg-gradient-to-b from-white to-transparent"
      
       /> */}
 
-      <div className="rounded-3xl z-10 max-w-7xl border border-dcg-lightBlue/25 bg-white self-center px-6 py-10 shadow-lg md:px-10 md:py-12">
+      <div className="rounded-3xl  self-center mx-auto z-10 max-w-7xl border border-dcg-lightBlue/25 bg-white px-6 py-10 shadow-lg md:px-10 md:py-12">
         <div className="grid gap-6 md:grid-cols-[2fr_1fr] md:items-center">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight text-dcg-ink md:text-3xl">
