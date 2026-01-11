@@ -27,9 +27,9 @@ export function WhyDcgBento() {
       {/* Enterprise Security */}
       <GridItem
         area="md:[grid-area:1/7/2/13] xl:[grid-area:1/4/2/7]"
-        icon={<Shield className="h-4 w-4 text-black" />}
-        title="Master Data Management (MDM) & Asset Management"
-        description="PCI compliant with bank-level security standards ensuring trust, resilience and adherence to global regulations."
+        icon={<Rocket className="h-4 w-4 text-black" />}
+        title="Unified Data Platform (UDP)"
+        description="Battle-tested teams move rapidly from idea to production, balancing innovation with governance and compliance."
       />
 
       {/* Deep Sector Expertise */}
@@ -59,9 +59,9 @@ export function WhyDcgBento() {
       {/* Speed & Certainty */}
       <GridItem
         area="md:[grid-area:3/7/4/13] xl:[grid-area:2/7/3/13]"
-        icon={<Rocket className="h-4 w-4 text-black" />}
-        title="Unified Data Platform (UDP)"
-        description="Battle-tested teams move rapidly from idea to production, balancing innovation with governance and compliance."
+        icon={<Shield className="h-4 w-4 text-black" />}
+        title="Master Data Management (MDM) & Asset Management"
+        description="PCI compliant with bank-level security standards ensuring trust, resilience and adherence to global regulations."
       />
     </ul>
   );

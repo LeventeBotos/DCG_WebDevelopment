@@ -2624,6 +2624,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 62
+      },
+      {
+        "date": "2026-01-11T22:04:00.801Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 13
       }
     ],
     "app/services/[slug]/page.tsx": [
