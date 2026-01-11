@@ -233,13 +233,18 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return (
-    <Button type="button" variant="secondary" size="icon" onClick={onClick}>
+    <Button
+      type="button"
+      variant="secondary"
+      size="icon"
+      onClick={onClick}
+      aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+    >
       {isOpen ? (
         <IconX className="text-black" />
       ) : (
         <IconMenu2 className="text-black" />
       )}
-      <span className="sr-only">Toggle navigation menu</span>
     </Button>
   );
 };
