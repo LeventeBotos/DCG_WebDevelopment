@@ -57,7 +57,7 @@ const WIRE_OPACITY = 0.25;
 const SERVICE_VISUALS: ServiceVisualConfig[] = [
   {
     slug: "digital-twin",
-    visualFile: "/oilrig.obj",
+    visualFile: "/dl_network.obj",
     camera: { position: [8, 5, 10], fov: 70 },
     targetSize: 15,
     spinSpeed: 0.1,

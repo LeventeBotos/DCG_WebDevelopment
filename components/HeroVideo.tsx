@@ -49,19 +49,24 @@ const Hero = () => {
           </h1>
 
           <p className="md:text-lg px-4 text-sm opacity-75 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            Data Consulting Group helps enterprises turn technology, data, and
-            AI into measurable outcomes across retail, energy, finance, IT,
-            transportation, aviation, and oil &amp; gas.
+            We enable organisations to realise sustained and measurable value
+            through end-to-end digital, technology, and data solutions. Our
+            approach blends strategic excellence with advanced engineering
+            expertise to design and deliver purpose-built architectures that
+            unlock growth and turn complex transformation ambitions into
+            scalable, real-world outcomes. As a trusted partner and architect of
+            change, we help enterprises unlock growth, drive impact, and deliver
+            purpose-led results at scale.
           </p>
           <motion.div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
             <Button asChild variant="primary" size="lg">
-              <Link href="/contact" className="text-xs md:text-sm">
-                Get Started
+              <Link href="/projects" className="text-xs md:text-sm">
+                Digital, Technology & Data
               </Link>
             </Button>
             <Button asChild variant="secondary" size="lg">
               <Link href="/projects" className="text-xs md:text-sm">
-                Go to Our Projects
+                Digital, Technology & Data
               </Link>
             </Button>
           </motion.div>

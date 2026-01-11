@@ -334,9 +334,9 @@ export default function KnowledgeGraphProject() {
         <div className="mt-16 grid gap-8 md:grid-cols-2">
           {[
             {
-              title: "Energy Sector",
+              title: "Industrial Operations",
               description:
-                "Mapping complex relationships between oil wells, pipelines, and production facilities for BP and Shell.",
+                "Mapping complex relationships across production lines, equipment fleets, and suppliers for global manufacturers.",
               icon: Zap,
               delay: 0.1,
             },

@@ -20,7 +20,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/4]"
         icon={<BarChart3 className="h-4 w-4 text-black" />}
-        title="Proven Results"
+        title="Generative AI"
         description="£30M+ in cost savings delivered across 200+ projects through data-driven optimisation and intelligent automation."
       />
 
@@ -28,7 +28,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:1/7/2/13] xl:[grid-area:1/4/2/7]"
         icon={<Shield className="h-4 w-4 text-black" />}
-        title="Enterprise-Grade Security"
+        title="Master Data Management (MDM) & Asset Management"
         description="PCI compliant with bank-level security standards ensuring trust, resilience and adherence to global regulations."
       />
 
@@ -36,7 +36,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:2/1/3/7] xl:[grid-area:1/7/2/10]"
         icon={<Briefcase className="h-4 w-4 text-black" />}
-        title="Deep Sector Expertise"
+        title="Digital Twin (DT)"
         description="Hands-on experience across financial services, energy, retail, technology and transport — helping you see around corners."
       />
 
@@ -44,7 +44,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:2/7/3/13] xl:[grid-area:1/10/2/13]"
         icon={<BrainCircuit className="h-4 w-4 text-black" />}
-        title="AI-First Strategy"
+        title="Artificial Intelligence"
         description="We embed AI and data at the core of your operating model, not as isolated experiments."
       />
 
@@ -52,7 +52,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:3/1/4/7] xl:[grid-area:2/1/3/7]"
         icon={<Target className="h-4 w-4 text-black" />}
-        title="Outcome-Focused Delivery"
+        title="Unified Asset Model (UAM)"
         description="End-to-end design, build and run — with measurable impact on revenue, cost, risk and customer experience."
       />
 
@@ -60,7 +60,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:3/7/4/13] xl:[grid-area:2/7/3/13]"
         icon={<Rocket className="h-4 w-4 text-black" />}
-        title="Speed & Certainty"
+        title="Unified Data Platform (UDP)"
         description="Battle-tested teams move rapidly from idea to production, balancing innovation with governance and compliance."
       />
     </ul>

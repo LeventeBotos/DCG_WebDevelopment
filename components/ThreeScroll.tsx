@@ -48,7 +48,7 @@ const WIRE_OPACITY = 0.25;
 const SERVICE_VISUALS: ServiceVisualConfig[] = [
   {
     slug: "digital-twin",
-    visualFile: "/oilrig.obj",
+    visualFile: "/dl_network.obj",
     camera: { position: [8, 5, 10], fov: 70 },
     targetSize: 10,
     baseRotation: [-0.1, MathUtils.degToRad(20), 0],
@@ -491,7 +491,7 @@ export default function ServicesFullScreenScrollPerf() {
 // const SERVICE_VISUALS: ServiceVisualConfig[] = [
 //   {
 //     slug: "digital-twin",
-//     visualFile: "/oilrig.obj",
+//     visualFile: "/dl_network.obj",
 //     camera: { position: [8, 5, 10], fov: 70 },
 //     targetSize: 15,
 //     baseRotation: [-0.1, MathUtils.degToRad(20), 0],

@@ -148,7 +148,7 @@ export default function Home() {
 
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
-          title="Why Choose DCG?"
+          title="Unlocking Potential & Delivering Business Value at Speed"
           subtitle="At DCG we impower organizations to transform ambition into impact. Our cutting-edge solutions combine the latest technology, advanced analytics, and deep industry expertise to unlock growth and deliver measurable value."
           nomb={true}
         />
@@ -202,7 +202,7 @@ export default function Home() {
           center={true}
         />
 
-        <ServicesSection />
+        {/* <ServicesSection /> */}
       </div>
       <ServicesFullScreenScroll />
       {/* <OurProcess /> */}
