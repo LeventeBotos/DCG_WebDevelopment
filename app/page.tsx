@@ -185,7 +185,7 @@ export default function Home() {
         />
         <AIAtWorkSection />
       </div>
-      <AiCompanies />
+
       <AiCompaniesVideo />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
@@ -195,12 +195,12 @@ export default function Home() {
         />
         <SuccessStories />
 
-        <SectionTitle
+        {/* <SectionTitle
           title="From strategy to implementation, with data at the core"
           subtitle="We design, build and operate the data, AI and technology foundations you need to launch new products, experiences and business models."
           nomb={true}
           center={true}
-        />
+        /> */}
 
         {/* <ServicesSection /> */}
       </div>

@@ -410,7 +410,7 @@ export default function ServicesFullScreenScrollPerf() {
                 </div>
               </div>
 
-              <div className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-gradient-to-b from-white/5 via-white/0 to-transparent sm:h-[420px] md:h-full md:min-h-0 md:w-1/2 lg:rounded-3xl">
+              <div className="relative h-[320px] w-full overflow-hidden rounded-2xl bg-transparent sm:h-[420px] md:h-full md:min-h-0 md:w-1/2 lg:rounded-3xl">
                 <Canvas
                   dpr={[1, dpr]}
                   camera={{ position: camera.position, fov: camera.fov ?? 45 }}
