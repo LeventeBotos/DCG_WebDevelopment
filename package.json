@@ -40,6 +40,7 @@
     "@radix-ui/react-tooltip": "1.1.6",
     "@react-three/fiber": "^9.0.0-alpha.8",
     "@tabler/icons-react": "^3.36.0",
+    "resend": "^4.0.1",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

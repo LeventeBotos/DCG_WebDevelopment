@@ -14,12 +14,49 @@ const topics = [
 ];
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "submitted">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "submitted" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("submitted");
-    // TODO: wire up form submission endpoint and CRM handoff.
+    setStatus("submitting");
+    setErrorMessage(null);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      company: String(formData.get("company") || ""),
+      country: String(formData.get("country") || ""),
+      topic: String(formData.get("topic") || ""),
+      message: String(formData.get("message") || ""),
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        setErrorMessage(
+          data?.error || "Something went wrong. Please try again."
+        );
+        setStatus("error");
+        return;
+      }
+
+      form.reset();
+      setStatus("submitted");
+    } catch {
+      setErrorMessage("Unable to send right now. Please try again later.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -109,11 +146,19 @@ export default function ContactPage() {
               type="submit"
               variant="primary"
               size="lg"
+              disabled={status === "submitting"}
             >
-              {status === "submitted"
-                ? "Message sent — we’ll reply soon"
-                : "Submit"}
+              {status === "submitting"
+                ? "Sending..."
+                : status === "submitted"
+                  ? "Message sent — we’ll reply soon"
+                  : "Submit"}
             </Button>
+            {status === "error" ? (
+              <p className="text-xs text-red-600" role="status">
+                {errorMessage}
+              </p>
+            ) : null}
             <p className="text-xs text-dcg-slate">
               We respond quickly. You can also book a 30-min consultation using
               the link below.
