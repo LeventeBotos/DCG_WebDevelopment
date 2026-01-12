@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Navbar";
 import Footer from "@/components/footer";
-import WhatsAppChat from "@/components/whatsapp-chat";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +31,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          // async
+          src="https://www.googletagmanager.com/gtag/js?id=G-T9WH3XWBH5"
+          strategy="afterInteractive"
+        ></Script>
+        <Script id="googleAnalytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-T9WH3XWBH5');`}
+        </Script>
+      </head>
       <body
         className={`${inter.className} min-h-screen flex relative flex-col  text-slate-900`}
       >
