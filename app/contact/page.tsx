@@ -18,11 +18,21 @@ export default function ContactPage() {
     "idle" | "submitting" | "submitted" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
+
+  const resetStatus = () => {
+    if (status !== "idle") {
+      setStatus("idle");
+      setErrorMessage(null);
+      setSubmittedMessage(null);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("submitting");
     setErrorMessage(null);
+    setSubmittedMessage(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -33,6 +43,7 @@ export default function ContactPage() {
       country: String(formData.get("country") || ""),
       topic: String(formData.get("topic") || ""),
       message: String(formData.get("message") || ""),
+      website: String(formData.get("website") || ""),
     };
 
     try {
@@ -52,6 +63,9 @@ export default function ContactPage() {
       }
 
       form.reset();
+      setSubmittedMessage(
+        "Thanks for reaching out! We received your message and will reply soon."
+      );
       setStatus("submitted");
     } catch {
       setErrorMessage("Unable to send right now. Please try again later.");
@@ -88,6 +102,8 @@ export default function ContactPage() {
                 <input
                   required
                   name="name"
+                  autoComplete="name"
+                  onChange={resetStatus}
                   className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
                   placeholder="Your name"
                 />
@@ -98,6 +114,8 @@ export default function ContactPage() {
                   required
                   type="email"
                   name="email"
+                  autoComplete="email"
+                  onChange={resetStatus}
                   className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
                   placeholder="you@company.com"
                 />
@@ -108,6 +126,8 @@ export default function ContactPage() {
                 Company
                 <input
                   name="company"
+                  autoComplete="organization"
+                  onChange={resetStatus}
                   className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
                   placeholder="Organization name"
                 />
@@ -116,6 +136,8 @@ export default function ContactPage() {
                 Country
                 <input
                   name="country"
+                  autoComplete="country-name"
+                  onChange={resetStatus}
                   className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
                   placeholder="Where you're based"
                 />
@@ -125,10 +147,15 @@ export default function ContactPage() {
               Topic
               <select
                 name="topic"
+                onChange={resetStatus}
                 className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-2 text-sm focus:border-dcg-lightBlue focus:outline-none"
+                defaultValue=""
               >
+                <option value="">Select a topic</option>
                 {topics.map((topic) => (
-                  <option key={topic}>{topic}</option>
+                  <option key={topic} value={topic}>
+                    {topic}
+                  </option>
                 ))}
               </select>
             </label>
@@ -137,11 +164,23 @@ export default function ContactPage() {
               <textarea
                 required
                 name="message"
+                onChange={resetStatus}
                 className="w-full rounded-xl border border-dcg-lightBlue/30 bg-white px-3 py-3 text-sm focus:border-dcg-lightBlue focus:outline-none"
                 rows={5}
                 placeholder="Tell us about your AI, data, or cloud goals"
               />
             </label>
+            <label className="sr-only" htmlFor="website">
+              Website
+            </label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+            />
             <Button
               type="submit"
               variant="primary"
@@ -155,8 +194,13 @@ export default function ContactPage() {
                   : "Submit"}
             </Button>
             {status === "error" ? (
-              <p className="text-xs text-red-600" role="status">
+              <p className="text-xs text-red-600" role="status" aria-live="polite">
                 {errorMessage}
+              </p>
+            ) : null}
+            {status === "submitted" ? (
+              <p className="text-xs text-dcg-lightGreen" role="status" aria-live="polite">
+                {submittedMessage}
               </p>
             ) : null}
             <p className="text-xs text-dcg-slate">

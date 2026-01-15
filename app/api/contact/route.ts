@@ -5,12 +5,13 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 
 const ContactSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  company: z.string().optional().default(""),
-  country: z.string().optional().default(""),
-  topic: z.string().optional().default("General inquiry"),
-  message: z.string().min(1),
+  name: z.string().trim().min(1),
+  email: z.string().trim().email(),
+  company: z.string().trim().optional(),
+  country: z.string().trim().optional(),
+  topic: z.string().trim().optional(),
+  message: z.string().trim().min(1),
+  website: z.string().optional(),
 });
 
 const escapeHtml = (value: string) =>
@@ -50,7 +51,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, company, country, topic, message } = parsed.data;
+  const { name, email, company, country, topic, message, website } =
+    parsed.data;
+
+  if (website && website.trim().length > 0) {
+    return NextResponse.json({ ok: true });
+  }
+
+  const normalizedCompany = company?.trim() || "";
+  const normalizedCountry = country?.trim() || "";
+  const normalizedTopic = topic?.trim() || "General inquiry";
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
   const to = process.env.RESEND_TO;
@@ -65,15 +75,17 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
 
   const submittedAt = new Date().toISOString();
-  const subject = `DCG contact request${topic ? `: ${topic}` : ""}`;
+  const subject = `DCG contact request${
+    normalizedTopic ? `: ${normalizedTopic}` : ""
+  }`;
   const text = [
     "DCG contact request",
     "-------------------",
     `Name: ${name}`,
     `Email: ${email}`,
-    `Company: ${company || "-"}`,
-    `Country: ${country || "-"}`,
-    `Topic: ${topic || "-"}`,
+    `Company: ${normalizedCompany || "-"}`,
+    `Country: ${normalizedCountry || "-"}`,
+    `Topic: ${normalizedTopic || "-"}`,
     `Submitted: ${submittedAt}`,
     "",
     "Message:",
@@ -82,9 +94,9 @@ export async function POST(request: Request) {
 
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
-  const safeCompany = escapeHtml(company || "-");
-  const safeCountry = escapeHtml(country || "-");
-  const safeTopic = escapeHtml(topic || "-");
+  const safeCompany = escapeHtml(normalizedCompany || "-");
+  const safeCountry = escapeHtml(normalizedCountry || "-");
+  const safeTopic = escapeHtml(normalizedTopic || "-");
   const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
 
   const html = `
@@ -140,15 +152,45 @@ export async function POST(request: Request) {
     </div>
   `;
 
+  const confirmationHtml = `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; background: #f5f3ee; padding: 24px;">
+      <table width="100%" cellspacing="0" cellpadding="0" style="max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden;">
+        <tr>
+          <td style="background: #e8efe7; padding: 28px 32px;">
+            <div style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #4b5f57;">DCG Contact</div>
+            <div style="font-size: 24px; font-weight: 700; color: #1c2b28; margin-top: 8px;">We received your message</div>
+            <div style="font-size: 14px; color: #4b5f57; margin-top: 6px;">Thanks for reaching out — our team will reply soon.</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 24px 32px; font-size: 14px; color: #1c2b28;">
+            <p style="margin: 0 0 12px;">Hi ${safeName},</p>
+            <p style="margin: 0 0 12px;">We have your message about <strong>${safeTopic}</strong>. If you need to add more context, reply to this email.</p>
+            <p style="margin: 0;">Best,<br />DCG Team</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+
   try {
-    await resend.emails.send({
-      to,
-      from,
-      subject,
-      text,
-      html,
-      replyTo: email,
-    });
+    await Promise.all([
+      resend.emails.send({
+        to,
+        from,
+        subject,
+        text,
+        html,
+        replyTo: `${name} <${email}>`,
+      }),
+      resend.emails.send({
+        to: email,
+        from,
+        subject: "We received your request",
+        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply soon.\n\n- DCG Team`,
+        html: confirmationHtml,
+      }),
+    ]);
 
     return NextResponse.json({ ok: true });
   } catch {
