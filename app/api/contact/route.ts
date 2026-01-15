@@ -1,8 +1,9 @@
+
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const ContactSchema = z.object({
   name: z.string().trim().min(1),
