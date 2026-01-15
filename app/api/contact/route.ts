@@ -239,23 +239,52 @@ export async function POST(request: Request) {
 
   try {
     log("info", "Sending notification emails.");
+    const sendWithFallback = async (
+      payload: Parameters<typeof resend.emails.send>[0],
+      label: string
+    ) => {
+      const initialResult = await resend.emails.send(payload);
+      const errorMessage = initialResult?.error?.message ?? "";
+      const shouldFallback =
+        errorMessage.includes("domain is not verified") && from !== defaultFrom;
+
+      if (shouldFallback) {
+        log(
+          "warn",
+          `${label} email sender domain is not verified; retrying with default sender.`
+        );
+        return resend.emails.send({
+          ...payload,
+          from: defaultFrom,
+        });
+      }
+
+      return initialResult;
+    };
+
     const [adminResult, confirmationResult] = await Promise.all([
-      resend.emails.send({
-        to,
-        from,
-        subject,
-        text,
-        html,
-        replyTo: `${name} <${email}>`,
-      }),
-      resend.emails.send({
-        to: email,
-        from,
-        subject: "We received your request",
-        text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply soon.\n\n- DCG Team`,
-        html: confirmationHtml,
-        replyTo: from,
-      }),
+      sendWithFallback(
+        {
+          to,
+          from,
+          subject,
+          text,
+          html,
+          replyTo: `${name} <${email}>`,
+        },
+        "Admin"
+      ),
+      sendWithFallback(
+        {
+          to: email,
+          from,
+          subject: "We received your request",
+          text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply soon.\n\n- DCG Team`,
+          html: confirmationHtml,
+          replyTo: from,
+        },
+        "Confirmation"
+      ),
     ]);
 
     const errors = [
