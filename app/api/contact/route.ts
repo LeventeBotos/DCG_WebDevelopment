@@ -63,10 +63,10 @@ export async function POST(request: Request) {
   const normalizedCountry = country?.trim() || "";
   const normalizedTopic = topic?.trim() || "General inquiry";
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM;
-  const to = process.env.RESEND_TO;
+  const from = process.env.RESEND_FROM ?? "contact@dataconsulting-group.com";
+  const to = process.env.RESEND_TO ?? "botos.levente2007@gmail.com";
 
-  if (!apiKey || !from || !to) {
+  if (!apiKey) {
     return NextResponse.json(
       { error: "Email service is not configured." },
       { status: 500 }
@@ -190,6 +190,7 @@ export async function POST(request: Request) {
         subject: "We received your request",
         text: `Hi ${name},\n\nThanks for reaching out. We received your message and will reply soon.\n\n- DCG Team`,
         html: confirmationHtml,
+        replyTo: from,
       }),
     ]);
 
