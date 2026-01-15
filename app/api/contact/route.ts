@@ -5,6 +5,12 @@ import { Resend } from "resend";
 
 export const runtime = "edge";
 
+type LogEntry = {
+  level: "info" | "warn" | "error";
+  message: string;
+  detail?: string;
+};
+
 const ContactSchema = z.object({
   name: z.string().trim().min(1),
   email: z.string().trim().email(),
@@ -14,6 +20,29 @@ const ContactSchema = z.object({
   message: z.string().trim().min(1),
   website: z.string().optional(),
 });
+
+const serializeError = (error: unknown) => {
+  if (error instanceof Error) {
+    return { message: error.message, stack: error.stack };
+  }
+  if (typeof error === "string") {
+    return { message: error };
+  }
+  return { message: "Unknown error" };
+};
+
+const jsonWithLogs = (
+  data: Record<string, unknown>,
+  logs: LogEntry[],
+  status = 200
+) =>
+  NextResponse.json(
+    {
+      ...data,
+      logs,
+    },
+    { status }
+  );
 
 const escapeHtml = (value: string) =>
   value.replace(/[&<>"']/g, (char) => {
@@ -34,21 +63,40 @@ const escapeHtml = (value: string) =>
   });
 
 export async function POST(request: Request) {
+  const requestId = crypto.randomUUID();
+  const logs: LogEntry[] = [];
+  const log = (level: LogEntry["level"], message: string, detail?: string) => {
+    logs.push({ level, message, detail });
+    const prefix = `[contact][${requestId}]`;
+    if (level === "error") {
+      console.error(prefix, message, detail ?? "");
+    } else if (level === "warn") {
+      console.warn(prefix, message, detail ?? "");
+    } else {
+      console.info(prefix, message, detail ?? "");
+    }
+  };
+
+  log("info", "Incoming contact request received.");
   const json = await request.json().catch(() => null);
 
   if (!json) {
-    return NextResponse.json(
-      { error: "Invalid request body." },
-      { status: 400 }
+    log("warn", "Invalid JSON body received.");
+    return jsonWithLogs(
+      { error: "Invalid request body.", requestId },
+      logs,
+      400
     );
   }
 
   const parsed = ContactSchema.safeParse(json);
 
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Please fill out all required fields." },
-      { status: 400 }
+    log("warn", "Validation failed.", JSON.stringify(parsed.error.flatten()));
+    return jsonWithLogs(
+      { error: "Please fill out all required fields.", requestId },
+      logs,
+      400
     );
   }
 
@@ -56,7 +104,12 @@ export async function POST(request: Request) {
     parsed.data;
 
   if (website && website.trim().length > 0) {
-    return NextResponse.json({ ok: true });
+    log("warn", "Bot detection triggered via honeypot field.");
+    return jsonWithLogs(
+      { error: "Submission rejected.", requestId },
+      logs,
+      400
+    );
   }
 
   const normalizedCompany = company?.trim() || "";
@@ -67,9 +120,11 @@ export async function POST(request: Request) {
   const to = process.env.RESEND_TO ?? "botos.levente2007@gmail.com";
 
   if (!apiKey) {
-    return NextResponse.json(
-      { error: "Email service is not configured." },
-      { status: 500 }
+    log("error", "Missing RESEND_API_KEY configuration.");
+    return jsonWithLogs(
+      { error: "Email service is not configured.", requestId },
+      logs,
+      500
     );
   }
 
@@ -175,7 +230,8 @@ export async function POST(request: Request) {
   `;
 
   try {
-    await Promise.all([
+    log("info", "Sending notification emails.");
+    const [adminResult, confirmationResult] = await Promise.all([
       resend.emails.send({
         to,
         from,
@@ -194,11 +250,33 @@ export async function POST(request: Request) {
       }),
     ]);
 
-    return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to send message." },
-      { status: 500 }
+    const errors = [
+      adminResult?.error
+        ? `Admin email failed: ${adminResult.error.message}`
+        : null,
+      confirmationResult?.error
+        ? `Confirmation email failed: ${confirmationResult.error.message}`
+        : null,
+    ].filter(Boolean);
+
+    if (errors.length > 0) {
+      log("error", "Resend returned errors.", errors.join(" | "));
+      return jsonWithLogs(
+        { error: "Failed to send message.", requestId },
+        logs,
+        502
+      );
+    }
+
+    log("info", "Email delivery accepted by Resend.");
+    return jsonWithLogs({ ok: true, requestId }, logs, 200);
+  } catch (error) {
+    const serialized = serializeError(error);
+    log("error", "Unexpected error while sending emails.", serialized.message);
+    return jsonWithLogs(
+      { error: "Failed to send message.", requestId },
+      logs,
+      500
     );
   }
 }

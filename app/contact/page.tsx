@@ -19,12 +19,18 @@ export default function ContactPage() {
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
+  const [logEntries, setLogEntries] = useState<
+    { level: "info" | "warn" | "error"; message: string; detail?: string }[]
+  >([]);
 
   const resetStatus = () => {
     if (status !== "idle") {
       setStatus("idle");
       setErrorMessage(null);
       setSubmittedMessage(null);
+    }
+    if (logEntries.length) {
+      setLogEntries([]);
     }
   };
 
@@ -53,8 +59,11 @@ export default function ContactPage() {
         body: JSON.stringify(payload),
       });
 
+      const data = await response.json().catch(() => null);
+      const logs = Array.isArray(data?.logs) ? data.logs : [];
+      setLogEntries(logs);
+
       if (!response.ok) {
-        const data = await response.json().catch(() => null);
         setErrorMessage(
           data?.error || "Something went wrong. Please try again."
         );
@@ -69,6 +78,12 @@ export default function ContactPage() {
       setStatus("submitted");
     } catch {
       setErrorMessage("Unable to send right now. Please try again later.");
+      setLogEntries([
+        {
+          level: "error",
+          message: "Network error while submitting the form.",
+        },
+      ]);
       setStatus("error");
     }
   };
@@ -202,6 +217,36 @@ export default function ContactPage() {
               <p className="text-xs text-dcg-lightGreen" role="status" aria-live="polite">
                 {submittedMessage}
               </p>
+            ) : null}
+            {logEntries.length ? (
+              <div className="rounded-xl border border-dcg-lightBlue/20 bg-dcg-sand/60 p-4 text-xs text-dcg-ink">
+                <p className="font-semibold text-dcg-ink">Submission log</p>
+                <ul className="mt-2 space-y-2">
+                  {logEntries.map((entry, index) => (
+                    <li key={`${entry.level}-${index}`} className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span
+                          className={
+                            entry.level === "error"
+                              ? "font-semibold text-red-600"
+                              : entry.level === "warn"
+                                ? "font-semibold text-amber-600"
+                                : "font-semibold text-dcg-lightGreen"
+                          }
+                        >
+                          {entry.level.toUpperCase()}
+                        </span>
+                        <span>{entry.message}</span>
+                      </div>
+                      {entry.detail ? (
+                        <p className="text-[11px] text-dcg-slate">
+                          {entry.detail}
+                        </p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ) : null}
             <p className="text-xs text-dcg-slate">
               We respond quickly. You can also book a 30-min consultation using
