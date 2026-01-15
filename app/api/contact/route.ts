@@ -116,7 +116,8 @@ export async function POST(request: Request) {
   const normalizedCountry = country?.trim() || "";
   const normalizedTopic = topic?.trim() || "General inquiry";
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM ?? "contact@dataconsulting-group.com";
+  const defaultFrom = "DCG Contact <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM ?? defaultFrom;
   const to = process.env.RESEND_TO ?? "botos.levente2007@gmail.com";
 
   if (!apiKey) {
@@ -125,6 +126,13 @@ export async function POST(request: Request) {
       { error: "Email service is not configured.", requestId },
       logs,
       500
+    );
+  }
+
+  if (from === defaultFrom) {
+    log(
+      "warn",
+      "RESEND_FROM not set; using Resend onboarding sender address."
     );
   }
 
