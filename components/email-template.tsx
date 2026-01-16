@@ -131,7 +131,7 @@ export const buildAdminEmailHtml = ({
                       <a href="mailto:${safeEmail}" style="display: inline-block; padding: 11px 20px; color: #ffffff; font-size: 13px; font-weight: 600; text-decoration: none;">Reply to ${safeName}</a>
                     </td>
                     <td style="padding-left: 12px; font-size: 12px; color: #64748b;">
-                      Aim to respond within 24 hours.
+                      We'll reply with next steps soon.
                     </td>
                   </tr>
                 </table>
@@ -213,7 +213,7 @@ export const buildConfirmationEmailHtml = ({
                     <td style="padding: 14px 16px; background: #f0fbfb; border: 1px solid #c8f0f0; border-radius: 14px;">
                       <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #0f766e;">What happens next</div>
                       <div style="margin-top: 6px; font-size: 13px; color: #0f172a; line-height: 1.6;">
-                        We aim to respond within one business day with tailored next steps.
+                          We'll reply with tailored next steps soon.
                       </div>
                     </td>
                   </tr>

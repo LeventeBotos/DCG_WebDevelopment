@@ -12184,6 +12184,22 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 11
+      },
+      {
+        "date": "2026-01-16T13:09:50.460Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 5
+      },
+      {
+        "date": "2026-01-16T13:10:57.974Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 68
       }
     ],
     "components/WhyDcgBento.tsx": [
@@ -12720,6 +12736,86 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 4
+      },
+      {
+        "date": "2026-01-15T21:26:37.781Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 69
+      },
+      {
+        "date": "2026-01-15T21:27:12.499Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 35
+      },
+      {
+        "date": "2026-01-15T21:27:44.853Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 32
+      },
+      {
+        "date": "2026-01-15T21:28:52.466Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 68
+      },
+      {
+        "date": "2026-01-15T21:29:37.852Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 45
+      },
+      {
+        "date": "2026-01-16T04:32:48.516Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 25391
+      },
+      {
+        "date": "2026-01-16T13:01:42.191Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 30534
+      },
+      {
+        "date": "2026-01-16T13:01:46.151Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 4
+      },
+      {
+        "date": "2026-01-16T13:02:39.507Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 53
+      },
+      {
+        "date": "2026-01-16T13:03:19.985Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 40
       }
     ],
     "node_modules/@types/node/globals.d.ts": [

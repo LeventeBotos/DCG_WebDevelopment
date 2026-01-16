@@ -64,11 +64,11 @@ const Hero = () => {
                 Digital, Technology & Data
               </Link>
             </Button>
-            <Button asChild variant="secondary" size="lg">
+            {/* <Button asChild variant="secondary" size="lg">
               <Link href="/projects" className="text-xs md:text-sm">
                 Digital, Technology & Data
               </Link>
-            </Button>
+            </Button> */}
           </motion.div>
         </div>
 
