@@ -12,6 +12,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
 
 const topics = [
   "AI Strategy",
@@ -192,27 +193,16 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-dcg-sand to-white" />
-        <div className="absolute -top-24 right-10 h-64 w-64 rounded-full bg-dcg-lightGreen/20 blur-3xl" />
-        <div className="absolute -bottom-24 left-[-40px] h-72 w-72 rounded-full bg-dcg-lightBlue/20 blur-3xl" />
-        <div className="relative dcg-section py-20 md:py-28 space-y-6">
-          <p className="text-xs font-semibold text-dcg-lightGreen uppercase tracking-[0.32em]">
-            Contact
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-3xl leading-tight">
-            Start a conversation with DCG
-          </h1>
-          <p className="text-lg text-dcg-slate max-w-2xl">
-            Tell us what you want to build and the outcomes you need. We'll
-            reply with tailored next steps.
-          </p>
-          <div className="flex flex-wrap gap-3 text-xs text-dcg-ink">
-            <span className="dcg-chip">AI + Data + Cloud</span>
-            <span className="dcg-chip">Global delivery</span>
-          </div>
-        </div>
-      </section>
+      <SubpageHero
+        eyebrow="Contact"
+        title="Start a conversation with DCG"
+        emphasis="conversation"
+        description="Tell us what you want to build and the outcomes you need. We'll reply with tailored next steps."
+        chips={[
+          { label: "AI + Data + Cloud" },
+          { label: "Global delivery" },
+        ]}
+      />
 
       <section className="dcg-section py-16 md:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">

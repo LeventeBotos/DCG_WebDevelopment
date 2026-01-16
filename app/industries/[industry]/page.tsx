@@ -5,6 +5,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CheckCircle, Factory, Fuel, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
 interface IndustryPageProps {
   params: {
@@ -156,137 +158,142 @@ export default function IndustryPage({ params }: IndustryPageProps) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="py-12 md:py-20 bg-muted">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col space-y-4">
-            <Link
-              href="/industries"
-              className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Industries
-            </Link>
-            <div className="grid gap-6 md:grid-cols-2 md:gap-12 items-center">
-              <div className="space-y-4">
-                <div className="inline-block rounded-lg bg-primary p-2 text-primary-foreground">
-                  <industry.icon className="h-6 w-6" />
-                </div>
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  {industry.name}
-                </h1>
-                <p className="text-muted-foreground md:text-xl">
-                  {industry.longDescription}
-                </p>
-                <div className="space-y-2">
-                  <h3 className="font-semibold">Key Clients:</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {industry.clients.map((client) => (
-                      <span
-                        key={client}
-                        className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-sm font-semibold"
-                      >
-                        {client}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+      <SubpageHero
+        eyebrow="Industry Playbook"
+        title={`Industry playbook for ${industry.name}`}
+        emphasis={industry.name}
+        description={industry.longDescription}
+        topSlot={
+          <Link
+            href="/industries"
+            className="inline-flex items-center text-sm font-semibold text-dcg-slate hover:text-dcg-ink"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Industries
+          </Link>
+        }
+        chips={industry.clients.map((client) => ({ label: client }))}
+        aside={
+          <div className="relative w-full max-w-md">
+            <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-dcg-lightBlue/20 to-dcg-lightGreen/20 blur-2xl" />
+            <div className="relative rounded-3xl border border-dcg-lightBlue/20 bg-white p-4 shadow-xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-dcg-sand text-dcg-blue">
+                <industry.icon className="h-6 w-6" />
               </div>
-              <div className="flex justify-center">
-                <Image
-                  src="/placeholder.svg?height=400&width=600"
-                  width={600}
-                  height={400}
-                  alt={`${industry.name} industry`}
-                  className="rounded-lg object-cover"
-                />
-              </div>
+              <h2 className="mt-4 text-lg font-semibold text-dcg-ink">
+                {industry.description}
+              </h2>
+              <Image
+                src="/placeholder.svg?height=400&width=600"
+                width={600}
+                height={400}
+                alt={`${industry.name} industry`}
+                className="mt-4 rounded-2xl object-cover"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* Solutions Section */}
-      <section className="py-12 md:py-20">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">
-                Our Solutions
-              </h2>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Tailored AI and data solutions designed specifically for the{" "}
-                {industry.name.toLowerCase()} industry.
-              </p>
-            </div>
-          </div>
-          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2">
-            {industry.solutions.map((solution, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-lg border bg-background p-6 transition-colors hover:bg-muted/50"
-              >
-                <div className="space-y-2">
-                  <h3 className="font-bold">{solution.title}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {solution.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="dcg-section py-12 md:py-20 space-y-8">
+        <div className="max-w-3xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+            Our solutions
+          </p>
+          <h2 className="text-3xl font-bold text-dcg-ink md:text-4xl">
+            Targeted outcomes for {industry.name}
+          </h2>
+          <p className="text-dcg-slate md:text-lg">
+            Tailored AI and data solutions designed specifically for the{" "}
+            {industry.name.toLowerCase()} industry.
+          </p>
         </div>
+        <BentoGrid className="mx-0 grid-cols-1 md:auto-rows-[14rem] md:grid-cols-2">
+          {industry.solutions.map((solution, index) => (
+            <BentoGridItem
+              key={solution.title}
+              className="overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg hover:shadow-xl"
+              title={<span className="text-dcg-ink">{solution.title}</span>}
+              description={
+                <span className="text-sm text-dcg-slate">
+                  {solution.description}
+                </span>
+              }
+              header={
+                <div className="flex items-center justify-between rounded-2xl bg-dcg-sand p-4">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                    Capability
+                  </span>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-dcg-ink shadow-sm">
+                    {index + 1}
+                  </span>
+                </div>
+              }
+              icon={<div className="h-2 w-2 rounded-full bg-dcg-lightGreen" />}
+            />
+          ))}
+        </BentoGrid>
       </section>
 
       {/* Case Study Section */}
-      <section className="py-12 md:py-20 bg-muted">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter">
-                Case Study
-              </h2>
-              <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                See how we've helped companies in the{" "}
-                {industry.name.toLowerCase()} sector achieve remarkable results.
-              </p>
-            </div>
+      <section className="bg-dcg-sand/60 py-12 md:py-20">
+        <div className="dcg-section space-y-8">
+          <div className="max-w-3xl space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+              Case study
+            </p>
+            <h2 className="text-3xl font-bold text-dcg-ink md:text-4xl">
+              Proof of value in the wild
+            </h2>
+            <p className="text-dcg-slate md:text-lg">
+              See how we've helped companies in the{" "}
+              {industry.name.toLowerCase()} sector achieve remarkable results.
+            </p>
           </div>
-          <div className="mx-auto max-w-4xl py-12">
-            <div className="rounded-lg border bg-background p-6">
+          <div className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-8 shadow-xl">
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold">
+                <h3 className="text-2xl font-semibold text-dcg-ink">
                   {industry.caseStudy.title}
                 </h3>
                 <div className="space-y-2">
-                  <p className="font-semibold">Client:</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                    Client
+                  </p>
+                  <p className="text-sm text-dcg-ink">
                     {industry.caseStudy.client}
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p className="font-semibold">Challenge:</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                    Challenge
+                  </p>
+                  <p className="text-sm text-dcg-slate">
                     {industry.caseStudy.challenge}
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <p className="font-semibold">Solution:</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                    Solution
+                  </p>
+                  <p className="text-sm text-dcg-slate">
                     {industry.caseStudy.solution}
                   </p>
                 </div>
-                <div className="space-y-2">
-                  <p className="font-semibold">Results:</p>
-                  <ul className="ml-6 space-y-2">
-                    {industry.caseStudy.results.map((result, index) => (
-                      <li key={index} className="flex items-start">
-                        <CheckCircle className="mr-2 h-5 w-5 text-primary flex-shrink-0" />
-                        <span className="text-muted-foreground">{result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              </div>
+              <div className="rounded-2xl border border-dcg-lightBlue/20 bg-dcg-sand/70 p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                  Results
+                </p>
+                <ul className="mt-4 space-y-3 text-sm text-dcg-ink">
+                  {industry.caseStudy.results.map((result, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle className="mt-0.5 h-5 w-5 text-dcg-lightGreen" />
+                      <span>{result}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -294,21 +301,24 @@ export default function IndustryPage({ params }: IndustryPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-20 bg-primary text-primary-foreground">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Ready to Transform Your {industry.name} Business?
-              </h2>
-              <p className="mx-auto max-w-[700px] md:text-xl">
-                Let's discuss how our AI and data solutions can help your
-                organization thrive in the digital age.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+      <section className="py-12 md:py-20">
+        <div className="dcg-section">
+          <div className="rounded-3xl border border-dcg-lightBlue/20 bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen p-10 text-white shadow-xl">
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
+                  Ready to start?
+                </p>
+                <h2 className="text-3xl font-semibold md:text-4xl">
+                  Ready to transform your {industry.name} business?
+                </h2>
+                <p className="text-sm text-white/80 md:text-base">
+                  Let's discuss how our AI and data solutions can help your
+                  organization thrive in the digital age.
+                </p>
+              </div>
               <Button asChild size="lg" variant="secondary">
-                <Link href="/contact">Get Started Today</Link>
+                <Link href="/contact">Get started today</Link>
               </Button>
             </div>
           </div>

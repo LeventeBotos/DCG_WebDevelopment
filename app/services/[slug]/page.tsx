@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { services, servicesBySlug } from "@/lib/services";
+import SubpageHero from "@/components/SubpageHero";
 
 export const dynamicParams = true;
 
@@ -24,27 +25,35 @@ export default async function ServiceDetailPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative dcg-section py-16 md:py-24 space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold text-dcg-blue shadow-sm">
-            {service.category}
+      <SubpageHero
+        eyebrow={service.category}
+        title={service.title}
+        description={service.intro}
+        actions={[
+          { label: "Back to services", href: "/services", variant: "secondary" },
+          { label: "Talk with us", href: "/contact", variant: "primary" },
+        ]}
+        chips={[
+          { label: "Outcome aligned" },
+          { label: "Delivery focused", href: "/projects" },
+        ]}
+        aside={
+          <div className="dcg-card space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+              Service snapshot
+            </p>
+            <p className="text-sm text-dcg-slate">{service.summary}</p>
+            <ul className="space-y-2 text-sm text-dcg-ink">
+              {service.highlights.slice(0, 3).map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-4xl leading-tight">
-            {service.title}
-          </h1>
-          <p className="text-lg text-dcg-slate max-w-3xl">{service.intro}</p>
-          <p className="text-sm text-dcg-ink max-w-4xl">{service.summary}</p>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/services">Back to services</Link>
-            </Button>
-            <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Talk with us</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+        }
+      />
 
       <section className="dcg-section py-14 md:py-20 space-y-10">
         <div className="grid gap-6 md:grid-cols-2">

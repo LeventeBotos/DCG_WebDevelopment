@@ -1,53 +1,55 @@
 import Link from "next/link";
 import { platformCards } from "@/lib/platforms";
 import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
 export default function SolutionsIndexPage() {
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-dcg-lightBlue/10 via-white to-dcg-lightGreen/10" />
-        <div className="relative dcg-section py-16 md:py-20 space-y-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-dcg-slate">
-            DCG AI Platform
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink">
-            Productized AI capabilities, tuned for your industry.
-          </h1>
-          <p className="max-w-3xl text-lg text-dcg-slate">
-            Choose a platform to see the accelerators, launch patterns, and operating model we bring to co-deliver value fast.
-          </p>
-        </div>
-      </section>
+      <SubpageHero
+        eyebrow="DCG AI Platform"
+        title="Productized AI capabilities, tuned for your industry."
+        emphasis="Productized AI"
+        description="Choose a platform to see the accelerators, launch patterns, and operating model we bring to co-deliver value fast."
+      />
 
       <section className="dcg-section pb-16">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {platformCards.map((card) => (
-            <div
+        <BentoGrid className="mx-0 grid-cols-1 md:auto-rows-[16rem] md:grid-cols-2 lg:grid-cols-4">
+          {platformCards.map((card, index) => (
+            <BentoGridItem
               key={card.href}
-              className="group relative overflow-hidden rounded-2xl border border-dcg-lightBlue/20 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div
-                className="absolute inset-0 opacity-0 transition group-hover:opacity-100"
-                style={{
-                  background: `linear-gradient(135deg, rgba(${card.colors[0].join(",")},0.08), rgba(${card.colors[1].join(",")},0.14))`,
-                }}
-              />
-              <div className="relative flex h-full flex-col gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-dcg-slate">
-                  DCG AI Platform
-                </p>
-                <h3 className="text-xl font-semibold text-dcg-ink">{card.title}</h3>
-                <p className="text-sm text-dcg-slate">{card.body}</p>
-                <div className="mt-auto">
-                  <Button asChild variant="ghost" size="sm" showArrow>
+              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg hover:shadow-xl ${
+                index === 0 ? "md:col-span-2" : ""
+              }`}
+              title={<span className="text-dcg-ink">{card.title}</span>}
+              description={
+                <div className="space-y-3">
+                  <p className="text-sm text-dcg-slate">{card.body}</p>
+                  <Button asChild variant="secondary" size="sm">
                     <Link href={card.href}>Explore</Link>
                   </Button>
                 </div>
-              </div>
-            </div>
+              }
+              header={
+                <div
+                  className="flex items-center justify-between rounded-2xl p-4"
+                  style={{
+                    background: `linear-gradient(135deg, rgba(${card.colors[0].join(",")},0.12), rgba(${card.colors[1].join(",")},0.18))`,
+                  }}
+                >
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-dcg-slate">
+                    DCG AI Platform
+                  </span>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-dcg-ink shadow-sm">
+                    {index + 1} / {platformCards.length}
+                  </span>
+                </div>
+              }
+              icon={<div className="h-2 w-2 rounded-full bg-dcg-lightBlue" />}
+            />
           ))}
-        </div>
+        </BentoGrid>
       </section>
     </div>
   );

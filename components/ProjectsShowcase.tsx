@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
 const projects = [
   {
@@ -47,32 +48,44 @@ export default function ProjectsShowcase() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        {projects.map((project) => (
-          <div
+      <BentoGrid className="mx-0 grid-cols-1 md:auto-rows-[16rem] md:grid-cols-3">
+        {projects.map((project, index) => (
+          <BentoGridItem
             key={project.title}
-            className="flex h-full flex-col gap-4 rounded-3xl border border-dcg-blue/10 bg-white p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <h3 className="text-lg font-semibold text-dcg-ink">
-              {project.title}
-            </h3>
-            <div className="space-y-2 text-sm text-dcg-slate">
-              <p>
-                <span className="font-semibold text-dcg-ink">Challenge:</span>{" "}
-                {project.challenge}
-              </p>
-              <p>
-                <span className="font-semibold text-dcg-ink">Approach:</span>{" "}
-                {project.approach}
-              </p>
-              <p>
-                <span className="font-semibold text-dcg-ink">Outcome:</span>{" "}
-                {project.outcome}
-              </p>
-            </div>
-          </div>
+            className={`overflow-hidden border border-dcg-blue/10 bg-white/95 shadow-lg hover:shadow-xl ${
+              index === 0 ? "md:col-span-2" : ""
+            }`}
+            title={<span className="text-dcg-ink">{project.title}</span>}
+            description={
+              <div className="space-y-2 text-sm text-dcg-slate">
+                <p>
+                  <span className="font-semibold text-dcg-ink">Challenge:</span>{" "}
+                  {project.challenge}
+                </p>
+                <p>
+                  <span className="font-semibold text-dcg-ink">Approach:</span>{" "}
+                  {project.approach}
+                </p>
+                <p>
+                  <span className="font-semibold text-dcg-ink">Outcome:</span>{" "}
+                  {project.outcome}
+                </p>
+              </div>
+            }
+            header={
+              <div className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-dcg-lightBlue/10 via-white to-dcg-lightGreen/10 p-4">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                  Case study
+                </span>
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-dcg-ink shadow-sm">
+                  {index + 1} / {projects.length}
+                </span>
+              </div>
+            }
+            icon={<div className="h-2 w-2 rounded-full bg-dcg-lightGreen" />}
+          />
         ))}
-      </div>
+      </BentoGrid>
       <div className="flex flex-wrap gap-3">
         <Button asChild variant="primary" size="lg">
           <Link href="/projects">Go to Our Projects</Link>

@@ -1,5 +1,8 @@
 "use client";
 
+import SubpageHero from "@/components/SubpageHero";
+import { Tabs } from "@/components/ui/tabs";
+
 const articles = [
   {
     title: "Agentic Enterprise",
@@ -52,50 +55,68 @@ const salesAgents = [
 ];
 
 export default function InsightsPage() {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative dcg-section py-20 md:py-28 space-y-6">
-          <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
-            Insights
+  const insightTabs = articles.map((article, index) => ({
+    title: article.title,
+    value: `insight-${index}`,
+    content: (
+      <div className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+            Featured insight
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-4xl leading-tight">
-            Digital, Technology &amp; Data, Agentic Enterprise, and AI at Work.
-          </h1>
-          <p className="text-lg text-dcg-slate max-w-3xl">
-            Thought-leadership and playbooks on AI-first growth, agentic
-            architectures, and the training needed to make adoption stick.
-          </p>
+          <span className="rounded-full bg-dcg-sand px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+            {index + 1} / {articles.length}
+          </span>
         </div>
-      </section>
-
-      <section className="dcg-section py-16 md:py-20 space-y-8">
-        <div className="grid gap-6 md:grid-cols-2">
-          {articles.map((article) => (
+        <h2 className="mt-3 text-2xl font-semibold text-dcg-ink">
+          {article.title}
+        </h2>
+        <p className="mt-3 text-sm text-dcg-slate">{article.content}</p>
+        <div className="mt-5 grid gap-3 md:grid-cols-3">
+          {article.highlights.map((item) => (
             <div
-              key={article.title}
-              className="flex h-full flex-col gap-4 dcg-card"
+              key={item}
+              className="rounded-2xl border border-dcg-lightBlue/10 bg-dcg-sand/70 p-4 text-sm text-dcg-ink"
             >
-              <div>
-                <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.18em]">
-                  Article
-                </p>
-                <h2 className="text-xl font-semibold text-dcg-ink">
-                  {article.title}
-                </h2>
-              </div>
-              <p className="text-sm text-dcg-ink">{article.content}</p>
-              <ul className="space-y-2 text-sm text-dcg-slate">
-                {article.highlights.map((item) => (
-                  <li key={item} className="flex gap-2">
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              {item}
             </div>
           ))}
+        </div>
+      </div>
+    ),
+  }));
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <SubpageHero
+        eyebrow="Insights"
+        title="Digital, Technology & Data, Agentic Enterprise, and AI at Work."
+        emphasis="Agentic Enterprise"
+        description="Thought-leadership and playbooks on AI-first growth, agentic architectures, and the training needed to make adoption stick."
+      />
+
+      <section className="dcg-section py-16 md:py-20 space-y-10">
+        <div className="max-w-3xl space-y-3">
+          <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
+            Insight library
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-dcg-ink">
+            Browse the latest thinking
+          </h2>
+          <p className="text-dcg-slate">
+            Each insight connects strategy, operating model, and execution with
+            the data and AI details that matter.
+          </p>
+        </div>
+
+        <div className="relative min-h-[420px]">
+          <Tabs
+            tabs={insightTabs}
+            containerClassName="gap-2 flex-wrap"
+            tabClassName="border border-dcg-lightBlue/20 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-dcg-ink"
+            activeTabClassName="bg-dcg-lightBlue/15 border-dcg-lightBlue/40"
+            contentClassName="mt-10"
+          />
         </div>
 
         <div className="dcg-card-muted">

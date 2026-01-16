@@ -2,13 +2,10 @@
 
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import {
-  homepageFeaturedServices,
-  services,
-  servicesBySlug,
-} from "@/lib/services";
+import { services } from "@/lib/services";
 import DCGAIPlatformSection from "@/components/DCGAIPlatformSection";
-import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
 const engagement = [
   {
@@ -56,65 +53,23 @@ const categories: Array<keyof typeof categoryCopy> = [
   "Cloud Operations",
 ];
 
-const featuredServices = homepageFeaturedServices
-  .map((slug) => servicesBySlug[slug])
-  .filter((service): service is (typeof servicesBySlug)[string] =>
-    Boolean(service)
-  );
-
-const withAlpha = (rgb: [number, number, number], alpha: number) =>
-  `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
-
-const solutionCardStyle = (colors: [number, number, number][]) => {
-  const [start, end] = colors;
-  return {
-    background: `linear-gradient(135deg, ${withAlpha(start, 0.08)}, ${withAlpha(
-      end,
-      0.14
-    )})`,
-    borderColor: withAlpha(start, 0.25),
-    textColor: `rgb(${end[0]}, ${end[1]}, ${end[2]})`,
-  };
-};
-
 export default function ServicesPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative dcg-section py-20 md:py-28 space-y-6">
-          <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
-            Services
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-4xl leading-tight">
-            A clear, outcome-first catalog across data, AI, and cloud.
-          </h1>
-          <p className="text-lg text-dcg-slate max-w-3xl">
-            We design, build, and operate the platforms and products that keep
-            your business intelligent—covering data foundations, AI use cases,
-            and cloud operations with security and cost control baked in.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Talk with us</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/projects">View solutions &amp; projects</Link>
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-2 pt-4">
-            {featuredServices.map((service) => (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="dcg-chip"
-              >
-                {service.title}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SubpageHero
+        eyebrow="Services"
+        title="A clear, outcome-first catalog across data, AI, and cloud."
+        emphasis="outcome-first"
+        description="We design, build, and operate the platforms and products that keep your business intelligent—covering data foundations, AI use cases, and cloud operations with security and cost control baked in."
+        actions={[
+          { label: "Talk with us", href: "/contact", variant: "primary" },
+          {
+            label: "View solutions & projects",
+            href: "/projects",
+            variant: "secondary",
+          },
+        ]}
+      />
 
       <section className="dcg-section py-12 md:py-16 space-y-6">
         <div className="max-w-3xl space-y-3">
@@ -208,17 +163,31 @@ export default function ServicesPage() {
             operate with confidence after launch.
           </p>
         </div>
-        <div className="grid gap-4 md:grid-cols-4">
-          {engagement.map((step) => (
-            <div key={step.title} className="dcg-card-compact">
-              <div className="flex items-center gap-2 text-dcg-lightBlue font-semibold">
-                <CheckCircle2 className="h-4 w-4 text-dcg-lightGreen" />
-                {step.title}
-              </div>
-              <p className="mt-2 text-sm text-dcg-slate">{step.body}</p>
-            </div>
+        <BentoGrid className="mx-0 grid-cols-1 md:auto-rows-[15rem] md:grid-cols-3">
+          {engagement.map((step, index) => (
+            <BentoGridItem
+              key={step.title}
+              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/90 shadow-lg hover:shadow-xl ${
+                index === 0 || index === 3 ? "md:col-span-2" : ""
+              }`}
+              title={<span className="text-dcg-ink">{step.title}</span>}
+              description={
+                <span className="text-sm text-dcg-slate">{step.body}</span>
+              }
+              header={
+                <div className="flex items-center justify-between rounded-xl bg-gradient-to-br from-dcg-lightBlue/10 via-white to-dcg-lightGreen/10 p-4">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
+                    Step {index + 1}
+                  </span>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 text-dcg-lightGreen" />
+                  </div>
+                </div>
+              }
+              icon={<div className="h-2 w-2 rounded-full bg-dcg-lightBlue" />}
+            />
           ))}
-        </div>
+        </BentoGrid>
       </section>
     </div>
   );

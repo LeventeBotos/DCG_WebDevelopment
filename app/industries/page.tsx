@@ -1,8 +1,7 @@
 "use client";
 
 import IndustriesGrid from "@/components/IndustriesGrid";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
 
 const industryNotes = [
   {
@@ -28,50 +27,46 @@ const industryNotes = [
 export default function IndustriesPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-dcg-sand to-white" />
-        <div className="relative dcg-section py-20 md:py-28 space-y-6">
-          <p className="text-sm font-semibold text-dcg-lightGreen uppercase tracking-[0.2em]">
-            Industries
+      <SubpageHero
+        eyebrow="Industries"
+        title="Sector-specific playbooks grounded in data, AI, and cloud execution."
+        emphasis="playbooks"
+        description="Retail, energy, finance, IT/technology, transportation, and aviation—we bring repeatable solutions plus the context that makes them work for your teams."
+        actions={[
+          { label: "Explore case studies", href: "/projects", variant: "primary" },
+          { label: "Start a conversation", href: "/contact", variant: "secondary" },
+        ]}
+      />
+
+      <section className="dcg-section py-12 md:py-16 space-y-6">
+        <div className="max-w-3xl space-y-3">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+            Where we focus
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-dcg-ink max-w-4xl leading-tight">
-            Sector-specific playbooks grounded in data, AI, and cloud execution.
-          </h1>
-          <p className="text-lg text-dcg-slate max-w-3xl">
-            Retail, energy, finance, IT/technology, transportation, and
-            aviation—we bring repeatable solutions plus the context that makes
-            them work for your teams.
+          <h2 className="text-3xl md:text-4xl font-bold text-dcg-ink">
+            Challenges we tackle and how DCG helps
+          </h2>
+          <p className="text-dcg-slate">
+            We translate sector constraints into clear, actionable AI programs
+            so teams can move from pilots to production.
           </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {industryNotes.map((note) => (
-              <div key={note.title} className="dcg-card-compact">
-                <h3 className="text-lg font-semibold text-dcg-ink">
-                  {note.title}
-                </h3>
-                <ul className="mt-2 space-y-2 text-sm text-dcg-slate">
-                  {note.bullets.map((bullet) => (
-                    <li key={bullet} className="flex gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/projects">Explore case studies</Link>
-            </Button>
-            <Button
-              asChild
-              variant="secondary"
-              size="lg"
-              // className="border-dcg-lightBlue/30 bg-white text-dcg-lightBlue hover:-translate-y-0.5 hover:shadow-lg hover:border-dcg-lightBlue/40 hover:text-dcg-lightBlue"
-            >
-              <Link href="/contact">Start a conversation</Link>
-            </Button>
-          </div>
+        </div>
+        <div className="grid gap-8 md:grid-cols-2">
+          {industryNotes.map((note) => (
+            <div key={note.title} className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+                {note.title}
+              </p>
+              <ul className="space-y-2 text-sm text-dcg-slate">
+                {note.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 

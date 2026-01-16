@@ -80,29 +80,31 @@ export default function IndustriesGrid() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-8 divide-y divide-dcg-lightBlue/10">
         {industries.map((industry) => (
           <div
             key={industry.title}
-            className="flex h-full flex-col gap-4 rounded-3xl border border-dcg-blue/10 bg-white p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
+            className="pt-8 first:pt-0 md:grid md:grid-cols-[1.2fr_1.8fr] md:items-start md:gap-10"
           >
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-dcg-blue/10 text-dcg-blue">
-              <industry.icon className="h-6 w-6" />
+            <div className="flex items-start gap-4">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-dcg-blue/10 text-dcg-blue">
+                <industry.icon className="h-6 w-6" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold text-dcg-ink">
+                  {industry.title}
+                </h3>
+                <p className="text-sm text-dcg-slate">{industry.summary}</p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-dcg-ink">
-                {industry.title}
-              </h3>
-              <p className="text-sm text-dcg-slate">{industry.summary}</p>
-              <ul className="space-y-1.5 text-sm text-dcg-ink">
-                {industry.bullets.map((bullet) => (
-                  <li key={bullet} className="flex gap-2">
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul className="mt-4 grid gap-3 text-sm text-dcg-ink md:mt-0 md:grid-cols-2">
+              {industry.bullets.map((bullet) => (
+                <li key={bullet} className="flex gap-2">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
