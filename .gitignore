@@ -28,3 +28,5 @@ next-env.d.ts
 
 # logs
 *.log
+
+/public/video

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 const Hero = () => {
   return (
     <section className="relative h-screen flex text-white flex-col items-center w-full justify-center overflow-hidden ">
-      <div className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
+      <div className="pointer-events-none absolute inset-0 -z-10 md:block hidden">
         <video
           className="h-full w-full object-cover"
           autoPlay
@@ -13,28 +13,26 @@ const Hero = () => {
           loop
           playsInline
           preload="metadata"
-          poster="/media/hero-poster.jpg" // put a lightweight JPG here
+          poster="/bg_video_thumbnail.jpeg"
           aria-hidden="true"
         >
-          {/* Provide multiple formats for better codec support */}
-          {/* <source src="/media/hero-bg.webm" type="video/webm" /> */}
-          <source src="/testingvideo.mp4" type="video/mp4" />
+          <source src="/bg_video.mov" type="video/mp4" />
         </video>
 
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/70 to-slate-950/90" />
+        <div className="absolute inset-0 bg-black/85 " />
       </div>
 
       {/* Static background for mobile / fallback */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 md:hidden"
+        className="pointer-events-none absolute inset-0 -z-20 "
         style={{
-          backgroundImage: "url('/media/hero-poster.jpg')",
+          backgroundImage: "url('/bg_video_thumbnail.jpeg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-slate-950/70" />
+        <div className="absolute inset-0 bg-black/85" />
       </div>
       <div className="h-full px-2 md:px-4 relative flex justify-center flex-col w-full">
         <div className="gap-10 flex flex-col items-center md:items-start">

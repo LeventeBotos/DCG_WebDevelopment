@@ -17,7 +17,7 @@ export default function CookieBanner() {
       aria-live="polite"
       aria-label="Cookie consent"
     >
-      <div className="mx-auto flex flex-col md:max-w-xl gap-4 rounded-2xl border border-white/15 bg-slate-950/90 p-4 shadow-2xl backdrop-blur  md:gap-6 md:p-6">
+      <div className="mx-auto flex flex-col md:max-w-xl gap-4 rounded-2xl border border-white/15 bg-black/85 p-4 shadow-2xl backdrop-blur  md:gap-6 md:p-6">
         <div className="space-y-2 text-white">
           <p className="text-sm font-semibold uppercase tracking-wide text-white/70">
             Cookie preferences
