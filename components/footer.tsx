@@ -5,8 +5,10 @@ import Image from "next/image";
 import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import FuturisticBlob from "./futuristic-blob";
+import { useCookieConsent } from "@/hooks/use-cookie-consent";
 
 export default function Footer() {
+  const { resetConsent } = useCookieConsent();
   const footerLinks = [
     {
       title: "Company",
@@ -32,7 +34,7 @@ export default function Footer() {
       title: "Legal",
       links: [
         { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/terms" },
+        { label: "Terms of Service", href: "/tos" },
       ],
     },
   ];
@@ -147,6 +149,15 @@ export default function Footer() {
                   </motion.li>
                 ))}
               </ul>
+              {section.title === "Legal" && (
+                <button
+                  type="button"
+                  onClick={resetConsent}
+                  className="text-white/80 hover:text-white transition-colors hover:underline"
+                >
+                  Manage cookies
+                </button>
+              )}
             </motion.div>
           ))}
         </div>
