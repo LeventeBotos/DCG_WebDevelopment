@@ -37,6 +37,7 @@ interface MobileNavProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  isMenuOpen?: boolean;
 }
 
 interface MobileNavHeaderProps {
@@ -150,11 +151,45 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   );
 };
 
-export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
+export const MobileNav = ({
+  children,
+  className,
+  isMenuOpen = false,
+}: MobileNavProps) => {
+  const { scrollY } = useScroll();
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsAtTop(latest <= 0);
+
+    if (isMenuOpen) {
+      setIsHidden(false);
+      lastScrollY.current = latest;
+      return;
+    }
+
+    if (latest > lastScrollY.current && latest > 80) {
+      setIsHidden(true);
+    } else if (latest < lastScrollY.current) {
+      setIsHidden(false);
+    }
+
+    lastScrollY.current = latest;
+  });
+
   return (
     <motion.div
+      animate={{
+        y: isHidden ? "-100%" : "0%",
+        opacity: isHidden ? 0 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 30 }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 bg-white px-4 py-3 shadow-sm lg:hidden",
+        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 px-4 py-3 lg:hidden",
+        isAtTop ? "bg-transparent shadow-none" : "bg-white/95 shadow-sm",
+        isHidden ? "pointer-events-none" : "pointer-events-auto",
         className
       )}
     >
@@ -170,7 +205,7 @@ export const MobileNavHeader = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-row items-center justify-between",
+        "relative z-50 flex w-full flex-row items-center justify-between",
         className
       )}
     >
@@ -188,9 +223,9 @@ const variants = {
   },
   open: {
     opacity: 1,
-    height: "auto",
-    paddingTop: 12,
-    paddingBottom: 12,
+    height: "100dvh",
+    paddingTop: 96,
+    paddingBottom: 24,
   },
 };
 
@@ -214,7 +249,7 @@ export const MobileNavMenu = ({
           }}
           style={{ overflow: "hidden" }}
           className={cn(
-            "flex w-full flex-col items-start justify-start gap-4 rounded-md border border-neutral-100 bg-white px-2 shadow-none",
+            "fixed inset-0 z-40 flex w-full flex-col items-start justify-start gap-6 bg-white px-6 shadow-none",
             // ⬆️ note: no py-* here, padding is animated
             className
           )}
@@ -233,19 +268,18 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return (
-    <Button
+    <button
       type="button"
-      variant="secondary"
-      size="icon"
       onClick={onClick}
       aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+      className="flex items-center justify-center text-black"
     >
       {isOpen ? (
-        <IconX className="text-black" />
+        <IconX className="h-8 w-8" />
       ) : (
-        <IconMenu2 className="text-black" />
+        <IconMenu2 className="h-8 w-8" />
       )}
-    </Button>
+    </button>
   );
 };
 
