@@ -43,6 +43,8 @@ interface MobileNavProps {
 interface MobileNavHeaderProps {
   children: React.ReactNode;
   className?: string;
+  isAtTop?: boolean;
+  isMenuOpen?: boolean;
 }
 
 interface MobileNavMenuProps {
@@ -186,14 +188,28 @@ export const MobileNav = ({
         opacity: isHidden ? 0 : 1,
       }}
       transition={{ type: "spring", stiffness: 200, damping: 30 }}
+      data-at-top={isAtTop}
       className={cn(
         "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 px-4 py-3 lg:hidden",
-        isAtTop ? "bg-transparent shadow-none" : "bg-white/95 shadow-sm",
+        isAtTop ? "bg-transparent shadow-none" : "bg-white shadow-sm",
         isHidden ? "pointer-events-none" : "pointer-events-auto",
         className
       )}
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<{
+                isAtTop?: boolean;
+                isMenuOpen?: boolean;
+              }>,
+              {
+                isAtTop,
+                isMenuOpen,
+              }
+            )
+          : child
+      )}
     </motion.div>
   );
 };
@@ -201,7 +217,11 @@ export const MobileNav = ({
 export const MobileNavHeader = ({
   children,
   className,
+  isAtTop = false,
+  isMenuOpen = false,
 }: MobileNavHeaderProps) => {
+  const shouldInvert = isAtTop && !isMenuOpen;
+
   return (
     <div
       className={cn(
@@ -209,7 +229,14 @@ export const MobileNavHeader = ({
         className
       )}
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<{ inverted?: boolean }>,
+              { inverted: shouldInvert }
+            )
+          : child
+      )}
     </div>
   );
 };
@@ -263,16 +290,21 @@ export const MobileNavMenu = ({
 export const MobileNavToggle = ({
   isOpen,
   onClick,
+  inverted = false,
 }: {
   isOpen: boolean;
   onClick: () => void;
+  inverted?: boolean;
 }) => {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-      className="flex items-center justify-center text-black"
+      className={cn(
+        "flex items-center justify-center transition-colors",
+        inverted ? "text-white" : "text-black"
+      )}
     >
       {isOpen ? (
         <IconX className="h-8 w-8" />
@@ -283,7 +315,7 @@ export const MobileNavToggle = ({
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({ inverted = false }: { inverted?: boolean }) => {
   return (
     <a
       href="/"
@@ -292,7 +324,10 @@ export const NavbarLogo = () => {
       <img
         src="/logo.png"
         alt="logo"
-        className="h-8 invert md:invert-0 md:brightness-[25%] md:h-8"
+        className={cn(
+          "h-8 md:h-8 md:invert-0 md:brightness-[25%]",
+          inverted ? "invert" : "invert-0 brightness-[25%]"
+        )}
       />
       {/* <span className="font-medium text-black ">Startup</span> */}
     </a>
