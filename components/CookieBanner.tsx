@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCookieConsent } from "@/hooks/use-cookie-consent";
+import { track } from "@/lib/analytics";
 
 export default function CookieBanner() {
   const { consent, isReady, setConsent } = useCookieConsent();
@@ -37,14 +38,26 @@ export default function CookieBanner() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             type="button"
-            onClick={() => setConsent("denied")}
+            onClick={() => {
+              track("cta_click", {
+                label: "Reject analytics",
+                location: "cookie_banner",
+              });
+              setConsent("denied");
+            }}
             className="rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-white/60 hover:text-white"
           >
             Reject analytics
           </button>
           <button
             type="button"
-            onClick={() => setConsent("granted")}
+            onClick={() => {
+              track("cta_click", {
+                label: "Accept analytics",
+                location: "cookie_banner",
+              });
+              setConsent("granted");
+            }}
             className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white/80"
           >
             Accept analytics

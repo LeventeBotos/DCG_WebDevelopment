@@ -1,6 +1,13 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 const lastUpdated = "January 18, 2026";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Terms of service for Data Consulting Group Ltd.",
+  alternates: { canonical: "/tos" },
+};
 
 export default function TermsOfServicePage() {
   return (

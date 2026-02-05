@@ -1,6 +1,13 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 const lastUpdated = "January 18, 2026";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Privacy policy for Data Consulting Group Ltd.",
+  alternates: { canonical: "/privacy" },
+};
 
 export default function PrivacyPage() {
   return (

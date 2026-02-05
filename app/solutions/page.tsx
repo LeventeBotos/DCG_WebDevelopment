@@ -1,8 +1,28 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { platformCards } from "@/lib/platforms";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+
+export const metadata: Metadata = {
+  title: "Solutions",
+  description:
+    "Explore DCG’s productized AI platforms and accelerators designed to deliver value fast.",
+  alternates: { canonical: "/solutions" },
+  openGraph: {
+    title: "Solutions | Data Consulting Group",
+    description:
+      "Explore DCG’s productized AI platforms and accelerators designed to deliver value fast.",
+    url: "/solutions",
+  },
+  twitter: {
+    card: "summary",
+    title: "Solutions | Data Consulting Group",
+    description:
+      "Explore DCG’s productized AI platforms and accelerators designed to deliver value fast.",
+  },
+};
 
 export default function SolutionsIndexPage() {
   return (

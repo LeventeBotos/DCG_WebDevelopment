@@ -6,6 +6,7 @@ import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import FuturisticBlob from "./futuristic-blob";
 import { useCookieConsent } from "@/hooks/use-cookie-consent";
+import { track } from "@/lib/analytics";
 
 export default function Footer() {
   const { resetConsent } = useCookieConsent();
@@ -105,6 +106,13 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
                     aria-label={link.label}
+                    onClick={() =>
+                      track("social_click", {
+                        label: link.label,
+                        href: link.href,
+                        location: "footer",
+                      })
+                    }
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
@@ -143,6 +151,13 @@ export default function Footer() {
                     <Link
                       href={link.href}
                       className="text-white/80 hover:text-white transition-colors hover:underline"
+                      onClick={() =>
+                        track("nav_click", {
+                          label: link.label,
+                          href: link.href,
+                          location: "footer",
+                        })
+                      }
                     >
                       {link.label}
                     </Link>
@@ -152,7 +167,10 @@ export default function Footer() {
               {section.title === "Legal" && (
                 <button
                   type="button"
-                  onClick={resetConsent}
+                  onClick={() => {
+                    track("cta_click", { label: "Manage cookies", location: "footer" });
+                    resetConsent();
+                  }}
                   className="text-white/80 hover:text-white transition-colors hover:underline"
                 >
                   Manage cookies
@@ -180,6 +198,12 @@ export default function Footer() {
                 <a
                   href="mailto:info@dataconsulting-group.com"
                   className="hover:text-white transition-colors"
+                  onClick={() =>
+                    track("email_click", {
+                      email: "info@dataconsulting-group.com",
+                      location: "footer",
+                    })
+                  }
                 >
                   info@dataconsulting-group.com
                 </a>
@@ -187,6 +211,12 @@ export default function Footer() {
               <a
                 href="tel:+44 (0) 20 80639958"
                 className="flex items-center gap-2"
+                onClick={() =>
+                  track("phone_click", {
+                    phone: "+44 (0) 20 80639958",
+                    location: "footer",
+                  })
+                }
               >
                 <Phone className="h-4 w-4" />
                 <span>+44 (0) 20 80639958</span>
@@ -196,6 +226,14 @@ export default function Footer() {
                 <a
                   href="https://www.dataconsulting-group.com"
                   className="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    track("outbound_click", {
+                      href: "https://www.dataconsulting-group.com",
+                      location: "footer",
+                    })
+                  }
                 >
                   www.dataconsulting-group.com
                 </a>

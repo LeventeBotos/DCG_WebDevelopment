@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 import {
   Navbar,
   NavBody,
@@ -33,7 +34,16 @@ export default function Header() {
           {/* Desktop */}
           <NavBody>
             <NavbarLogo />
-            <NavItems items={navItems} />
+            <NavItems
+              items={navItems}
+              onItemClick={(item) =>
+                track("nav_click", {
+                  label: item.name,
+                  href: item.link,
+                  location: "header_desktop",
+                })
+              }
+            />
             {/* Optional CTAs */}
             {/* <div className="flex items-center gap-4">
               <NavbarButton variant="secondary">Login</NavbarButton>
@@ -59,7 +69,14 @@ export default function Header() {
                 <Link
                   key={`mobile-link-${idx}`}
                   href={item.link}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    track("nav_click", {
+                      label: item.name,
+                      href: item.link,
+                      location: "header_mobile",
+                    });
+                    setIsMobileMenuOpen(false);
+                  }}
                   className="relative text-neutral-600 "
                 >
                   <span className="block">{item.name}</span>

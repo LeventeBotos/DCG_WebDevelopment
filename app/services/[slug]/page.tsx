@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,38 @@ export const dynamicParams = true;
 
 export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const service = servicesBySlug[slug];
+
+  if (!service) {
+    return {
+      title: "Service not found",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  return {
+    title: service.title,
+    description: service.excerpt,
+    alternates: { canonical: `/services/${service.slug}` },
+    openGraph: {
+      title: `${service.title} | Data Consulting Group`,
+      description: service.excerpt,
+      url: `/services/${service.slug}`,
+    },
+    twitter: {
+      card: "summary",
+      title: `${service.title} | Data Consulting Group`,
+      description: service.excerpt,
+    },
+  };
 }
 
 export default async function ServiceDetailPage({

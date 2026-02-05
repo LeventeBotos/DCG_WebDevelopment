@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
+import { track } from "@/lib/analytics";
 
 const topics = [
   "AI Strategy",
@@ -110,6 +111,12 @@ export default function ContactPage() {
     };
 
     try {
+      track("contact_submit", {
+        topic: payload.topic || undefined,
+        country: payload.country || undefined,
+        hasCompany: Boolean(payload.company),
+      });
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -123,6 +130,10 @@ export default function ContactPage() {
       clearStatusTimers();
 
       if (!response.ok) {
+        track("contact_error", {
+          topic: payload.topic || undefined,
+          status: response.status,
+        });
         setErrorMessage(
           data?.error || "Something went wrong. Please try again."
         );
@@ -132,12 +143,19 @@ export default function ContactPage() {
       }
 
       form.reset();
+      track("contact_success", {
+        topic: payload.topic || undefined,
+      });
       setSubmittedMessage(
         "Thanks for reaching out! We received your message and will reply soon."
       );
       setStatusDetail("Delivered. A confirmation email is on the way.");
       setStatus("submitted");
     } catch {
+      track("contact_error", {
+        topic: payload.topic || undefined,
+        status: "network_error",
+      });
       setErrorMessage("Unable to send right now. Please try again later.");
       setStatusDetail("Network error. Please try again.");
       setLogEntries([
@@ -459,6 +477,14 @@ export default function ContactPage() {
                   <a
                     className="underline-offset-4 hover:underline"
                     href="https://www.dataconsulting-group.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() =>
+                      track("outbound_click", {
+                        href: "https://www.dataconsulting-group.com",
+                        location: "contact_sidebar",
+                      })
+                    }
                   >
                     www.dataconsulting-group.com
                   </a>
@@ -468,6 +494,12 @@ export default function ContactPage() {
                   <a
                     className="underline-offset-4 hover:underline"
                     href="mailto:info@dataconsulting-group.com"
+                    onClick={() =>
+                      track("email_click", {
+                        email: "info@dataconsulting-group.com",
+                        location: "contact_sidebar",
+                      })
+                    }
                   >
                     info@dataconsulting-group.com
                   </a>
@@ -494,7 +526,18 @@ export default function ContactPage() {
                 </p>
                 <div className="mt-3">
                   <Button asChild variant="secondary">
-                    <Link href="/contact">Pick a time</Link>
+                    <Link
+                      href="/contact"
+                      onClick={() =>
+                        track("cta_click", {
+                          label: "Pick a time",
+                          href: "/contact",
+                          location: "contact_sidebar",
+                        })
+                      }
+                    >
+                      Pick a time
+                    </Link>
                   </Button>
                 </div>
               </div>

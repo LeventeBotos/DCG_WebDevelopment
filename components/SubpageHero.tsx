@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import { Highlight } from "@/components/ui/hero-highlight";
+import { track } from "@/lib/analytics";
 
 type HeroAction = {
   label: string;
@@ -118,7 +119,19 @@ const SubpageHero = ({
                     variant={action.variant ?? "primary"}
                     size={action.size ?? "lg"}
                   >
-                    <Link href={action.href}>{action.label}</Link>
+                    <Link
+                      href={action.href}
+                      onClick={() =>
+                        track("cta_click", {
+                          label: action.label,
+                          href: action.href,
+                          location: "subpage_hero",
+                          context: eyebrow,
+                        })
+                      }
+                    >
+                      {action.label}
+                    </Link>
                   </Button>
                 ))}
               </div>
@@ -136,6 +149,14 @@ const SubpageHero = ({
                       key={chip.label}
                       href={chip.href}
                       className="dcg-chip hover:-translate-y-0.5 hover:shadow-md transition"
+                      onClick={() =>
+                        track("cta_click", {
+                          label: chip.label,
+                          href: chip.href,
+                          location: "subpage_hero_chip",
+                          context: eyebrow,
+                        })
+                      }
                     >
                       {chip.label}
                     </Link>

@@ -32,12 +32,28 @@ export async function generateMetadata({
   const platform = platformBySlug[targetSlug];
 
   if (!platform) {
-    return {};
+    return {
+      title: "Solution not found",
+      robots: { index: false, follow: false },
+    };
   }
+
+  const canonical = `/solutions/${targetSlug}`;
 
   return {
     title: `${platform.title} | DCG AI Platform`,
     description: platform.hero.description || platform.cardBody,
+    alternates: { canonical },
+    openGraph: {
+      title: `${platform.title} | DCG AI Platform`,
+      description: platform.hero.description || platform.cardBody,
+      url: canonical,
+    },
+    twitter: {
+      card: "summary",
+      title: `${platform.title} | DCG AI Platform`,
+      description: platform.hero.description || platform.cardBody,
+    },
   };
 }
 

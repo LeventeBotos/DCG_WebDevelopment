@@ -1,6 +1,9 @@
+"use client";
+
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 
 const Hero = () => {
   return (
@@ -52,7 +55,17 @@ const Hero = () => {
           </p>
 
           <Button asChild variant="primary" className="self-start" size="lg">
-            <Link href="/projects" className="text-xs md:text-sm">
+            <Link
+              href="/projects"
+              className="text-xs md:text-sm"
+              onClick={() =>
+                track("cta_click", {
+                  label: "Digital, Technology & Data",
+                  href: "/projects",
+                  location: "home_hero",
+                })
+              }
+            >
               Digital, Technology & Data
             </Link>
           </Button>

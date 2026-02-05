@@ -1,5 +1,6 @@
 export const runtime = "edge";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -8,148 +9,172 @@ import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
+const industries = {
+  energy: {
+    name: "Energy",
+    icon: Fuel,
+    description:
+      "Optimizing production forecasting and operational efficiency for energy companies like BP and Shell.",
+    longDescription:
+      "Our AI solutions for the energy sector focus on optimizing production forecasting, improving operational efficiency, and reducing environmental impact. We work with leading companies like BP and Shell to implement cutting-edge technology that transforms their operations.",
+    clients: ["BP", "Shell"],
+    solutions: [
+      {
+        title: "AI-driven Production Forecasting",
+        description:
+          "Leverage machine learning to predict production levels with greater accuracy, reducing waste and optimizing resource allocation.",
+      },
+      {
+        title: "Predictive Maintenance",
+        description:
+          "Identify potential equipment failures before they occur, minimizing downtime and extending asset lifespans.",
+      },
+      {
+        title: "Energy Consumption Optimization",
+        description:
+          "Analyze patterns to reduce energy usage while maintaining operational efficiency.",
+      },
+      {
+        title: "Risk Assessment and Management",
+        description:
+          "Identify and mitigate potential risks using advanced data analysis and predictive modeling.",
+      },
+    ],
+    caseStudy: {
+      title: "Optimizing Oil Production with AI",
+      client: "Major Energy Corporation",
+      challenge:
+        "Unpredictable production levels leading to inefficient resource allocation and increased costs.",
+      solution:
+        "Implemented an AI-driven forecasting system that analyzed historical data, weather patterns, and equipment performance.",
+      results: [
+        "20% improvement in production forecast accuracy",
+        "15% reduction in operational costs",
+        "30% decrease in unplanned downtime",
+      ],
+    },
+  },
+  banking: {
+    name: "Banking",
+    icon: Landmark,
+    description:
+      "Advanced risk assessment and fraud detection solutions for financial institutions like British Airways.",
+    longDescription:
+      "Our banking solutions leverage AI and machine learning to enhance security, improve customer experiences, and optimize operations. We work with major financial institutions to implement robust systems that protect assets and streamline processes.",
+    clients: ["British Airways"],
+    solutions: [
+      {
+        title: "Fraud Detection and Prevention",
+        description:
+          "Identify suspicious activities in real-time using advanced pattern recognition and anomaly detection.",
+      },
+      {
+        title: "Customer Behavior Analysis",
+        description:
+          "Gain insights into customer preferences and behaviors to personalize services and improve satisfaction.",
+      },
+      {
+        title: "Risk Assessment Models",
+        description:
+          "Evaluate lending risks with greater accuracy using comprehensive data analysis and predictive modeling.",
+      },
+      {
+        title: "Automated Compliance Monitoring",
+        description:
+          "Ensure regulatory compliance with automated systems that flag potential issues before they become problems.",
+      },
+    ],
+    caseStudy: {
+      title: "Enhancing Fraud Detection Systems",
+      client: "Leading Financial Institution",
+      challenge:
+        "Increasing sophistication of fraud attempts requiring more advanced detection methods.",
+      solution:
+        "Developed a machine learning system that analyzes transaction patterns and identifies anomalies in real-time.",
+      results: [
+        "40% increase in fraud detection rate",
+        "60% reduction in false positives",
+        "£2.5 million saved in potential fraud losses annually",
+      ],
+    },
+  },
+  manufacturing: {
+    name: "Manufacturing & Production",
+    icon: Factory,
+    description:
+      "Predictive maintenance and supply chain optimization for manufacturing companies.",
+    longDescription:
+      "Our manufacturing solutions focus on optimizing production processes, improving quality control, and streamlining supply chains. We help manufacturing companies implement data-driven strategies that increase efficiency and reduce costs.",
+    clients: ["Infosys"],
+    solutions: [
+      {
+        title: "Supply Chain Optimization",
+        description:
+          "Improve inventory management and logistics with predictive analytics and real-time tracking.",
+      },
+      {
+        title: "Predictive Maintenance",
+        description:
+          "Reduce downtime and extend equipment life with AI-powered maintenance scheduling.",
+      },
+      {
+        title: "Quality Control Automation",
+        description:
+          "Enhance product quality with automated inspection systems and defect prediction.",
+      },
+      {
+        title: "Production Planning and Scheduling",
+        description:
+          "Optimize production schedules based on demand forecasts, resource availability, and efficiency metrics.",
+      },
+    ],
+    caseStudy: {
+      title: "Revolutionizing Production Efficiency",
+      client: "Global Manufacturing Company",
+      challenge:
+        "Inefficient production processes leading to delays, waste, and increased costs.",
+      solution:
+        "Implemented an integrated AI system for production planning, quality control, and maintenance scheduling.",
+      results: [
+        "25% increase in production efficiency",
+        "35% reduction in defect rates",
+        "20% decrease in maintenance costs",
+      ],
+    },
+  },
+} as const;
+
 interface IndustryPageProps {
   params: {
     industry: string;
   };
 }
 
-export default function IndustryPage({ params }: IndustryPageProps) {
-  const industries = {
-    energy: {
-      name: "Energy",
-      icon: Fuel,
-      description:
-        "Optimizing production forecasting and operational efficiency for energy companies like BP and Shell.",
-      longDescription:
-        "Our AI solutions for the energy sector focus on optimizing production forecasting, improving operational efficiency, and reducing environmental impact. We work with leading companies like BP and Shell to implement cutting-edge technology that transforms their operations.",
-      clients: ["BP", "Shell"],
-      solutions: [
-        {
-          title: "AI-driven Production Forecasting",
-          description:
-            "Leverage machine learning to predict production levels with greater accuracy, reducing waste and optimizing resource allocation.",
-        },
-        {
-          title: "Predictive Maintenance",
-          description:
-            "Identify potential equipment failures before they occur, minimizing downtime and extending asset lifespans.",
-        },
-        {
-          title: "Energy Consumption Optimization",
-          description:
-            "Analyze patterns to reduce energy usage while maintaining operational efficiency.",
-        },
-        {
-          title: "Risk Assessment and Management",
-          description:
-            "Identify and mitigate potential risks using advanced data analysis and predictive modeling.",
-        },
-      ],
-      caseStudy: {
-        title: "Optimizing Oil Production with AI",
-        client: "Major Energy Corporation",
-        challenge:
-          "Unpredictable production levels leading to inefficient resource allocation and increased costs.",
-        solution:
-          "Implemented an AI-driven forecasting system that analyzed historical data, weather patterns, and equipment performance.",
-        results: [
-          "20% improvement in production forecast accuracy",
-          "15% reduction in operational costs",
-          "30% decrease in unplanned downtime",
-        ],
-      },
-    },
-    banking: {
-      name: "Banking",
-      icon: Landmark,
-      description:
-        "Advanced risk assessment and fraud detection solutions for financial institutions like British Airways.",
-      longDescription:
-        "Our banking solutions leverage AI and machine learning to enhance security, improve customer experiences, and optimize operations. We work with major financial institutions to implement robust systems that protect assets and streamline processes.",
-      clients: ["British Airways"],
-      solutions: [
-        {
-          title: "Fraud Detection and Prevention",
-          description:
-            "Identify suspicious activities in real-time using advanced pattern recognition and anomaly detection.",
-        },
-        {
-          title: "Customer Behavior Analysis",
-          description:
-            "Gain insights into customer preferences and behaviors to personalize services and improve satisfaction.",
-        },
-        {
-          title: "Risk Assessment Models",
-          description:
-            "Evaluate lending risks with greater accuracy using comprehensive data analysis and predictive modeling.",
-        },
-        {
-          title: "Automated Compliance Monitoring",
-          description:
-            "Ensure regulatory compliance with automated systems that flag potential issues before they become problems.",
-        },
-      ],
-      caseStudy: {
-        title: "Enhancing Fraud Detection Systems",
-        client: "Leading Financial Institution",
-        challenge:
-          "Increasing sophistication of fraud attempts requiring more advanced detection methods.",
-        solution:
-          "Developed a machine learning system that analyzes transaction patterns and identifies anomalies in real-time.",
-        results: [
-          "40% increase in fraud detection rate",
-          "60% reduction in false positives",
-          "£2.5 million saved in potential fraud losses annually",
-        ],
-      },
-    },
-    manufacturing: {
-      name: "Manufacturing & Production",
-      icon: Factory,
-      description:
-        "Predictive maintenance and supply chain optimization for manufacturing companies.",
-      longDescription:
-        "Our manufacturing solutions focus on optimizing production processes, improving quality control, and streamlining supply chains. We help manufacturing companies implement data-driven strategies that increase efficiency and reduce costs.",
-      clients: ["Infosys"],
-      solutions: [
-        {
-          title: "Supply Chain Optimization",
-          description:
-            "Improve inventory management and logistics with predictive analytics and real-time tracking.",
-        },
-        {
-          title: "Predictive Maintenance",
-          description:
-            "Reduce downtime and extend equipment life with AI-powered maintenance scheduling.",
-        },
-        {
-          title: "Quality Control Automation",
-          description:
-            "Enhance product quality with automated inspection systems and defect prediction.",
-        },
-        {
-          title: "Production Planning and Scheduling",
-          description:
-            "Optimize production schedules based on demand forecasts, resource availability, and efficiency metrics.",
-        },
-      ],
-      caseStudy: {
-        title: "Revolutionizing Production Efficiency",
-        client: "Global Manufacturing Company",
-        challenge:
-          "Inefficient production processes leading to delays, waste, and increased costs.",
-        solution:
-          "Implemented an integrated AI system for production planning, quality control, and maintenance scheduling.",
-        results: [
-          "25% increase in production efficiency",
-          "35% reduction in defect rates",
-          "20% decrease in maintenance costs",
-        ],
-      },
+export function generateStaticParams() {
+  return Object.keys(industries).map((industry) => ({ industry }));
+}
+
+export async function generateMetadata({
+  params,
+}: IndustryPageProps): Promise<Metadata> {
+  const data = industries[params.industry as keyof typeof industries];
+  if (!data) {
+    return { title: "Industry not found", robots: { index: false, follow: false } };
+  }
+
+  return {
+    title: `${data.name} Industry Playbook`,
+    description: data.description,
+    alternates: { canonical: `/industries/${params.industry}` },
+    openGraph: {
+      title: `${data.name} Industry Playbook | Data Consulting Group`,
+      description: data.description,
+      url: `/industries/${params.industry}`,
     },
   };
+}
 
+export default function IndustryPage({ params }: IndustryPageProps) {
   const industry = industries[params.industry as keyof typeof industries];
 
   if (!industry) {

@@ -30,7 +30,7 @@ interface NavItemsProps {
     link: string;
   }[];
   className?: string;
-  onItemClick?: () => void;
+  onItemClick?: (item: { name: string; link: string }) => void;
 }
 
 interface MobileNavProps {
@@ -130,9 +130,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       )}
     >
       {items.map((item, idx) => (
-        <a
+        <Link
           onMouseEnter={() => setHovered(idx)}
-          onClick={onItemClick}
+          onClick={() => onItemClick?.(item)}
           className="relative px-4 py-2 text-neutral-600 "
           key={`link-${idx}`}
           href={item.link}
@@ -144,7 +144,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
             />
           )}
           <span className="relative z-20">{item.name}</span>
-        </a>
+        </Link>
       ))}
     </motion.div>
   );
@@ -251,7 +251,7 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    <a
+    <Link
       href="/"
       className="relative z-20  mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
@@ -261,7 +261,7 @@ export const NavbarLogo = () => {
         className="h-8 invert md:invert-0 md:brightness-[25%] md:h-8"
       />
       {/* <span className="font-medium text-black ">Startup</span> */}
-    </a>
+    </Link>
   );
 };
 

@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 // import { DottedGlowBackground } from "./ui/dotted-glow-background";
 
 export default function FinalCTASection() {
@@ -24,13 +27,30 @@ export default function FinalCTASection() {
           </div>
           <div className="flex flex-col gap-3 md:items-end">
             <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Schedule a conversation</Link>
+              <Link
+                href="/contact"
+                onClick={() =>
+                  track("cta_click", {
+                    label: "Schedule a conversation",
+                    href: "/contact",
+                    location: "final_cta",
+                  })
+                }
+              >
+                Schedule a conversation
+              </Link>
             </Button>
             <p className="text-xs text-dcg-slate">
               Or email us at{" "}
               <a
                 href="mailto:info@dataconsulting-group.com"
                 className="font-semibold text-dcg-blue hover:underline"
+                onClick={() =>
+                  track("email_click", {
+                    email: "info@dataconsulting-group.com",
+                    location: "final_cta",
+                  })
+                }
               >
                 info@dataconsulting-group.com
               </a>
