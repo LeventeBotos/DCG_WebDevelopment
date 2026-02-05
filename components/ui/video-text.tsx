@@ -78,10 +78,11 @@ export function VideoText({
   textAnchor = "middle",
   dominantBaseline = "middle",
   fontFamily = "sans-serif",
-  as: Component = "div",
+  as,
 }: VideoTextProps) {
   const [svgMask, setSvgMask] = useState("");
   const content = React.Children.toArray(children).join("");
+  const Component = (as ?? "div") as any;
 
   useEffect(() => {
     const updateSvgMask = () => {
