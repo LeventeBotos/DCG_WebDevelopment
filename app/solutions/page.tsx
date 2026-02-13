@@ -39,7 +39,7 @@ export default function SolutionsIndexPage() {
           {platformCards.map((card, index) => (
             <BentoGridItem
               key={card.href}
-              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg hover:shadow-xl ${
+              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg ${
                 index === 0 ? "md:col-span-2" : ""
               }`}
               title={<span className="text-dcg-ink">{card.title}</span>}

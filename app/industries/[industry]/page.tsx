@@ -236,7 +236,7 @@ export default function IndustryPage({ params }: IndustryPageProps) {
           {industry.solutions.map((solution, index) => (
             <BentoGridItem
               key={solution.title}
-              className="overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg hover:shadow-xl"
+              className="overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg"
               title={<span className="text-dcg-ink">{solution.title}</span>}
               description={
                 <span className="text-sm text-dcg-slate">

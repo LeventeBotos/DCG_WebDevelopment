@@ -48,31 +48,35 @@ const SubpageHero = ({
 }: SubpageHeroProps) => {
   const isCentered = align === "center";
   const titleContent =
-    typeof title === "string" && emphasis ? (
-      (() => {
-        const parts = title.split(emphasis);
-        if (parts.length === 1) {
-          return title;
-        }
-        return (
-          <>
-            {parts[0]}
-            <Highlight className="from-dcg-lightBlue/40 to-dcg-lightGreen/40 text-dcg-ink">
-              {emphasis}
-            </Highlight>
-            {parts.slice(1).join(emphasis)}
-          </>
-        );
-      })()
-    ) : (
-      title
-    );
+    typeof title === "string" && emphasis
+      ? (() => {
+          const parts = title.split(emphasis);
+          if (parts.length === 1) {
+            return title;
+          }
+          return (
+            <>
+              {parts[0]}
+              <Highlight className="from-dcg-lightBlue/40 to-dcg-lightGreen/40 text-dcg-ink">
+                {emphasis}
+              </Highlight>
+              {parts.slice(1).join(emphasis)}
+            </>
+          );
+        })()
+      : title;
 
   return (
-    <BackgroundBeamsWithCollision
+    // <BackgroundBeamsWithCollision
+    // className={cn(
+    //   "relative py-16 md:py-24 bg-gradient-to-br from-dcg-sand via-white to-white",
+    //   className
+    // )}
+    // >
+    <div
       className={cn(
         "relative py-16 md:py-24 bg-gradient-to-br from-dcg-sand via-white to-white",
-        className
+        className,
       )}
     >
       <DottedGlowBackground
@@ -88,13 +92,13 @@ const SubpageHero = ({
           className={cn(
             "grid gap-10 lg:gap-12",
             aside ? "lg:grid-cols-[1.1fr_0.9fr]" : "",
-            isCentered ? "text-center" : "text-left"
+            isCentered ? "text-center" : "text-left",
           )}
         >
           <div
             className={cn(
               "space-y-6",
-              isCentered ? "mx-auto max-w-3xl" : "max-w-3xl"
+              isCentered ? "mx-auto max-w-3xl" : "max-w-3xl",
             )}
           >
             {topSlot ? <div className="text-sm">{topSlot}</div> : null}
@@ -109,7 +113,7 @@ const SubpageHero = ({
               <div
                 className={cn(
                   "flex flex-wrap gap-3",
-                  isCentered ? "justify-center" : "justify-start"
+                  isCentered ? "justify-center" : "justify-start",
                 )}
               >
                 {actions.map((action) => (
@@ -140,7 +144,7 @@ const SubpageHero = ({
               <div
                 className={cn(
                   "flex flex-wrap gap-2 pt-2",
-                  isCentered ? "justify-center" : "justify-start"
+                  isCentered ? "justify-center" : "justify-start",
                 )}
               >
                 {chips.map((chip) =>
@@ -164,7 +168,7 @@ const SubpageHero = ({
                     <span key={chip.label} className="dcg-chip">
                       {chip.label}
                     </span>
-                  )
+                  ),
                 )}
               </div>
             ) : null}
@@ -176,7 +180,8 @@ const SubpageHero = ({
           ) : null}
         </div>
       </div>
-    </BackgroundBeamsWithCollision>
+    </div>
+    // </BackgroundBeamsWithCollision>
   );
 };
 

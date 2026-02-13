@@ -34,7 +34,7 @@ const projects = [
 
 export default function ProjectsShowcase() {
   return (
-    <section className="container px-4 md:px-6 py-16 md:py-20 space-y-8">
+    <section className="container space-y-10 px-4 py-16 md:px-6 md:py-20">
       <div className="flex flex-col gap-3">
         <p className="text-sm font-semibold text-dcg-darkGreen uppercase tracking-[0.2em]">
           Featured Projects
@@ -48,16 +48,16 @@ export default function ProjectsShowcase() {
         </p>
       </div>
 
-      <BentoGrid className="mx-0 grid-cols-1 md:auto-rows-[16rem] md:grid-cols-3">
+      <BentoGrid className="mx-0 grid-cols-1 gap-6 md:auto-rows-[20rem] md:grid-cols-3">
         {projects.map((project, index) => (
           <BentoGridItem
             key={project.title}
-            className={`overflow-hidden border border-dcg-blue/10 bg-white/95 shadow-lg hover:shadow-xl ${
+            className={`overflow-hidden border border-dcg-blue/10 bg-white/95 p-6 shadow-lg transition-shadow hover:shadow-xl ${
               index === 0 ? "md:col-span-2" : ""
             }`}
             title={<span className="text-dcg-ink">{project.title}</span>}
             description={
-              <div className="space-y-2 text-sm text-dcg-slate">
+              <div className="space-y-3 text-sm leading-6 text-dcg-slate">
                 <p>
                   <span className="font-semibold text-dcg-ink">Challenge:</span>{" "}
                   {project.challenge}
@@ -73,7 +73,7 @@ export default function ProjectsShowcase() {
               </div>
             }
             header={
-              <div className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-dcg-lightBlue/10 via-white to-dcg-lightGreen/10 p-4">
+              <div className="flex items-center justify-between rounded-2xl bg-gradient-to-br from-dcg-lightBlue/10 via-white to-dcg-lightGreen/10 p-5">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-dcg-slate">
                   Case study
                 </span>

@@ -6,15 +6,33 @@ import {
   type BackgroundRippleHandle,
 } from "./background-ripple-effect";
 import SectionTitle from "../SectionTitle";
+import { cn } from "@/lib/utils";
 
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
 
+type TimelineProps = {
+  data: TimelineEntry[];
+  title?: string;
+  subtitle?: string;
+  showTitle?: boolean;
+  className?: string;
+};
+
 const CELL_SIZE = 50;
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({
+  data,
+  title = "Five AI Agents Every Sales Leader Needs to Know",
+  subtitle = ` Humans and AI are beginning to work as coordinated systems.
+          Specialized AI agents now connect across the revenue stack to
+          orchestrate workflows, uncover opportunities, and drive customer
+          adoption with precision.`,
+  showTitle = true,
+  className,
+}: TimelineProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const rippleRef = useRef<BackgroundRippleHandle>(null);
@@ -51,7 +69,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <div
-      className="relative flex min-h-screen w-full flex-col items-start justify-start overflow-hidden"
+      className={cn(
+        "relative flex min-h-screen w-full flex-col items-start justify-start overflow-hidden bg-white",
+        className,
+      )}
       ref={containerRef}
       onMouseDownCapture={(event) =>
         rippleRef.current?.triggerAt({
@@ -79,15 +100,14 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
         ref={ref}
         className="relative z-10 mx-auto max-w-7xl px-4 pb-20 md:px-0 pointer-events-none"
       >
-        <SectionTitle
-          title="Five AI Agents Every Sales Leader Needs to Know"
-          subtitle=" Humans and AI are beginning to work as coordinated systems.
-          Specialized AI agents now connect across the revenue stack to
-          orchestrate workflows, uncover opportunities, and drive customer
-          adoption with precision."
-          nomb={false}
-          center={true}
-        />
+        {showTitle ? (
+          <SectionTitle
+            title={title}
+            subtitle={subtitle}
+            nomb={false}
+            center={true}
+          />
+        ) : null}
         {data.map((item, index) => (
           <div
             key={index}

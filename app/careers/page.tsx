@@ -70,7 +70,7 @@ export default function CareersPage() {
           {roles.map((role, index) => (
             <BentoGridItem
               key={role.title}
-              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg hover:shadow-xl ${
+              className={`overflow-hidden border border-dcg-lightBlue/20 bg-white/95 shadow-lg ${
                 index === 1 ? "md:col-span-2" : ""
               }`}
               title={<span className="text-dcg-ink">{role.title}</span>}
