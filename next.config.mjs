@@ -6,10 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  distDir: ".next-local",
-  turbopack: {
-    root: process.cwd(),
-  },
 };
 
 export default nextConfig;

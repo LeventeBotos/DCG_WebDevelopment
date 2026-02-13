@@ -2070,6 +2070,30 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 39
+      },
+      {
+        "date": "2026-02-13T14:53:06.759Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 0
+      },
+      {
+        "date": "2026-02-13T14:53:07.478Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 1
+      },
+      {
+        "date": "2026-02-13T14:53:40.513Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 33
       }
     ],
     "components/home/FinalCTASection.tsx.git": [
@@ -5544,6 +5568,22 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 46
+      },
+      {
+        "date": "2026-02-13T14:53:45.615Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
+      },
+      {
+        "date": "2026-02-13T14:53:49.931Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 4
       }
     ],
     "package.json.git": [
@@ -5642,6 +5682,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 8
+      },
+      {
+        "date": "2026-02-13T14:49:15.460Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 7
       }
     ],
     "node_modules/@types/three/src/math/MathUtils.d.ts": [
@@ -13866,6 +13914,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 3
+      },
+      {
+        "date": "2026-02-13T14:51:15.945Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 8
       }
     ],
     "components/HeroVideo.tsx": [
@@ -13998,6 +14054,16 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 3
+      }
+    ],
+    "app/layout.tsx.git": [
+      {
+        "date": "2026-02-13T14:52:54.472Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 13
       }
     ]
   }

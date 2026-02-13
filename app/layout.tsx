@@ -86,23 +86,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-GB">
-      <head>
-        {siteUrl ? (
-          <script
-            type="application/ld+json"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                name: siteConfig.name,
-                url: siteUrl.toString(),
-                logo: new URL(siteConfig.ogImagePath, siteUrl).toString(),
-              }),
-            }}
-          />
-        ) : null}
-      </head>
       <body
         className={`${inter.className} min-h-screen flex relative flex-col  text-slate-900`}
       >
