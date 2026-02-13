@@ -2808,6 +2808,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 61
+      },
+      {
+        "date": "2026-02-13T14:45:59.265Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 173
       }
     ],
     "app/services/[slug]/page.tsx": [
@@ -13758,6 +13766,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 55
+      },
+      {
+        "date": "2026-02-05T17:48:09.342Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 1
       }
     ],
     "components/footer.tsx.git": [
@@ -13974,6 +13990,14 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 21
+      },
+      {
+        "date": "2026-02-05T17:47:49.211Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 3
       }
     ]
   }
