@@ -1,19 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Globe2,
-  Loader2,
-  Mail,
-  MapPin,
-} from "lucide-react";
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Globe2, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
 import { track } from "@/lib/analytics";
+
+const World = dynamic(
+  () => import("@/components/ui/globe").then((m) => m.World),
+  {
+    ssr: false,
+  },
+);
 
 const topics = [
   "AI Strategy",
@@ -75,9 +75,7 @@ export default function ContactPage() {
       setStatusDetail("Ready when you are.");
       clearStatusTimers();
     }
-    if (logEntries.length) {
-      setLogEntries([]);
-    }
+    if (logEntries.length) setLogEntries([]);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,13 +87,16 @@ export default function ContactPage() {
     setLogEntries([]);
     setStatusDetail("Preparing secure delivery...");
     clearStatusTimers();
+
     statusTimers.current = [
-      setTimeout(() => {
-        setStatusDetail("Sending your note to the DCG inbox...");
-      }, 800),
-      setTimeout(() => {
-        setStatusDetail("Awaiting confirmation from our mail service...");
-      }, 2200),
+      setTimeout(
+        () => setStatusDetail("Sending your note to the DCG inbox..."),
+        800,
+      ),
+      setTimeout(
+        () => setStatusDetail("Awaiting confirmation from our mail service..."),
+        2200,
+      ),
     ];
 
     const form = event.currentTarget;
@@ -143,9 +144,7 @@ export default function ContactPage() {
       }
 
       form.reset();
-      track("contact_success", {
-        topic: payload.topic || undefined,
-      });
+      track("contact_success", { topic: payload.topic || undefined });
       setSubmittedMessage(
         "Thanks for reaching out! We received your message and will reply soon.",
       );
@@ -159,42 +158,12 @@ export default function ContactPage() {
       setErrorMessage("Unable to send right now. Please try again later.");
       setStatusDetail("Network error. Please try again.");
       setLogEntries([
-        {
-          level: "error",
-          message: "Network error while submitting the form.",
-        },
+        { level: "error", message: "Network error while submitting the form." },
       ]);
       setStatus("error");
       clearStatusTimers();
     }
   };
-
-  const statusLabel =
-    status === "submitting"
-      ? "Sending"
-      : status === "submitted"
-        ? "Delivered"
-        : status === "error"
-          ? "Needs attention"
-          : "Ready";
-
-  const statusBadge =
-    status === "submitting"
-      ? "Live"
-      : status === "submitted"
-        ? "Sent"
-        : status === "error"
-          ? "Error"
-          : "Idle";
-
-  const statusBadgeClass =
-    status === "submitting"
-      ? "border-dcg-lightBlue/30 bg-dcg-lightBlue/10 text-dcg-lightBlue"
-      : status === "submitted"
-        ? "border-dcg-lightGreen/30 bg-dcg-lightGreen/15 text-dcg-darkGreen"
-        : status === "error"
-          ? "border-red-200 bg-red-50 text-red-600"
-          : "border-dcg-lightBlue/10 bg-white text-dcg-slate";
 
   const statusMessage =
     status === "error"
@@ -205,9 +174,133 @@ export default function ContactPage() {
         : statusDetail;
 
   const inputClassName =
-    "w-full bg-transparent border border-white/10 rounded-2xl  px-4 py-3 text-sm text-dcg-ink shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
+    "w-full bg-transparent border border-white/10 rounded-2xl px-4 py-3 text-sm text-dcg-ink shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
 
   const textareaClassName = `${inputClassName} min-h-[140px]`;
+
+  const globeConfig = useMemo(
+    () => ({
+      pointSize: 3.2,
+      globeColor: "#050B16",
+      showAtmosphere: true,
+      atmosphereColor: "#60A5FA",
+      atmosphereAltitude: 0.12,
+      emissive: "#050B16",
+      emissiveIntensity: 0.12,
+      shininess: 0.85,
+      polygonColor: "rgba(255,255,255,0.75)",
+      ambientLight: "rgba(96,165,250,0.28)",
+      directionalLeftLight: "rgba(255,255,255,0.32)",
+      directionalTopLight: "rgba(255,255,255,0.18)",
+      pointLight: "rgba(96,165,250,0.35)",
+      arcTime: 1100,
+      arcLength: 0.9,
+      rings: 1,
+      maxRings: 2,
+      initialPosition: { lat: 51.5072, lng: -0.1276 },
+      autoRotate: true,
+      autoRotateSpeed: 0.35,
+    }),
+    [],
+  );
+
+  const globeArcs = useMemo(() => {
+    const colors = ["#ffffff", "#ffffff", "#ffffff"];
+    const pick = (i: number) => colors[i % colors.length];
+
+    return [
+      {
+        order: 1,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: 47.4979,
+        endLng: 19.0402,
+        arcAlt: 0.22,
+        color: pick(0),
+      },
+      {
+        order: 2,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: 40.7128,
+        endLng: -74.006,
+        arcAlt: 0.32,
+        color: pick(1),
+      },
+      {
+        order: 3,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: 25.2048,
+        endLng: 55.2708,
+        arcAlt: 0.38,
+        color: pick(2),
+      },
+      {
+        order: 4,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: 28.6139,
+        endLng: 77.209,
+        arcAlt: 0.45,
+        color: pick(0),
+      },
+      {
+        order: 5,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: 1.3521,
+        endLng: 103.8198,
+        arcAlt: 0.5,
+        color: pick(1),
+      },
+      {
+        order: 6,
+        startLat: 51.5072,
+        startLng: -0.1276,
+        endLat: -33.8688,
+        endLng: 151.2093,
+        arcAlt: 0.62,
+        color: pick(2),
+      },
+      {
+        order: 7,
+        startLat: 47.4979,
+        startLng: 19.0402,
+        endLat: 37.7749,
+        endLng: -122.4194,
+        arcAlt: 0.52,
+        color: pick(0),
+      },
+      {
+        order: 8,
+        startLat: 47.4979,
+        startLng: 19.0402,
+        endLat: 35.6762,
+        endLng: 139.6503,
+        arcAlt: 0.55,
+        color: pick(1),
+      },
+      {
+        order: 9,
+        startLat: 47.4979,
+        startLng: 19.0402,
+        endLat: 52.52,
+        endLng: 13.405,
+        arcAlt: 0.16,
+        color: pick(2),
+      },
+      {
+        order: 10,
+        startLat: 47.4979,
+        startLng: 19.0402,
+        endLat: 48.8566,
+        endLng: 2.3522,
+        arcAlt: 0.14,
+        color: pick(0),
+      },
+    ];
+  }, []);
 
   return (
     <div className="flex flex-col bg-black min-h-screen">
@@ -234,7 +327,7 @@ export default function ContactPage() {
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-dcg-lightBlue">
                     Project intake
                   </p>
-                  <h2 className="text-2xl md:text-3xl text-white font-semibold ">
+                  <h2 className="text-2xl md:text-3xl text-white font-semibold">
                     Tell us what you're building
                   </h2>
                   <p className="text-sm text-dcg-slate">
@@ -242,12 +335,13 @@ export default function ContactPage() {
                     a clear response.
                   </p>
                 </div>
+
                 <fieldset
                   disabled={status === "submitting"}
                   className="space-y-4"
                 >
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm ">
+                    <label className="space-y-2 text-sm">
                       Name
                       <input
                         required
@@ -258,7 +352,7 @@ export default function ContactPage() {
                         placeholder="Your name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm ">
+                    <label className="space-y-2 text-sm">
                       Work email
                       <input
                         required
@@ -271,8 +365,9 @@ export default function ContactPage() {
                       />
                     </label>
                   </div>
+
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm ">
+                    <label className="space-y-2 text-sm">
                       Company
                       <input
                         name="company"
@@ -282,7 +377,7 @@ export default function ContactPage() {
                         placeholder="Organization name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm ">
+                    <label className="space-y-2 text-sm">
                       Country
                       <input
                         name="country"
@@ -293,7 +388,8 @@ export default function ContactPage() {
                       />
                     </label>
                   </div>
-                  <label className="space-y-2 text-sm ">
+
+                  <label className="space-y-2 text-sm">
                     Topic
                     <select
                       name="topic"
@@ -309,6 +405,7 @@ export default function ContactPage() {
                       ))}
                     </select>
                   </label>
+
                   <label className="space-y-2 text-sm">
                     Message
                     <textarea
@@ -320,6 +417,7 @@ export default function ContactPage() {
                       placeholder="Share goals, timelines, and any constraints we should know."
                     />
                   </label>
+
                   <label className="sr-only" htmlFor="website">
                     Website
                   </label>
@@ -332,6 +430,7 @@ export default function ContactPage() {
                     className="hidden"
                   />
                 </fieldset>
+
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                   <Button
                     type="submit"
@@ -344,57 +443,27 @@ export default function ContactPage() {
                     {status === "submitting"
                       ? "Sending..."
                       : status === "submitted"
-                        ? "Message sent - we'll reply soon"
+                        ? "Message sent, we'll reply soon"
                         : "Submit"}
                   </Button>
+
                   <p className="text-xs text-dcg-slate">
-                    Prefer to book time? Choose a consultation in the sidebar.
+                    {status === "submitting"
+                      ? `${statusMessage}${elapsedSeconds ? ` (${elapsedSeconds}s)` : ""}`
+                      : statusMessage}
                   </p>
                 </div>
               </div>
             </form>
           </div>
 
-          <aside className="space-y-6  ">
-            <div className="dcg-card bg-transparent border text-white border-white/10 space-y-4">
-              <h2 className="text-lg font-semibold ">Contact information</h2>
-              <div className="space-y-3 text-sm ">
-                <div className="flex items-center gap-2">
-                  <Globe2 className="h-4 w-4 text-dcg-lightBlue" />
-                  <a
-                    className="underline-offset-4 hover:underline"
-                    href="https://www.dataconsulting-group.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() =>
-                      track("outbound_click", {
-                        href: "https://www.dataconsulting-group.com",
-                        location: "contact_sidebar",
-                      })
-                    }
-                  >
-                    www.dataconsulting-group.com
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-dcg-lightBlue" />
-                  <a
-                    className="underline-offset-4 hover:underline"
-                    href="mailto:info@dataconsulting-group.com"
-                    onClick={() =>
-                      track("email_click", {
-                        email: "info@dataconsulting-group.com",
-                        location: "contact_sidebar",
-                      })
-                    }
-                  >
-                    info@dataconsulting-group.com
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-dcg-lightBlue" />
-                  <span>London, UK</span>
-                </div>
+          <aside className="space-y-6">
+            <div className="relative h-[36rem]">
+              <div className="absolute inset-0">
+                <World
+                  data={globeArcs as any}
+                  globeConfig={globeConfig as any}
+                />
               </div>
             </div>
           </aside>

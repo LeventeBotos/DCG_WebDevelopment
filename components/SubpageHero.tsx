@@ -56,7 +56,7 @@ const SubpageHero = ({
           return (
             <>
               {parts[0]}
-              <span className="bg-gradient-to-r text-white from-dcg-lightBlue to-dcg-lightGreen bg-clip-text">
+              <span className="subpage-hero-title-gradient">
                 {emphasis}
               </span>
               {parts.slice(1).join(emphasis)}
@@ -72,7 +72,17 @@ const SubpageHero = ({
         className,
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_8%,rgba(0,154,202,0.2),transparent_35%),radial-gradient(circle_at_86%_0%,rgba(0,202,202,0.16),transparent_35%)]" />
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="subpage-hero-base" />
+        <div className="subpage-hero-orb subpage-hero-orb-one" />
+        <div className="subpage-hero-orb subpage-hero-orb-two" />
+        <div className="subpage-hero-orb subpage-hero-orb-three" />
+        <div className="subpage-hero-blob subpage-hero-blob-one" />
+        <div className="subpage-hero-blob subpage-hero-blob-two" />
+        <div className="subpage-hero-blob subpage-hero-blob-three" />
+        <div className="subpage-hero-sheen" />
+        <div className="subpage-hero-vignette" />
+      </div>
 
       <div className="relative dcg-section w-full">
         <div
