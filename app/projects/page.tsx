@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import SubpageHero from "@/components/SubpageHero";
 
 type Project = {
   id: string;
@@ -136,29 +137,26 @@ const projects: Project[] = [
 export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-white">
-      <section className="dcg-section border-b border-slate-200 py-14 md:py-16">
-        <div className="max-w-4xl space-y-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-dcg-slate">
-            Solutions & Projects
-          </p>
-          <h1 className="text-4xl font-semibold leading-tight text-dcg-ink md:text-5xl">
-            Delivery-focused project case studies
-          </h1>
-          <p className="max-w-3xl text-base leading-8 text-dcg-slate md:text-lg">
-            Each program combines strategy, implementation, and adoption to
+      <SubpageHero
+        eyebrow="Solutions & Projects"
+        title="Delivery-focused project case studies"
+        emphasis="Delivery-focused"
+        description="Each program combines strategy, implementation, and adoption to
             deliver measurable value. The case studies below show the challenge,
-            execution pattern, and business outcomes.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Start a project</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/services">View services</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+            execution pattern, and business outcomes."
+        actions={[
+          {
+            label: "Start a project",
+            href: "/contact",
+            variant: "primary",
+          },
+          {
+            label: "View services",
+            href: "/services",
+            variant: "secondary",
+          },
+        ]}
+      />
 
       <section className="dcg-section border-b border-slate-200 py-5">
         <div className="flex flex-wrap items-center gap-2">
@@ -180,7 +178,11 @@ export default function ProjectsPage() {
       <section className="dcg-section pb-20 pt-2">
         <div className="divide-y divide-slate-200 border-t border-slate-200">
           {projects.map((project, index) => (
-            <article key={project.id} id={project.id} className="py-12 md:py-16">
+            <article
+              key={project.id}
+              id={project.id}
+              className="py-12 md:py-16"
+            >
               <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
                 <div className="space-y-7">
                   <header className="space-y-3">
@@ -273,7 +275,9 @@ export default function ProjectsPage() {
                   </div>
 
                   <div className="mt-7">
-                    <h4 className="text-sm font-semibold text-dcg-ink">Rollout</h4>
+                    <h4 className="text-sm font-semibold text-dcg-ink">
+                      Rollout
+                    </h4>
                     <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-7 text-dcg-slate">
                       {project.rollout.map((item) => (
                         <li key={item}>{item}</li>

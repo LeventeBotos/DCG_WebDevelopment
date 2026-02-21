@@ -37,7 +37,7 @@ export default function ContactPage() {
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
   const [statusDetail, setStatusDetail] = useState<string>(
-    "Ready when you are."
+    "Ready when you are.",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
@@ -135,7 +135,7 @@ export default function ContactPage() {
           status: response.status,
         });
         setErrorMessage(
-          data?.error || "Something went wrong. Please try again."
+          data?.error || "Something went wrong. Please try again.",
         );
         setStatusDetail("Delivery failed. Please try again.");
         setStatus("error");
@@ -147,7 +147,7 @@ export default function ContactPage() {
         topic: payload.topic || undefined,
       });
       setSubmittedMessage(
-        "Thanks for reaching out! We received your message and will reply soon."
+        "Thanks for reaching out! We received your message and will reply soon.",
       );
       setStatusDetail("Delivered. A confirmation email is on the way.");
       setStatus("submitted");
@@ -198,28 +198,26 @@ export default function ContactPage() {
 
   const statusMessage =
     status === "error"
-      ? errorMessage ?? "Something went wrong. Please try again."
+      ? (errorMessage ?? "Something went wrong. Please try again.")
       : status === "submitted"
-        ? submittedMessage ??
-          "Thanks for reaching out! We received your message and will reply soon."
+        ? (submittedMessage ??
+          "Thanks for reaching out! We received your message and will reply soon.")
         : statusDetail;
 
   const inputClassName =
-    "w-full rounded-2xl border border-dcg-lightBlue/30 bg-white px-4 py-3 text-sm text-dcg-ink shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
+    "w-full bg-transparent border border-white/10 rounded-2xl  px-4 py-3 text-sm text-dcg-ink shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
 
   const textareaClassName = `${inputClassName} min-h-[140px]`;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col bg-black min-h-screen">
       <SubpageHero
         eyebrow="Contact"
         title="Start a conversation with DCG"
         emphasis="conversation"
         description="Tell us what you want to build and the outcomes you need. We'll reply with tailored next steps."
-        chips={[
-          { label: "AI + Data + Cloud" },
-          { label: "Global delivery" },
-        ]}
+        chips={[{ label: "AI + Data + Cloud" }, { label: "Global delivery" }]}
+        nobottom
       />
 
       <section className="dcg-section py-16 md:py-20">
@@ -228,20 +226,20 @@ export default function ContactPage() {
             <form
               onSubmit={handleSubmit}
               aria-busy={status === "submitting"}
-              className="relative overflow-hidden rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-xl"
+              className="relative overflow-hidden rounded-3xl border border-white/10 text-white/30 p-6 shadow-xl"
             >
-              <div className="absolute -top-20 right-0 h-40 w-40 rounded-full bg-dcg-lightGreen/15 blur-3xl" />
+              <div className="absolute -top-20 right-0 h-40 w-40 rounded-full blur-3xl" />
               <div className="relative space-y-6">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-dcg-lightBlue">
                     Project intake
                   </p>
-                  <h2 className="text-2xl md:text-3xl font-semibold text-dcg-ink">
+                  <h2 className="text-2xl md:text-3xl text-white font-semibold ">
                     Tell us what you're building
                   </h2>
                   <p className="text-sm text-dcg-slate">
-                    We'll route your note to the right expert and follow up
-                    with a clear response.
+                    We'll route your note to the right expert and follow up with
+                    a clear response.
                   </p>
                 </div>
                 <fieldset
@@ -249,7 +247,7 @@ export default function ContactPage() {
                   className="space-y-4"
                 >
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm text-dcg-ink">
+                    <label className="space-y-2 text-sm ">
                       Name
                       <input
                         required
@@ -260,7 +258,7 @@ export default function ContactPage() {
                         placeholder="Your name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm text-dcg-ink">
+                    <label className="space-y-2 text-sm ">
                       Work email
                       <input
                         required
@@ -274,7 +272,7 @@ export default function ContactPage() {
                     </label>
                   </div>
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm text-dcg-ink">
+                    <label className="space-y-2 text-sm ">
                       Company
                       <input
                         name="company"
@@ -284,7 +282,7 @@ export default function ContactPage() {
                         placeholder="Organization name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm text-dcg-ink">
+                    <label className="space-y-2 text-sm ">
                       Country
                       <input
                         name="country"
@@ -295,7 +293,7 @@ export default function ContactPage() {
                       />
                     </label>
                   </div>
-                  <label className="space-y-2 text-sm text-dcg-ink">
+                  <label className="space-y-2 text-sm ">
                     Topic
                     <select
                       name="topic"
@@ -311,7 +309,7 @@ export default function ContactPage() {
                       ))}
                     </select>
                   </label>
-                  <label className="space-y-2 text-sm text-dcg-ink">
+                  <label className="space-y-2 text-sm">
                     Message
                     <textarea
                       required
@@ -346,132 +344,21 @@ export default function ContactPage() {
                     {status === "submitting"
                       ? "Sending..."
                       : status === "submitted"
-                      ? "Message sent - we'll reply soon"
+                        ? "Message sent - we'll reply soon"
                         : "Submit"}
                   </Button>
                   <p className="text-xs text-dcg-slate">
-                    Prefer to book time? Choose a consultation in the
-                    sidebar.
+                    Prefer to book time? Choose a consultation in the sidebar.
                   </p>
-                </div>
-                <div className="rounded-2xl border border-dcg-lightBlue/20 bg-dcg-sand/60 p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-dcg-ink">
-                      {status === "submitting" ? (
-                        <Loader2 className="h-4 w-4 animate-spin text-dcg-lightBlue" />
-                      ) : status === "submitted" ? (
-                        <CheckCircle2 className="h-4 w-4 text-dcg-lightGreen" />
-                      ) : status === "error" ? (
-                        <AlertTriangle className="h-4 w-4 text-red-600" />
-                      ) : (
-                        <Clock className="h-4 w-4 text-dcg-lightBlue" />
-                      )}
-                      <span>{statusLabel}</span>
-                    </div>
-                    <span
-                      className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${statusBadgeClass}`}
-                    >
-                      {statusBadge}
-                    </span>
-                  </div>
-                  <p
-                    className="mt-2 text-sm text-dcg-slate"
-                    role="status"
-                    aria-live="polite"
-                  >
-                    {statusMessage}
-                    {status === "submitting" ? (
-                      <span className="ml-2 text-xs text-dcg-slate/80">
-                        {elapsedSeconds}s
-                      </span>
-                    ) : null}
-                  </p>
-                  {requestId ? (
-                    <p className="mt-2 text-xs text-dcg-slate">
-                      Request ID:{" "}
-                      <span className="font-mono text-dcg-ink">
-                        {requestId}
-                      </span>
-                    </p>
-                  ) : null}
-                  {logEntries.length ? (
-                    <div className="mt-3 border-t border-dcg-lightBlue/10 pt-3 text-xs text-dcg-ink">
-                      <p className="font-semibold text-dcg-ink">
-                        Delivery log
-                      </p>
-                      <ul className="mt-2 space-y-2">
-                        {logEntries.map((entry, index) => (
-                          <li
-                            key={`${entry.level}-${index}`}
-                            className="space-y-1"
-                          >
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span
-                                className={
-                                  entry.level === "error"
-                                    ? "font-semibold text-red-600"
-                                    : entry.level === "warn"
-                                      ? "font-semibold text-amber-600"
-                                      : "font-semibold text-dcg-lightGreen"
-                                }
-                              >
-                                {entry.level.toUpperCase()}
-                              </span>
-                              <span>{entry.message}</span>
-                            </div>
-                            {entry.detail ? (
-                              <p className="text-[11px] text-dcg-slate">
-                                {entry.detail}
-                              </p>
-                            ) : null}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
                 </div>
               </div>
             </form>
-
-            <div className="rounded-3xl border border-dcg-lightBlue/20 bg-gradient-to-br from-white via-dcg-sand/70 to-white p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-dcg-ink">
-                What happens next
-              </h3>
-              <ul className="mt-4 space-y-4 text-sm text-dcg-slate">
-                <li className="flex gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-dcg-lightBlue/15 text-xs font-semibold text-dcg-lightBlue">
-                    1
-                  </span>
-                  <span>
-                    We review your message and align the right DCG partner.
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-dcg-lightGreen/15 text-xs font-semibold text-dcg-darkGreen">
-                    2
-                  </span>
-                  <span>
-                    You get a tailored response with the next best step.
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-dcg-lightBlue/15 text-xs font-semibold text-dcg-lightBlue">
-                    3
-                  </span>
-                  <span>
-                    We schedule a working session to scope impact and timing.
-                  </span>
-                </li>
-              </ul>
-            </div>
           </div>
 
-          <aside className="space-y-6">
-            <div className="dcg-card space-y-4">
-              <h2 className="text-lg font-semibold text-dcg-ink">
-                Contact information
-              </h2>
-              <div className="space-y-3 text-sm text-dcg-ink">
+          <aside className="space-y-6  ">
+            <div className="dcg-card bg-transparent border text-white border-white/10 space-y-4">
+              <h2 className="text-lg font-semibold ">Contact information</h2>
+              <div className="space-y-3 text-sm ">
                 <div className="flex items-center gap-2">
                   <Globe2 className="h-4 w-4 text-dcg-lightBlue" />
                   <a
@@ -507,38 +394,6 @@ export default function ContactPage() {
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-dcg-lightBlue" />
                   <span>London, UK</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-dcg-lightBlue/20 bg-white p-6 shadow-lg">
-              <div className="flex items-center gap-2 text-sm font-semibold text-dcg-ink">
-                <Clock className="h-4 w-4 text-dcg-lightGreen" />
-                Response SLA
-              </div>
-              <p className="mt-2 text-sm text-dcg-slate">
-                We'll respond with clear next steps.
-              </p>
-              <div className="mt-4 rounded-2xl bg-dcg-sand p-4 text-sm text-dcg-ink">
-                <p className="font-semibold">Book a consultation</p>
-                <p className="text-dcg-slate">
-                  Share a topic and we'll pair you with the right expert.
-                </p>
-                <div className="mt-3">
-                  <Button asChild variant="secondary">
-                    <Link
-                      href="/contact"
-                      onClick={() =>
-                        track("cta_click", {
-                          label: "Pick a time",
-                          href: "/contact",
-                          location: "contact_sidebar",
-                        })
-                      }
-                    >
-                      Pick a time
-                    </Link>
-                  </Button>
                 </div>
               </div>
             </div>
