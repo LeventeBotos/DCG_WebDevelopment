@@ -56,9 +56,7 @@ const SubpageHero = ({
           return (
             <>
               {parts[0]}
-              <span className="subpage-hero-title-gradient">
-                {emphasis}
-              </span>
+              <span className="subpage-hero-title-gradient">{emphasis}</span>
               {parts.slice(1).join(emphasis)}
             </>
           );
@@ -100,7 +98,7 @@ const SubpageHero = ({
           >
             {topSlot ? <div className="text-sm ">{topSlot}</div> : null}
 
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] ">
+            <p className="text-xs text-white/50 font-semibold uppercase tracking-[0.26em] ">
               {eyebrow}
             </p>
 
