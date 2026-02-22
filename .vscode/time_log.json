@@ -12214,6 +12214,22 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 29
+      },
+      {
+        "date": "2026-02-22T16:54:22.383Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 0
+      },
+      {
+        "date": "2026-02-22T16:54:24.470Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
       }
     ],
     "components/ThreeScroll.tsx.git": [
@@ -17238,6 +17254,48 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 38
+      }
+    ],
+    ".next/dev/package.json": [
+      {
+        "date": "2026-02-22T16:30:46.814Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 7
+      },
+      {
+        "date": "2026-02-22T16:30:48.690Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
+      },
+      {
+        "date": "2026-02-22T16:30:50.757Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
+      },
+      {
+        "date": "2026-02-22T16:31:40.410Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 50
+      },
+      {
+        "date": "2026-02-22T16:31:40.413Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 50
       }
     ]
   }

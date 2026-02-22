@@ -201,7 +201,7 @@ export default function Home() {
 
         {/* <ServicesSection /> */}
       </div>
-      <ServicesFullScreenScroll />
+      {/* <ServicesFullScreenScroll /> */}
       {/* <OurProcess /> */}
 
       <SectionTitle
