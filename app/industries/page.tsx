@@ -1,7 +1,11 @@
+// app/industries/page.tsx (or wherever your page lives)
 "use client";
 
 import IndustriesGrid from "@/components/IndustriesGrid";
 import SubpageHero from "@/components/SubpageHero";
+import IndustriesScrollRail, {
+  IndustryRailItem,
+} from "@/components/IndustriesScrollRail";
 
 const industryNotes = [
   {
@@ -16,11 +20,92 @@ const industryNotes = [
   {
     title: "How DCG helps",
     bullets: [
-      "Design AI-first workflows and agentic patterns",
+      "Design AI first workflows and agentic patterns",
       "Operationalize analytics with governance and MLOps",
       "Coach teams on adoption, training, and safety",
       "Link services, projects, and industry playbooks for reuse",
     ],
+  },
+];
+
+const railItems: IndustryRailItem[] = [
+  {
+    key: "retail",
+    title: "Retail",
+    tag: "Customer and supply",
+    summary:
+      "Demand sensing, pricing, personalization, and store operations that stay grounded in real constraints.",
+    bullets: [
+      "Forecast demand with noisy data",
+      "Optimize pricing and promos",
+      "Improve availability and fulfillment",
+    ],
+    href: "/projects?industry=retail",
+  },
+  {
+    key: "energy",
+    title: "Energy",
+    tag: "Reliability and optimization",
+    summary:
+      "Predictive maintenance and asset analytics with governance, traceability, and production grade delivery.",
+    bullets: [
+      "Reduce unplanned downtime",
+      "Detect anomalies early",
+      "Enable field usable insights",
+    ],
+    href: "/projects?industry=energy",
+  },
+  {
+    key: "finance",
+    title: "Finance",
+    tag: "Risk and decisioning",
+    summary:
+      "Fraud signals, credit decisioning, and compliance aware workflows that ship safely.",
+    bullets: [
+      "Fraud detection and triage",
+      "Explainable decision support",
+      "Data lineage and controls",
+    ],
+    href: "/projects?industry=finance",
+  },
+  {
+    key: "tech",
+    title: "IT and technology",
+    tag: "Platform and velocity",
+    summary:
+      "From data platform work to agentic patterns, we help teams move from pilots to production fast.",
+    bullets: [
+      "Modernize data foundations",
+      "MLOps and deployment paths",
+      "Enablement and adoption",
+    ],
+    href: "/projects?industry=technology",
+  },
+  {
+    key: "transport",
+    title: "Transportation",
+    tag: "Networks and operations",
+    summary:
+      "Planning, routing, and service reliability using analytics that operators can trust day to day.",
+    bullets: [
+      "Better routing and capacity",
+      "Improve on time performance",
+      "Operational dashboards that stick",
+    ],
+    href: "/projects?industry=transportation",
+  },
+  {
+    key: "aviation",
+    title: "Aviation",
+    tag: "Turnaround and performance",
+    summary:
+      "Operational intelligence across turnaround, maintenance, and disruption response.",
+    bullets: [
+      "Reduce turnaround variance",
+      "Predict maintenance events",
+      "Improve disruption response",
+    ],
+    href: "/projects?industry=aviation",
   },
 ];
 
@@ -29,12 +114,20 @@ export default function IndustriesPage() {
     <div className="flex flex-col min-h-screen">
       <SubpageHero
         eyebrow="Industries"
-        title="Sector-specific playbooks grounded in data, AI, and cloud execution."
+        title="Sector specific playbooks grounded in data, AI, and cloud execution."
         emphasis="playbooks"
-        description="Retail, energy, finance, IT/technology, transportation, and aviation—we bring repeatable solutions plus the context that makes them work for your teams."
+        description="Retail, energy, finance, IT and technology, transportation, and aviation. We bring repeatable solutions plus the context that makes them work for your teams."
         actions={[
-          { label: "Explore case studies", href: "/projects", variant: "primary" },
-          { label: "Start a conversation", href: "/contact", variant: "secondary" },
+          {
+            label: "Explore case studies",
+            href: "/projects",
+            variant: "primary",
+          },
+          {
+            label: "Start a conversation",
+            href: "/contact",
+            variant: "secondary",
+          },
         ]}
       />
 
@@ -51,6 +144,7 @@ export default function IndustriesPage() {
             so teams can move from pilots to production.
           </p>
         </div>
+
         <div className="grid gap-8 md:grid-cols-2">
           {industryNotes.map((note) => (
             <div key={note.title} className="space-y-3">
@@ -70,7 +164,11 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      <IndustriesGrid />
+      <IndustriesScrollRail
+        items={railItems}
+        title="Browse by industry"
+        subtitle="Keep scrolling. The rail moves horizontally as you move vertically."
+      />
     </div>
   );
 }

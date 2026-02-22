@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
+import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 
 type HeroAction = {
   label: string;
@@ -66,12 +67,44 @@ const SubpageHero = ({
   return (
     <section
       className={cn(
-        `relative bg-black overflow-hidden ${nobottom ? "border-b-0" : "border-b border-white/10"} pb-14 pt-28 md:pb-16 md:pt-32`,
+        `relative bg-black overflow-hidden ${
+          nobottom ? "border-b-0" : "border-b border-white/10"
+        } pb-14 pt-28 md:pb-16 md:pt-32`,
         className,
       )}
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {/* Layer 0: base paint (behind everything) */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden="true"
+      >
         <div className="subpage-hero-base" />
+      </div>
+
+      {/* Layer 1: dotted glow (above base, below blobs/sheen) */}
+      <DottedGlowBackground
+        className={cn(
+          "pointer-events-none absolute inset-0 z-[3]",
+          "mask-radial-to-90% mask-radial-at-center",
+        )}
+        opacity={0.15}
+        gap={12}
+        radius={1.6}
+        colorLightVar="--color-neutral-500"
+        glowColorLightVar="--color-neutral-600"
+        colorDarkVar="--color-neutral-500"
+        glowColorDarkVar="--color-sky-800"
+        backgroundOpacity={0}
+        speedMin={0.25}
+        speedMax={1.4}
+        speedScale={1}
+      />
+
+      {/* Layer 2: your existing background elements */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2]"
+        aria-hidden="true"
+      >
         <div className="subpage-hero-orb subpage-hero-orb-one" />
         <div className="subpage-hero-orb subpage-hero-orb-two" />
         <div className="subpage-hero-orb subpage-hero-orb-three" />
@@ -82,7 +115,8 @@ const SubpageHero = ({
         <div className="subpage-hero-vignette" />
       </div>
 
-      <div className="relative dcg-section w-full">
+      {/* Layer 3: content */}
+      <div className="relative z-[3] dcg-section w-full">
         <div
           className={cn(
             "grid gap-10 lg:gap-12",
@@ -96,9 +130,9 @@ const SubpageHero = ({
               isCentered ? "mx-auto max-w-3xl" : "max-w-3xl",
             )}
           >
-            {topSlot ? <div className="text-sm ">{topSlot}</div> : null}
+            {topSlot ? <div className="text-sm">{topSlot}</div> : null}
 
-            <p className="text-xs text-white/50 font-semibold uppercase tracking-[0.26em] ">
+            <p className="text-xs text-white/50 font-semibold uppercase tracking-[0.26em]">
               {eyebrow}
             </p>
 
