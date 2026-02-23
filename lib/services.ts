@@ -10,7 +10,7 @@ export type ServiceDetail = {
   pillars: { title: string; body: string }[];
 };
 
-export const services: ServiceDetail[] = [
+const serviceCatalog: ServiceDetail[] = [
   {
     slug: "data",
     title: "Data",
@@ -958,13 +958,26 @@ export const services: ServiceDetail[] = [
   },
 ];
 
+const serviceTypes = new Set<ServiceDetail["category"]>([
+  "Data",
+  "AI",
+  "Cloud Operations",
+]);
+
+const isServiceTypeEntry = (service: ServiceDetail): boolean =>
+  serviceTypes.has(service.title as ServiceDetail["category"]);
+
+export const services: ServiceDetail[] = serviceCatalog.filter(
+  (service) => !isServiceTypeEntry(service),
+);
+
 export const homepageFeaturedServices = [
   "data-migration",
   "data-platform",
   "data-product-portal",
   "large-language-models-rags",
   "generative-ai-agentic-ai",
-  "cloud-operations",
+  "microsoft-azure",
 ];
 
 export const servicesBySlug = services.reduce<Record<string, ServiceDetail>>(

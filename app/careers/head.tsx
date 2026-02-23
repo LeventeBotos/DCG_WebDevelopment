@@ -2,7 +2,7 @@ import { absoluteUrl } from "@/lib/seo";
 
 const title = "Careers | Data Consulting Group";
 const description =
-  "Open roles at DCG across ML engineering, cloud solutions, and data & analytics consulting.";
+  "Open roles at DCG across ML engineering, cloud solutions, and data consulting, with a direct in-page application form.";
 
 export default function Head() {
   const canonical = absoluteUrl("/careers") ?? "/careers";
@@ -19,4 +19,3 @@ export default function Head() {
     </>
   );
 }
-

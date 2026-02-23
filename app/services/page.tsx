@@ -78,11 +78,29 @@ const toCategoryKey = (category: ServiceDetail["category"]): CategoryKey => {
   return "data";
 };
 
-const serviceKey = (service: ServiceDetail): string =>
-  `${toCategoryKey(service.category)}:${service.title
+const canonicalServiceAliases: Record<string, string> = {
+  "amazon web services aws": "aws",
+  aws: "aws",
+  "google cloud platform gcp": "gcp",
+  gcp: "gcp",
+  "data modelling": "data modeling",
+  "large language models and rags": "large language models and rag",
+};
+
+const canonicalServiceTitle = (title: string): string => {
+  const normalized = title
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, " ")}`;
+    .replace(/&/g, " and ")
+    .replace(/[()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return canonicalServiceAliases[normalized] ?? normalized;
+};
+
+const serviceKey = (service: ServiceDetail): string =>
+  `${toCategoryKey(service.category)}:${canonicalServiceTitle(service.title)}`;
 
 const groupedServicesMap = services.reduce<Map<string, GroupedService>>(
   (acc, service) => {
