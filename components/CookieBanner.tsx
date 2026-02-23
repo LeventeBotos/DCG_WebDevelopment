@@ -27,10 +27,21 @@ export default function CookieBanner() {
             We use analytics cookies to understand how the site is used. These
             only load after you accept. See our{" "}
             <Link
-              href="/privacy"
+              href="/documents/PrivacyPolicy.docx"
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-semibold text-white underline underline-offset-4 hover:text-white/70"
             >
               Privacy Policy
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/documents/CookiePolicy.docx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-white underline underline-offset-4 hover:text-white/70"
+            >
+              Cookie Policy
             </Link>
             .
           </p>

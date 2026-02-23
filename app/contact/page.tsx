@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Globe2, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
+import ContactCtaSection from "@/components/ContactCtaSection";
 import { track } from "@/lib/analytics";
 
 const World = dynamic(
@@ -104,6 +105,7 @@ export default function ContactPage() {
     const payload = {
       name: String(formData.get("name") || ""),
       email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
       company: String(formData.get("company") || ""),
       country: String(formData.get("country") || ""),
       topic: String(formData.get("topic") || ""),
@@ -174,7 +176,7 @@ export default function ContactPage() {
         : statusDetail;
 
   const inputClassName =
-    "w-full bg-transparent border border-white/10 rounded-2xl px-4 py-3 text-sm text-dcg-ink shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
+    "w-full bg-transparent border border-white/10 rounded-2xl px-4 py-3 text-sm text-white shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
 
   const textareaClassName = `${inputClassName} min-h-[140px]`;
 
@@ -388,6 +390,18 @@ export default function ContactPage() {
                       />
                     </label>
                   </div>
+
+                  <label className="space-y-2 text-sm">
+                    Phone number (optional)
+                    <input
+                      type="tel"
+                      name="phone"
+                      autoComplete="tel"
+                      onChange={resetStatus}
+                      className={inputClassName}
+                      placeholder="+1 555 123 4567"
+                    />
+                  </label>
 
                   <label className="space-y-2 text-sm">
                     Topic

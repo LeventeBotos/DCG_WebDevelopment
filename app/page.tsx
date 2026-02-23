@@ -5,7 +5,7 @@ import { WorldMap } from "@/components/WorldMap";
 import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
 import SectionTitle from "@/components/SectionTitle";
 import DCGAIPlatformSection from "@/components/DCGAIPlatformSection";
-import FinalCTASection from "@/components/FinalCTASection";
+import ContactCtaSection from "@/components/ContactCtaSection";
 import StrategicQuestionsSection from "@/components/StrategicQuestionsSection";
 import AIAtWorkSection from "@/components/AIAtWorkSection";
 import { WhyDcgBento } from "@/components/WhyDcgBento";
@@ -257,7 +257,16 @@ export default function Home() {
           speedMax={1.6}
           speedScale={1}
         />
-        <FinalCTASection />
+        <ContactCtaSection
+          eyebrow="Next step"
+          title="Let's build tomorrow together."
+          description="Whether you're exploring your first AI use-cases or scaling an existing data and AI portfolio, we help you move from slideware to impact quickly and responsibly."
+          primaryLabel="Schedule a conversation"
+          primaryHref="/contact"
+          secondaryLabel="Explore services"
+          secondaryHref="/services"
+          className="border-t-0 pt-10 md:pt-12"
+        />
       </div>
       {/* </BackgroundBeamsWithCollision> */}
     </div>

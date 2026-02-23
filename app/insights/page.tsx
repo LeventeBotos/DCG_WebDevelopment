@@ -1,6 +1,7 @@
 "use client";
 
 import SubpageHero from "@/components/SubpageHero";
+import ContactCtaSection from "@/components/ContactCtaSection";
 import { Tabs } from "@/components/ui/tabs";
 
 const articles = [
@@ -93,6 +94,18 @@ export default function InsightsPage() {
         title="Digital, Technology & Data, Agentic Enterprise, and AI at Work."
         emphasis="Agentic Enterprise"
         description="Thought-leadership and playbooks on AI-first growth, agentic architectures, and the training needed to make adoption stick."
+        actions={[
+          {
+            label: "Talk to our team",
+            href: "/contact",
+            variant: "primary",
+          },
+          {
+            label: "Explore services",
+            href: "/services",
+            variant: "secondary",
+          },
+        ]}
       />
 
       <section className="dcg-section py-16 md:py-20 space-y-10">
@@ -196,6 +209,15 @@ export default function InsightsPage() {
           </div>
         </div>
       </section>
+      <ContactCtaSection
+        eyebrow="Next step"
+        title="Want to turn these insights into execution?"
+        description="We can translate these patterns into a practical roadmap tailored to your teams, stack, and delivery goals."
+        primaryLabel="Talk to our team"
+        primaryHref="/contact"
+        secondaryLabel="Explore services"
+        secondaryHref="/services"
+      />
     </div>
   );
 }

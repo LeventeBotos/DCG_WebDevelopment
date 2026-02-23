@@ -18,6 +18,7 @@ type LogEntry = {
 const ContactSchema = z.object({
   name: z.string().trim().min(1),
   email: z.string().trim().email(),
+  phone: z.string().trim().optional(),
   company: z.string().trim().optional(),
   country: z.string().trim().optional(),
   topic: z.string().trim().optional(),
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, company, country, topic, message, website } =
+  const { name, email, phone, company, country, topic, message, website } =
     parsed.data;
 
   if (website && website.trim().length > 0) {
@@ -116,6 +117,7 @@ export async function POST(request: Request) {
     );
   }
 
+  const normalizedPhone = phone?.trim() || "";
   const normalizedCompany = company?.trim() || "";
   const normalizedCountry = country?.trim() || "";
   const normalizedTopic = topic?.trim() || "General inquiry";
@@ -151,6 +153,7 @@ export async function POST(request: Request) {
     "-------------------",
     `Name: ${name}`,
     `Email: ${email}`,
+    `Phone: ${normalizedPhone || "-"}`,
     `Company: ${normalizedCompany || "-"}`,
     `Country: ${normalizedCountry || "-"}`,
     `Topic: ${normalizedTopic || "-"}`,
@@ -162,6 +165,7 @@ export async function POST(request: Request) {
 
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
+  const safePhone = escapeHtml(normalizedPhone || "-");
   const safeCompany = escapeHtml(normalizedCompany || "-");
   const safeCountry = escapeHtml(normalizedCountry || "-");
   const safeTopic = escapeHtml(normalizedTopic || "-");
@@ -171,6 +175,7 @@ export async function POST(request: Request) {
   const html = buildAdminEmailHtml({
     safeName,
     safeEmail,
+    safePhone,
     safeCompany,
     safeCountry,
     safeTopic,

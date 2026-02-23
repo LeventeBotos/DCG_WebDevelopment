@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { services, servicesBySlug } from "@/lib/services";
 import SubpageHero from "@/components/SubpageHero";
+import ContactCtaSection from "@/components/ContactCtaSection";
 
 export const dynamicParams = true;
 
@@ -152,26 +151,16 @@ export default async function ServiceDetailPage({
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-dcg-blue/10 bg-gradient-to-r from-white via-dcg-lightGreen/10 to-white p-6 shadow-md">
-          <div className="flex-1 min-w-[240px]">
-            <p className="text-sm font-semibold text-dcg-ink">
-              Ready to explore how {service.title} can move the needle?
-            </p>
-            <p className="text-xs text-dcg-slate md:text-sm">
-              We’ll align on the outcomes that matter, assemble the right team,
-              and start with a fast, low-risk path to value.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Book a conversation</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/projects">View projects</Link>
-            </Button>
-          </div>
-        </div>
       </section>
+      <ContactCtaSection
+        eyebrow="Next step"
+        title={`Ready to explore how ${service.title} can move the needle?`}
+        description="We’ll align on the outcomes that matter, assemble the right team, and start with a fast, low-risk path to value."
+        primaryLabel="Book a conversation"
+        primaryHref="/contact"
+        secondaryLabel="View projects"
+        secondaryHref="/projects"
+      />
     </div>
   );
 }

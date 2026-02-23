@@ -1,6 +1,7 @@
 type AdminEmailTemplateProps = {
   safeName: string;
   safeEmail: string;
+  safePhone: string;
   safeCompany: string;
   safeCountry: string;
   safeTopic: string;
@@ -19,6 +20,7 @@ type ConfirmationEmailTemplateProps = {
 export const buildAdminEmailHtml = ({
   safeName,
   safeEmail,
+  safePhone,
   safeCompany,
   safeCountry,
   safeTopic,
@@ -108,6 +110,10 @@ export const buildAdminEmailHtml = ({
                         <tr>
                           <td style="width: 140px; color: #64748b;">Topic</td>
                           <td style="font-weight: 600;">${safeTopic}</td>
+                        </tr>
+                        <tr>
+                          <td style="padding-top: 6px; color: #64748b;">Phone</td>
+                          <td style="padding-top: 6px;">${safePhone}</td>
                         </tr>
                         <tr>
                           <td style="padding-top: 6px; color: #64748b;">Submitted</td>

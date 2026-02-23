@@ -34,8 +34,18 @@ export default function Footer() {
     {
       title: "Legal",
       links: [
-        { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/tos" },
+        {
+          label: "Privacy Policy",
+          href: "/documents/PrivacyPolicy.docx",
+        },
+        {
+          label: "Cookie Policy",
+          href: "/documents/CookiePolicy.docx",
+        },
+        {
+          label: "Terms of Service",
+          href: "/documents/TermsOfService.docx",
+        },
       ],
     },
   ];
@@ -137,38 +147,51 @@ export default function Footer() {
             >
               <h3 className="text-lg font-semibold">{section.title}</h3>
               <ul className="space-y-2">
-                {section.links.map((link, linkIndex) => (
-                  <motion.li
-                    key={link.label}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.3,
-                      delay: 0.05 * linkIndex + 0.2 * sectionIndex,
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-white/80 hover:text-white transition-colors hover:underline"
-                      onClick={() =>
-                        track("nav_click", {
-                          label: link.label,
-                          href: link.href,
-                          location: "footer",
-                        })
-                      }
+                {section.links.map((link, linkIndex) => {
+                  return (
+                    <motion.li
+                      key={link.label}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.3,
+                        delay: 0.05 * linkIndex + 0.2 * sectionIndex,
+                      }}
                     >
-                      {link.label}
-                    </Link>
-                  </motion.li>
-                ))}
+                      <Link
+                        href={link.href}
+                        target={
+                          section.title === "Legal" ? "_blank" : undefined
+                        }
+                        rel={
+                          section.title === "Legal"
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                        className="text-white/80 hover:text-white transition-colors hover:underline"
+                        onClick={() =>
+                          track("nav_click", {
+                            label: link.label,
+                            href: link.href,
+                            location: "footer",
+                          })
+                        }
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.li>
+                  );
+                })}
               </ul>
               {section.title === "Legal" && (
                 <button
                   type="button"
                   onClick={() => {
-                    track("cta_click", { label: "Manage cookies", location: "footer" });
+                    track("cta_click", {
+                      label: "Manage cookies",
+                      location: "footer",
+                    });
                     resetConsent();
                   }}
                   className="text-white/80 hover:text-white transition-colors hover:underline"

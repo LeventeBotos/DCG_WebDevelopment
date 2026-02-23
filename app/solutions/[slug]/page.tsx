@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { hexToRgb, platformBySlug, platforms } from "@/lib/platforms";
 import { Vortex } from "@/components/ui/vortex";
 import { Button } from "@/components/ui/button";
+import ContactCtaSection from "@/components/ContactCtaSection";
 
 type PageProps = {
   params: Promise<{
@@ -162,9 +163,6 @@ export default async function PlatformPage({ params }: PageProps) {
   const accent = cardBackground(startColor, endColor);
   const accentTextColor = toRgb(endColor);
   const accentBorderColor = withAlpha(startColor, 0.25);
-  const primaryButtonStyle = {
-    backgroundImage: buttonGradient(startColor, endColor),
-  };
   const secondaryButtonStyle = {
     // backgroundImage: buttonGradient(startColor, endColor, 0.12),
     borderColor: "rgba(0, 0, 0, 0.5)",
@@ -208,8 +206,7 @@ export default async function PlatformPage({ params }: PageProps) {
                   <Button
                     asChild
                     variant="primary"
-                    showArrow
-                    style={primaryButtonStyle}
+                    size="lg"
                   >
                     <Link href="/contact">Book a working session</Link>
                   </Button>
@@ -444,39 +441,15 @@ export default async function PlatformPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="dcg-section pb-16">
-        <div
-          className="flex flex-col gap-4 rounded-3xl border bg-white p-8 shadow-lg md:flex-row md:items-center md:justify-between"
-          style={{
-            borderColor: accentBorderColor,
-            background: `linear-gradient(120deg, ${withAlpha(
-              startColor,
-              0.12
-            )}, ${withAlpha(endColor, 0.14)})`,
-          }}
-        >
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-slate">
-              Ready to plan the first 6 weeks?
-            </p>
-            <h3 className="text-2xl font-semibold text-dcg-ink">
-              Let’s roadmap, then launch an evidence-backed pilot.
-            </h3>
-            <p className="text-sm text-dcg-slate">
-              We co-deliver with your teams, leave behind the runbooks, and stay
-              long enough to make sure the value sticks.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 md:flex-row">
-            <Button asChild variant="primary" style={primaryButtonStyle}>
-              <Link href="/contact">Schedule a call</Link>
-            </Button>
-            <Button asChild variant="secondary" style={secondaryButtonStyle}>
-              <Link href="/services">Explore our services</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ContactCtaSection
+        eyebrow="Ready to plan the first 6 weeks?"
+        title="Let’s roadmap, then launch an evidence-backed pilot."
+        description="We co-deliver with your teams, leave behind the runbooks, and stay long enough to make sure the value sticks."
+        primaryLabel="Schedule a call"
+        primaryHref="/contact"
+        secondaryLabel="Explore our services"
+        secondaryHref="/services"
+      />
     </div>
   );
 }

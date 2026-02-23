@@ -19,8 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/insights",
     "/careers",
     "/contact",
-    "/privacy",
-    "/tos",
   ];
 
   const entries: MetadataRoute.Sitemap = staticRoutes.map((path) => ({
@@ -51,4 +49,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return entries;
 }
-

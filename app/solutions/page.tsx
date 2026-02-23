@@ -3,6 +3,7 @@ import Link from "next/link";
 import { platformCards } from "@/lib/platforms";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
+import ContactCtaSection from "@/components/ContactCtaSection";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 
 export const metadata: Metadata = {
@@ -32,6 +33,18 @@ export default function SolutionsIndexPage() {
         title="Productized AI capabilities, tuned for your industry."
         emphasis="Productized AI"
         description="Choose a platform to see the accelerators, launch patterns, and operating model we bring to co-deliver value fast."
+        actions={[
+          {
+            label: "Talk to our team",
+            href: "/contact",
+            variant: "primary",
+          },
+          {
+            label: "View services",
+            href: "/services",
+            variant: "secondary",
+          },
+        ]}
       />
 
       <section className="dcg-section pb-16">
@@ -71,6 +84,15 @@ export default function SolutionsIndexPage() {
           ))}
         </BentoGrid>
       </section>
+      <ContactCtaSection
+        eyebrow="Next step"
+        title="Ready to activate one of these platforms?"
+        description="We’ll scope the first release with clear success metrics and an operating model your teams can own."
+        primaryLabel="Talk to our team"
+        primaryHref="/contact"
+        secondaryLabel="View services"
+        secondaryHref="/services"
+      />
     </div>
   );
 }

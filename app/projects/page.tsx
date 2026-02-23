@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
+import ContactCtaSection from "@/components/ContactCtaSection";
 
 type Project = {
   id: string;
@@ -132,6 +133,43 @@ const projects: Project[] = [
       { label: "Release cycle", value: "2x faster" },
     ],
   },
+  {
+    id: "smart-manufacturing",
+    title: "Smart Manufacturing: Predictive Maintenance & Yield Optimization",
+    sector: "Manufacturing",
+    summary:
+      "A plant-scale optimization program combining machine telemetry, quality signals, and AI recommendations to reduce downtime and stabilize throughput.",
+    challenge:
+      "Production teams were facing unplanned line stoppages, variable product quality, and fragmented visibility across maintenance, process, and quality systems.",
+    approach:
+      "We unified sensor and MES data, deployed failure-risk and yield models, and introduced operator-facing guidance for maintenance windows and process parameter tuning.",
+    impact: [
+      "Reduced unplanned downtime on critical production lines.",
+      "Improved first-pass yield and scrap visibility by shift.",
+      "Enabled faster, data-backed maintenance planning decisions.",
+    ],
+    deliverables: [
+      "Unified manufacturing data model across OT and IT systems",
+      "Predictive maintenance and yield optimization model suite",
+      "Plant operations cockpit for engineering and maintenance teams",
+    ],
+    technologies: [
+      "Industrial IoT",
+      "Predictive maintenance",
+      "Computer vision QA",
+      "MLOps",
+    ],
+    rollout: [
+      "Prioritized bottleneck assets and failure modes",
+      "Validated model guidance with plant and reliability engineers",
+      "Scaled deployment to additional lines after KPI lift",
+    ],
+    metrics: [
+      { label: "Lines covered", value: "12" },
+      { label: "Downtime reduction", value: "22%" },
+      { label: "First-pass yield gain", value: "+8.5%" },
+    ],
+  },
 ];
 
 export default function ProjectsPage() {
@@ -157,23 +195,6 @@ export default function ProjectsPage() {
           },
         ]}
       />
-
-      <section className="dcg-section border-b border-slate-200 py-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="mr-2 text-sm font-medium text-dcg-slate">
-            Jump to:
-          </span>
-          {projects.map((project, index) => (
-            <Link
-              key={project.id}
-              href={`#${project.id}`}
-              className="rounded-full border border-slate-300 px-4 py-1.5 text-sm text-dcg-ink transition hover:border-slate-400 hover:bg-slate-50"
-            >
-              {String(index + 1).padStart(2, "0")} {project.sector}
-            </Link>
-          ))}
-        </div>
-      </section>
 
       <section className="dcg-section pb-20 pt-2">
         <div className="divide-y divide-slate-200 border-t border-slate-200">
@@ -300,30 +321,15 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <section className="dcg-section border-t border-slate-200 pb-16 pt-10 md:pb-20">
-        <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-dcg-slate">
-              Next step
-            </p>
-            <h2 className="text-2xl font-semibold text-dcg-ink md:text-3xl">
-              Planning a transformation program?
-            </h2>
-            <p className="max-w-2xl text-dcg-slate">
-              We build practical, production-ready data and AI programs with
-              clear milestones and operating ownership.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/contact">Talk to our team</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/services">Explore services</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ContactCtaSection
+        eyebrow="Next step"
+        title="Planning a transformation program?"
+        description="We build practical, production-ready data and AI programs with clear milestones and operating ownership."
+        primaryLabel="Talk to our team"
+        primaryHref="/contact"
+        secondaryLabel="Explore services"
+        secondaryHref="/services"
+      />
     </div>
   );
 }

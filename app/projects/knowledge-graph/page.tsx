@@ -20,6 +20,7 @@ import {
 import FuturisticCard from "@/components/futuristic-card";
 import FuturisticSection from "@/components/futuristic-section";
 import FuturisticHeading from "@/components/futuristic-heading";
+import ContactCtaSection from "@/components/ContactCtaSection";
 import { Button } from "@/components/ui/button";
 
 export default function KnowledgeGraphProject() {
@@ -383,45 +384,15 @@ export default function KnowledgeGraphProject() {
         </div>
       </FuturisticSection>
 
-      {/* CTA Section */}
-      <FuturisticSection className="py-20">
-        <div className="flex flex-col items-center justify-center space-y-6 text-center">
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Ready to Build Your Knowledge Graph?
-            </h2>
-            <p className="mx-auto max-w-[700px] text-slate-600 md:text-xl">
-              Let's discuss how our knowledge graph and digital twin technology
-              can transform your organization's data capabilities.
-            </p>
-          </motion.div>
-          <motion.div
-            className="flex flex-col gap-4 sm:flex-row"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Button
-              asChild
-              variant="primary"
-              size="lg"
-              // className="group"
-            >
-              <Link href="/contact">Start Your Project</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="/projects">Explore More Projects</Link>
-            </Button>
-          </motion.div>
-        </div>
-      </FuturisticSection>
+      <ContactCtaSection
+        eyebrow="Next step"
+        title="Ready to Build Your Knowledge Graph?"
+        description="Let's discuss how our knowledge graph and digital twin technology can transform your organization's data capabilities."
+        primaryLabel="Start Your Project"
+        primaryHref="/contact"
+        secondaryLabel="Explore More Projects"
+        secondaryHref="/projects"
+      />
     </div>
   );
 }
