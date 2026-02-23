@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import SubpageHero from "@/components/SubpageHero";
 import { Button } from "@/components/ui/button";
-import { EvervaultCard } from "@/components/ui/evervault-card";
+import { EvervaultCardWhite } from "@/components/ui/evervault-card-white";
 
 type RoleCategory = "ai" | "cloud" | "data";
 
@@ -176,7 +176,7 @@ export default function CareersPage() {
                   //   className={`group flex min-h-[24rem] flex-col gap-4 rounded-3xl border bg-gradient-to-b p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${roleCategoryMeta[category].panel}`}
                   // >
                   //   <div className="h-56 w-full overflow-hidden rounded-2xl border border-black/10 bg-slate-950">
-                  //     <EvervaultCard
+                  //     <EvervaultCardWhite
                   //       text={roleCategoryMeta[category].label}
                   //       className="h-full w-full aspect-auto"
                   //     />
@@ -198,13 +198,13 @@ export default function CareersPage() {
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
-                    className="h-[36rem] relative bg-black shadow-sm rounded-md hover:shadow-lg"
+                    className="relative h-[32rem] rounded-md border border-slate-200 bg-white shadow-sm hover:shadow-lg"
                   >
-                    <EvervaultCard
+                    <EvervaultCardWhite
                       text={roleCategoryMeta[category].label}
                       className="h-full w-full rounded-3xl"
                     />
-                    <div className="absolute w-full bottom-4 text-white/75">
+                    <div className="absolute bottom-4 w-full text-slate-700/80">
                       {/* <p className="text-sm  ">
                                                           {roleCategoryMeta[category].description}
                                                         </p> */}
