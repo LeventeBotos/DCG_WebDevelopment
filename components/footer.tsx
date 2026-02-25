@@ -36,15 +36,15 @@ export default function Footer() {
       links: [
         {
           label: "Privacy Policy",
-          href: "/documents/PrivacyPolicy.docx",
+          href: "/privacy-policy",
         },
         {
           label: "Cookie Policy",
-          href: "/documents/CookiePolicy.docx",
+          href: "/cookie-policy",
         },
         {
           label: "Terms of Service",
-          href: "/documents/TermsOfService.docx",
+          href: "/terms-of-service",
         },
       ],
     },
@@ -161,14 +161,6 @@ export default function Footer() {
                     >
                       <Link
                         href={link.href}
-                        target={
-                          section.title === "Legal" ? "_blank" : undefined
-                        }
-                        rel={
-                          section.title === "Legal"
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
                         className="text-white/80 hover:text-white transition-colors hover:underline"
                         onClick={() =>
                           track("nav_click", {

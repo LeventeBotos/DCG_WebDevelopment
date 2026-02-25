@@ -142,7 +142,6 @@ export default function Home() {
       {/* <HeroSection /> */}
       <HeroVideoSection />
       {/* <Hero /> */}
-
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title="Unlocking Potential & Delivering Business Value at Speed"
@@ -170,7 +169,6 @@ export default function Home() {
         />
         <DCGAIPlatformSection />
       </div>
-
       <Timeline data={timeline} />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
@@ -182,7 +180,6 @@ export default function Home() {
         />
         <AIAtWorkSection />
       </div>
-
       <AiCompaniesVideo />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
@@ -203,7 +200,6 @@ export default function Home() {
       </div>
       {/* <ServicesFullScreenScroll /> */}
       {/* <OurProcess /> */}
-
       <SectionTitle
         title="Our Team Spans the Globe"
         subtitle="Connecting continents with innovative solutions."
@@ -230,19 +226,17 @@ export default function Home() {
           },
         ]}
       />
-
       <SectionTitle
         title="What Our Clients Say"
         subtitle="Hear from industry leaders who trust us with their digital transformation."
         nomb={true}
         center={true}
       />
-
       <InfiniteMovingCards items={testimonials} />
       {/* <BackgroundRippleEffectDemo /> */}
       {/* <AIFutureBuiltSection /> */}
       {/* <BackgroundBeamsWithCollision> */}
-      <div className="relative w-full min-h-96">
+      {/* <div className="relative w-full min-h-96">
         <DottedGlowBackground
           className="pointer-events-none [mask-image:radial-gradient(circle_at_center,black_0%,black_40%,transparent_95%)]"
           opacity={0.5}
@@ -267,7 +261,16 @@ export default function Home() {
           secondaryHref="/services"
           className="border-t-0 pt-10 md:pt-12"
         />
-      </div>
+      </div>{" "} */}
+      <ContactCtaSection
+        eyebrow="Next step"
+        title="Let's build tomorrow together."
+        description="Whether you're exploring your first AI use-cases or scaling an existing data and AI portfolio, we help you move from slideware to impact quickly and responsibly."
+        primaryLabel="Schedule a conversation"
+        primaryHref="/contact"
+        secondaryLabel="Explore services"
+        secondaryHref="/services"
+      />
       {/* </BackgroundBeamsWithCollision> */}
     </div>
   );
