@@ -163,10 +163,15 @@ export default async function PlatformPage({ params }: PageProps) {
   const accent = cardBackground(startColor, endColor);
   const accentTextColor = toRgb(endColor);
   const accentBorderColor = withAlpha(startColor, 0.25);
+  const primaryButtonStyle = {
+    backgroundImage: buttonGradient(startColor, endColor),
+    borderColor: withAlpha(startColor, 0.35),
+    color: "#ffffff",
+  };
   const secondaryButtonStyle = {
-    // backgroundImage: buttonGradient(startColor, endColor, 0.12),
-    borderColor: "rgba(0, 0, 0, 0.5)",
-    color: "rgba(0, 0, 0, 0.5)",
+    backgroundImage: buttonGradient(startColor, endColor, 0.08),
+    borderColor: withAlpha(startColor, 0.35),
+    color: accentTextColor,
   };
   const { baseHue: heroHue, rangeHue: heroHueRange } = hueRange(
     startColor,
@@ -207,6 +212,7 @@ export default async function PlatformPage({ params }: PageProps) {
                     asChild
                     variant="primary"
                     size="lg"
+                    style={primaryButtonStyle}
                   >
                     <Link href="/contact">Book a working session</Link>
                   </Button>

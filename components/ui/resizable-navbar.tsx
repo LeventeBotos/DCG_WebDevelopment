@@ -13,6 +13,10 @@ import {
 import React, { useRef, useState } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 
+const MobileNavStateContext = React.createContext<{ isScrolled: boolean }>({
+  isScrolled: true,
+});
+
 interface NavbarProps {
   children: React.ReactNode;
   className?: string;
@@ -77,9 +81,9 @@ export const Navbar = ({ children, className }: NavbarProps) => {
         React.isValidElement(child)
           ? React.cloneElement(
               child as React.ReactElement<{ visible?: boolean }>,
-              { visible }
+              { visible },
             )
-          : child
+          : child,
       )}
     </motion.div>
   );
@@ -108,7 +112,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
       }}
       className={cn(
         "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-        className
+        className,
       )}
     >
       {children}
@@ -124,7 +128,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       onMouseLeave={() => setHovered(null)}
       className={cn(
         "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
-        className
+        className,
       )}
     >
       {items.map((item, idx) => (
@@ -149,14 +153,30 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 };
 
 export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
+  const isScrolled = Boolean(visible);
+
   return (
     <motion.div
+      animate={{
+        backgroundColor: isScrolled
+          ? "rgba(255, 255, 255, 0.92)"
+          : "rgba(255, 255, 255, 0)",
+        backdropFilter: isScrolled ? "blur(8px)" : "blur(0px)",
+        boxShadow: isScrolled
+          ? "0 1px 2px rgba(0, 0, 0, 0.08)"
+          : "0 0 0 rgba(0, 0, 0, 0)",
+      }}
+      transition={{
+        default: { type: "tween", duration: 0.25 },
+      }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 bg-white px-4 py-3 shadow-sm lg:hidden",
-        className
+        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 px-4 py-3 lg:hidden",
+        className,
       )}
     >
-      {children}
+      <MobileNavStateContext.Provider value={{ isScrolled }}>
+        {children}
+      </MobileNavStateContext.Provider>
     </motion.div>
   );
 };
@@ -169,7 +189,7 @@ export const MobileNavHeader = ({
     <div
       className={cn(
         "flex w-full flex-row items-center justify-between",
-        className
+        className,
       )}
     >
       {children}
@@ -214,7 +234,7 @@ export const MobileNavMenu = ({
           className={cn(
             "flex w-full flex-col items-start justify-start gap-4 rounded-md border border-neutral-100 bg-white px-2 shadow-none",
             // ⬆️ note: no py-* here, padding is animated
-            className
+            className,
           )}
         >
           {children}
@@ -230,6 +250,8 @@ export const MobileNavToggle = ({
   isOpen: boolean;
   onClick: () => void;
 }) => {
+  const { isScrolled } = React.useContext(MobileNavStateContext);
+
   return (
     <Button
       type="button"
@@ -237,17 +259,30 @@ export const MobileNavToggle = ({
       size="icon"
       onClick={onClick}
       aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+      className="border-0 bg-transparent shadow-none hover:border-0 hover:bg-transparent hover:shadow-none"
     >
       {isOpen ? (
-        <IconX className="text-black" />
+        <IconX
+          className={cn(
+            "h-8 w-8 transition-colors duration-200",
+            isScrolled ? "text-black" : "text-white",
+          )}
+        />
       ) : (
-        <IconMenu2 className="text-black" />
+        <IconMenu2
+          className={cn(
+            "h-8 w-8 transition-colors duration-200",
+            isScrolled ? "text-black" : "text-white",
+          )}
+        />
       )}
     </Button>
   );
 };
 
 export const NavbarLogo = () => {
+  const { isScrolled } = React.useContext(MobileNavStateContext);
+
   return (
     <Link
       href="/"
@@ -256,7 +291,10 @@ export const NavbarLogo = () => {
       <img
         src="/logo.png"
         alt="logo"
-        className="h-8 invert md:invert-0 md:brightness-[25%] md:h-8"
+        className={cn(
+          "h-8 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
+          isScrolled ? "brightness-[25%]" : "invert-0 brightness-[75%]",
+        )}
       />
       {/* <span className="font-medium text-black ">Startup</span> */}
     </Link>
