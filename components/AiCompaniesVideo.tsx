@@ -5,11 +5,12 @@ import { Highlighter } from "./ui/highlighter";
 
 const AiCompaniesVideo = () => {
   return (
-    <div className="flex flex-col min-h-[80vh] justify-evenly mt-10 md:mt-20 items-center self-center text-center">
-      <div className="w-full  aspect-[3/1]">
+    <div className="mt-10 flex min-h-[80vh] flex-col items-center self-center text-center md:mt-20">
+      <div className="w-full aspect-[16/7] sm:aspect-[3/1]">
         <VideoText
           src="/testingvideo.mp4"
           className="h-full w-full"
+          preload="metadata"
           // fontSize={24}
           fontWeight="1000"
           fontFamily="helvetica"
@@ -18,12 +19,12 @@ const AiCompaniesVideo = () => {
         </VideoText>
       </div>
 
-      <div className="md:w-2/3 self-center flex flex-col items-center">
-        <p className="pb-6 md:pb-8 text-3xl md:text-5xl font-semibold">
+      <div className="flex flex-col items-center self-center px-4 md:w-2/3 md:px-0">
+        <p className="pb-5 text-2xl font-semibold sm:text-3xl md:pb-8 md:text-5xl">
           of companies are AI future-built
         </p>
 
-        <p className="opacity-70 space-y-3 text-lg md:text-2xl leading-relaxed">
+        <p className="space-y-3 text-base leading-relaxed opacity-70 sm:text-lg md:text-2xl">
           Yet these leaders achieve{" "}
           <Highlighter action="box" color="#009ACA" isView>
             5× higher revenue growth

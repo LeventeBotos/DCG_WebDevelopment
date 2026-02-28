@@ -72,7 +72,7 @@ export function VideoText({
   autoPlay = true,
   muted = true,
   loop = true,
-  preload = "auto",
+  preload = "metadata",
   fontSize = 22,
   fontWeight = "bold",
   textAnchor = "middle",

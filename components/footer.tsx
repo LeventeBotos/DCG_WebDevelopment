@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import FuturisticBlob from "./futuristic-blob";
@@ -212,7 +211,7 @@ export default function Footer() {
                 <Mail className="h-4 w-4" />
                 <a
                   href="mailto:info@dataconsulting-group.com"
-                  className="hover:text-white transition-colors"
+                  className="break-all transition-colors hover:text-white sm:break-normal"
                   onClick={() =>
                     track("email_click", {
                       email: "info@dataconsulting-group.com",
@@ -225,7 +224,7 @@ export default function Footer() {
               </div>
               <a
                 href="tel:+44 (0) 20 80639958"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 break-all sm:break-normal"
                 onClick={() =>
                   track("phone_click", {
                     phone: "+44 (0) 20 80639958",
@@ -240,7 +239,7 @@ export default function Footer() {
                 {/* <span className="text-xs uppercase tracking-wide">Web</span> */}
                 <a
                   href="https://www.dataconsulting-group.com"
-                  className="hover:text-white transition-colors"
+                  className="break-all transition-colors hover:text-white sm:break-normal"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
@@ -257,7 +256,7 @@ export default function Footer() {
                 Let&apos;s build tomorrow together.
               </p>
             </div>
-            <div className="text-right text-sm text-white/60">
+            <div className="text-left text-sm text-white/60 md:text-right">
               <p>
                 &copy; {new Date().getFullYear()} Data Consulting Group Ltd. All
                 rights reserved.

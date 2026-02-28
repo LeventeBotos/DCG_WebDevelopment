@@ -63,20 +63,20 @@ const withAlpha = (rgb: [number, number, number], alpha: number) =>
 
 const buildHeroBackground = (
   start: [number, number, number],
-  end: [number, number, number]
+  end: [number, number, number],
 ) => ({
   backgroundImage: `
     radial-gradient(circle at 15% 20%, ${withAlpha(
       start,
-      0.35
+      0.35,
     )} 0, transparent 40%),
     radial-gradient(circle at 82% 16%, ${withAlpha(
       end,
-      0.36
+      0.36,
     )} 0, transparent 40%),
     radial-gradient(circle at 68% 78%, ${withAlpha(
       end,
-      0.26
+      0.26,
     )} 0, transparent 40%),
     linear-gradient(135deg, ${withAlpha(start, 0.25)}, ${withAlpha(end, 0.12)})
   `,
@@ -84,11 +84,11 @@ const buildHeroBackground = (
 
 const cardBackground = (
   start: [number, number, number],
-  end: [number, number, number]
+  end: [number, number, number],
 ) => ({
   background: `linear-gradient(135deg, ${withAlpha(start, 0.08)}, ${withAlpha(
     end,
-    0.16
+    0.16,
   )})`,
   borderColor: withAlpha(start, 0.25),
 });
@@ -99,11 +99,11 @@ const toRgb = (rgb: [number, number, number]) =>
 const buttonGradient = (
   start: [number, number, number],
   end: [number, number, number],
-  alpha = 1
+  alpha = 1,
 ) =>
   `linear-gradient(90deg, ${withAlpha(start, alpha)}, ${withAlpha(
     end,
-    alpha
+    alpha,
   )})`;
 
 const rgbToHue = ([r, g, b]: [number, number, number]) => {
@@ -120,8 +120,8 @@ const rgbToHue = ([r, g, b]: [number, number, number]) => {
     max === nr
       ? (ng - nb) / delta
       : max === ng
-      ? 2 + (nb - nr) / delta
-      : 4 + (nr - ng) / delta;
+        ? 2 + (nb - nr) / delta
+        : 4 + (nr - ng) / delta;
 
   hue *= 60;
   if (hue < 0) hue += 360;
@@ -130,7 +130,7 @@ const rgbToHue = ([r, g, b]: [number, number, number]) => {
 
 const hueRange = (
   start: [number, number, number],
-  end: [number, number, number]
+  end: [number, number, number],
 ) => {
   const h1 = rgbToHue(start);
   const h2 = rgbToHue(end);
@@ -175,7 +175,7 @@ export default async function PlatformPage({ params }: PageProps) {
   };
   const { baseHue: heroHue, rangeHue: heroHueRange } = hueRange(
     startColor,
-    endColor
+    endColor,
   );
 
   return (
@@ -207,7 +207,7 @@ export default async function PlatformPage({ params }: PageProps) {
                   </p>
                 </div>
 
-                <div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start">
+                <div className="flex w-full flex-col md:flex-row gap-2 md:gap-4 justify-center lg:justify-start">
                   <Button
                     asChild
                     variant="primary"

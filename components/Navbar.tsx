@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
 import {
@@ -9,7 +9,6 @@ import {
   NavItems,
   MobileNav,
   NavbarLogo,
-  NavbarButton,
   MobileNavHeader,
   MobileNavToggle,
   MobileNavMenu,
@@ -17,6 +16,18 @@ import {
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
   const navItems = [
     { name: "Services", link: "/services" },
@@ -52,7 +63,7 @@ export default function Header() {
           </NavBody>
 
           {/* Mobile */}
-          <MobileNav>
+          <MobileNav isMenuOpen={isMobileMenuOpen}>
             <MobileNavHeader>
               <NavbarLogo />
               <MobileNavToggle
@@ -77,7 +88,7 @@ export default function Header() {
                     });
                     setIsMobileMenuOpen(false);
                   }}
-                  className="relative text-neutral-600 "
+                  className="w-full rounded-md px-2 py-3 text-base font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
                 >
                   <span className="block">{item.name}</span>
                 </Link>

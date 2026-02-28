@@ -42,7 +42,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-clip;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -504,6 +505,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .subpage-hero-orb-one,
   .subpage-hero-orb-two,
   .subpage-hero-orb-three,

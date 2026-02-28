@@ -190,7 +190,7 @@ export default function ServicesPage() {
   }, [activeCategory, query]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <SubpageHero
         eyebrow="Services"
         title="A clear, outcome-first catalog across data, AI, and cloud."
@@ -222,7 +222,7 @@ export default function ServicesPage() {
         <DCGAIPlatformSection />
       </section>
 
-      <section className="dcg-section space-y-6 py-12 md:py-16">
+      <section className="dcg-section space-y-6 w-full py-12 md:py-16">
         <div className="max-w-3xl space-y-3">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
             Service directory
@@ -238,49 +238,25 @@ export default function ServicesPage() {
 
         <div className="space-y-4">
           {!activeCategory ? (
-            <div className="space-y-4 max-w-4xl mx-auto self-center flex flex-row items-center">
-              <div className="grid gap-4 md:grid-cols-3">
+            <div className="space-y-4 max-w-4xl  mx-auto self-center flex flex-row items-center">
+              <div className="grid gap-4  md:grid-cols-3">
                 {categoryKeys.map((category) => (
-                  // <button
-                  //   key={category}
-                  //   type="button"
-                  //   onClick={() => setActiveCategory(category)}
-                  //   className={`group flex min-h-[24rem] flex-col gap-4 rounded-3xl border bg-gradient-to-b p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${categoryStyle[category].panel}`}
-                  // >
-                  //   <div className="h-56 w-full overflow-hidden rounded-2xl border border-black/10 bg-slate-950">
-                  //     <EvervaultCardWhite
-                  //       text={categoryMeta[category].label}
-                  //       className="h-full w-full aspect-auto"
-                  //     />
-                  //   </div>
-                  //   <div className="space-y-2 px-1">
-                  //     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                  //       Category
-                  //     </p>
-                  //     <p className="text-sm text-slate-700">
-                  //       {categoryMeta[category].description}
-                  //     </p>
-                  //   </div>
-                  // <p className="mt-auto px-1 text-sm font-semibold text-slate-700">
-                  //   {serviceCountsByCategory[category]} grouped services
-                  // </p>
-                  // </button>
                   <button
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
-                    className="relative h-[32rem] rounded-md border border-slate-200 bg-white shadow-sm hover:shadow-lg"
+                    className="relative h-[32rem] w-full rounded-md border border-slate-200 bg-white shadow-sm hover:shadow-lg"
                   >
                     <EvervaultCardWhite
                       text={categoryMeta[category].label}
-                      className="h-full w-full rounded-3xl"
+                      className="h-full rounded-3xl"
                     />
-                    <div className="absolute bottom-4 w-full text-slate-700/80">
+                    <div className="absolute bottom-4 text-slate-700/80">
                       {/* <p className="text-sm  ">
                                         {roleCategoryMeta[category].description}
                                       </p> */}
 
-                      <p className="mx-auto px-1 text-sm font-semibold ">
+                      <p className="mx-auto px-1  text-sm font-semibold ">
                         {serviceCountsByCategory[category]} grouped services
                       </p>
                     </div>
