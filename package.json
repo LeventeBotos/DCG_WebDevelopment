@@ -48,7 +48,7 @@
     "date-fns": "4.1.0",
     "dotted-map": "^2.2.3",
     "embla-carousel-react": "8.5.1",
-    "framer-motion": "^12.9.4",
+    "framer-motion": "^12.34.3",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
     "mini-svg-data-uri": "^1.4.4",
