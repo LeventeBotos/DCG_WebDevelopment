@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
@@ -129,6 +130,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 
 export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
+  const pathname = usePathname();
 
   return (
     <motion.nav
@@ -146,6 +148,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           className="relative px-4 py-2 text-neutral-600 "
           key={`link-${idx}`}
           href={item.link}
+          aria-current={pathname === item.link ? "page" : undefined}
         >
           {hovered === idx && (
             <motion.div
@@ -310,8 +313,8 @@ export const NavbarLogo = () => {
       <Image
         src="/logo.png"
         alt="Data Consulting Group"
-        width={120}
-        height={32}
+        width={768}
+        height={338}
         priority
         className={cn(
           "h-7 w-auto invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",

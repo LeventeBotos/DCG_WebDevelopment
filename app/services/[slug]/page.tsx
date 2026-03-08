@@ -50,7 +50,6 @@ export default async function ServiceDetailPage({
   const { slug } = await params;
   const service = servicesBySlug[slug];
 
-  console.log(slug);
   if (!service) {
     notFound();
   }

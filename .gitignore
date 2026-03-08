@@ -5,6 +5,7 @@
 
 # next.js
 /.next/
+/.next-workspace/
 /.next-local/
 /.next-runtime/
 /.next-deploy/
@@ -34,3 +35,6 @@ next-env.d.ts
 *.log
 
 /public/video
+
+node_modules.bak.20260308T1836/
+.npm-cache/

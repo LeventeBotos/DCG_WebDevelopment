@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
-import FuturisticBlob from "./futuristic-blob";
 import { useCookieConsent } from "@/hooks/use-cookie-consent";
 import { track } from "@/lib/analytics";
 import { siteConfig } from "@/lib/site";
@@ -73,24 +72,10 @@ export default function Footer() {
   }>;
 
   return (
-    <footer className="relative overflow-hidden bg-black bg-gradient-to-br from-dcg-lightBlue to-dcg-lightGreen text-white">
-      <div className="absolute inset-0 pointer-events-none">
-        <FuturisticBlob
-          className="-left-40 -top-40"
-          color="#0F3D2E"
-          opacity={0.1}
-          size={500}
-          blur={80}
-        />
-        <FuturisticBlob
-          className="-right-40 -bottom-40"
-          color="#0A4C8A"
-          opacity={0.1}
-          size={500}
-          blur={80}
-        />
-      </div>
-
+    <footer
+      className="relative overflow-hidden bg-black bg-gradient-to-br from-dcg-lightBlue to-dcg-lightGreen text-white"
+      aria-label="Footer"
+    >
       {/* Grid pattern overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-10"
@@ -113,9 +98,9 @@ export default function Footer() {
                 <Image
                   src="/logo.png"
                   alt="DCG Logo"
-                  width={96}
-                  height={20}
-                  className="h-5 w-auto object-cover"
+                  width={768}
+                  height={338}
+                  className="h-5 w-auto"
                 />
                 <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
@@ -163,8 +148,16 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 * sectionIndex }}
             >
-              <h3 className="text-lg font-semibold">{section.title}</h3>
-              <ul className="space-y-2">
+              <h3
+                id={`footer-section-${sectionIndex}`}
+                className="text-lg font-semibold"
+              >
+                {section.title}
+              </h3>
+              <ul
+                className="space-y-2"
+                aria-labelledby={`footer-section-${sectionIndex}`}
+              >
                 {section.links.map((link, linkIndex) => {
                   return (
                     <motion.li

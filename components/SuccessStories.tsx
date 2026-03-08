@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const successStories = [
   {
     company: "Shell",
-    logo: "https://www.pngplay.com/wp-content/uploads/3/Royal-Dutch-Shell-Logo-PNG-HD-Quality.png",
+    logo: "./shell.png",
     industry: "Energy",
     result: "40% improvement in production forecasting accuracy",
     impact: "£12M+ annual cost savings",
@@ -15,7 +15,7 @@ const successStories = [
   {
     company: "British Airways",
     industry: "Aviation",
-    logo: "https://1000logos.net/wp-content/uploads/2016/10/British-Airways-Logo.png",
+    logo: "./british-airways.png",
     result: "60% reduction in fraud detection time",
     impact: "Enhanced customer security",
 
@@ -27,7 +27,7 @@ const successStories = [
     result: "35% increase in supply chain efficiency",
     impact: "Faster time-to-market",
 
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Infosys_logo.svg/1280px-Infosys_logo.svg.png",
+    logo: "./infosys.png",
     delay: 0.3,
   },
 ];
