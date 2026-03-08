@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
@@ -56,6 +57,7 @@ interface MobileNavHeaderProps {
 interface MobileNavMenuProps {
   children: React.ReactNode;
   className?: string;
+  id?: string;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -129,7 +131,8 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <motion.div
+    <motion.nav
+      aria-label="Primary"
       onMouseLeave={() => setHovered(null)}
       className={cn(
         "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
@@ -153,7 +156,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
           <span className="relative z-20">{item.name}</span>
         </Link>
       ))}
-    </motion.div>
+    </motion.nav>
   );
 };
 
@@ -222,6 +225,7 @@ const variants = {
 export const MobileNavMenu = ({
   children,
   className,
+  id,
   isOpen,
 }: MobileNavMenuProps) => {
   return (
@@ -229,6 +233,10 @@ export const MobileNavMenu = ({
       {isOpen && (
         <motion.div
           key="mobile-nav-menu"
+          id={id}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
           initial="collapsed"
           animate="open"
           exit="collapsed"
@@ -253,9 +261,11 @@ export const MobileNavMenu = ({
 };
 export const MobileNavToggle = ({
   isOpen,
+  controlsId,
   onClick,
 }: {
   isOpen: boolean;
+  controlsId: string;
   onClick: () => void;
 }) => {
   const { isScrolled } = React.useContext(MobileNavStateContext);
@@ -266,6 +276,8 @@ export const MobileNavToggle = ({
       variant="secondary"
       size="icon"
       onClick={onClick}
+      aria-controls={controlsId}
+      aria-expanded={isOpen}
       aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
       className="h-12 w-12 border-0 bg-transparent shadow-none [&_svg]:size-7 hover:border-0 hover:bg-transparent hover:shadow-none"
     >
@@ -293,12 +305,16 @@ export const NavbarLogo = () => {
     <Link
       href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-white"
+      aria-label="Data Consulting Group home"
     >
-      <img
+      <Image
         src="/logo.png"
-        alt="logo"
+        alt="Data Consulting Group"
+        width={120}
+        height={32}
+        priority
         className={cn(
-          "h-7 invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
+          "h-7 w-auto invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
         )}
       />
       {/* <span className="font-medium text-black ">Startup</span> */}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { motion } from "framer-motion";
 
@@ -54,12 +55,14 @@ const SuccessStories = () => {
                 >
                   <div className="flex items-center gap-3">
                     {story.logo && (
-                      <img
+                      <Image
                         src={story.logo}
                         alt={`${story.company} logo`}
+                        width={128}
+                        height={32}
                         className="h-8 w-auto grayscale transition duration-300 group-hover/card:grayscale-0"
                         loading="lazy"
-                        decoding="async"
+                        unoptimized={false}
                       />
                     )}
                   </div>

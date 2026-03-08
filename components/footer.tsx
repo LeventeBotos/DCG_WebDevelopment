@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import FuturisticBlob from "./futuristic-blob";
 import { useCookieConsent } from "@/hooks/use-cookie-consent";
 import { track } from "@/lib/analytics";
+import { siteConfig } from "@/lib/site";
 
 export default function Footer() {
   const { resetConsent } = useCookieConsent();
@@ -50,9 +52,25 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Twitter, href: "https://twitter.com", label: "X (Twitter)" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  ];
+    siteConfig.socialLinks.x
+      ? {
+          icon: Twitter,
+          href: siteConfig.socialLinks.x,
+          label: "X (Twitter)",
+        }
+      : null,
+    siteConfig.socialLinks.linkedin
+      ? {
+          icon: Linkedin,
+          href: siteConfig.socialLinks.linkedin,
+          label: "LinkedIn",
+        }
+      : null,
+  ].filter(Boolean) as Array<{
+    icon: typeof Twitter;
+    href: string;
+    label: string;
+  }>;
 
   return (
     <footer className="relative overflow-hidden bg-black bg-gradient-to-br from-dcg-lightBlue to-dcg-lightGreen text-white">
@@ -92,46 +110,47 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
             >
               <Link href="/" className="flex items-center space-x-2 mb-6">
-                {/* <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white/10 backdrop-blur-sm"> */}
-                <img
+                <Image
                   src="/logo.png"
                   alt="DCG Logo"
-                  // fill
-                  className="object-cover h-5"
+                  width={96}
+                  height={20}
+                  className="h-5 w-auto object-cover"
                 />
-                {/* </div> */}
                 <span className="font-bold text-xl">Data Consulting Group</span>
               </Link>
               <p className="max-w-xs mb-6 text-white/80">
                 Transforming ambition into AI-driven impact across data
                 platforms, analytics, and cloud for global enterprises.
               </p>
-              <div className="flex space-x-4">
-                {socialLinks.map((link, index) => (
-                  <motion.a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                    aria-label={link.label}
-                    onClick={() =>
-                      track("social_click", {
-                        label: link.label,
-                        href: link.href,
-                        location: "footer",
-                      })
-                    }
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.1 * index }}
-                    whileHover={{ y: -5 }}
-                  >
-                    <link.icon className="h-5 w-5" />
-                  </motion.a>
-                ))}
-              </div>
+              {socialLinks.length ? (
+                <div className="flex space-x-4">
+                  {socialLinks.map((link, index) => (
+                    <motion.a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                      aria-label={link.label}
+                      onClick={() =>
+                        track("social_click", {
+                          label: link.label,
+                          href: link.href,
+                          location: "footer",
+                        })
+                      }
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.1 * index }}
+                      whileHover={{ y: -5 }}
+                    >
+                      <link.icon className="h-5 w-5" />
+                    </motion.a>
+                  ))}
+                </div>
+              ) : null}
             </motion.div>
           </div>
 
@@ -160,7 +179,7 @@ export default function Footer() {
                     >
                       <Link
                         href={link.href}
-                        className="text-white/80 hover:text-white transition-colors hover:underline"
+                        className="text-white/80 transition-colors hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                         onClick={() =>
                           track("nav_click", {
                             label: link.label,
@@ -185,7 +204,7 @@ export default function Footer() {
                     });
                     resetConsent();
                   }}
-                  className="text-white/80 hover:text-white transition-colors hover:underline"
+                  className="text-white/80 transition-colors hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
                   Manage cookies
                 </button>

@@ -8,7 +8,7 @@ import { GA_ID } from "@/lib/analytics";
 export default function Analytics() {
   const { consent, isReady } = useCookieConsent();
 
-  if (!isReady || consent !== "granted") {
+  if (!GA_ID || !isReady || consent !== "granted") {
     return null;
   }
 

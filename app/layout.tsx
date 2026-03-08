@@ -68,6 +68,16 @@ export const metadata: Metadata = {
     },
   },
   themeColor: "#000000",
+  manifest: "/manifest.webmanifest",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.png",
+  },
   appleWebApp: {
     statusBarStyle: "black",
   },
@@ -87,15 +97,21 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
-        className={`${inter.className} min-h-screen flex relative flex-col  text-slate-900`}
+        className={`${inter.className} relative flex min-h-screen flex-col text-slate-900 antialiased`}
       >
+        <a
+          href="#main-content"
+          className="sr-only z-[100] rounded-md bg-white px-4 py-2 text-black focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Skip to content
+        </a>
         <Analytics />
         <Header />
-        {/* <Header /> */}
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" className="flex-grow" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
         <CookieBanner />
-        {/* <WhatsAppChat /> */}
       </body>
     </html>
   );

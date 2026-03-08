@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { track } from "@/lib/analytics";
 import {
   Navbar,
@@ -16,6 +17,7 @@ import {
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -27,6 +29,23 @@ export default function Header() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMobileMenuOpen]);
 
   const navItems = [
@@ -68,11 +87,13 @@ export default function Header() {
               <NavbarLogo />
               <MobileNavToggle
                 isOpen={isMobileMenuOpen}
+                controlsId="mobile-navigation-menu"
                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
               />
             </MobileNavHeader>
 
             <MobileNavMenu
+              id="mobile-navigation-menu"
               isOpen={isMobileMenuOpen}
               onClose={() => setIsMobileMenuOpen(false)}
             >

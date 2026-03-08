@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
 import SubpageHero from "@/components/SubpageHero";
 import { Button } from "@/components/ui/button";
 import { EvervaultCardWhite } from "@/components/ui/evervault-card-white";
@@ -137,6 +137,11 @@ export default function CareersPage() {
     "Complete the form and submit your application.",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const dialogTitleId = useId();
+  const dialogDescriptionId = useId();
+  const statusMessageId = useId();
 
   const filteredRoles = useMemo(
     () =>
@@ -152,12 +157,37 @@ export default function CareersPage() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsApplyOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) {
+        return;
+      }
+
+      const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (!firstElement || !lastElement) {
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     };
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
+    closeButtonRef.current?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -271,6 +301,7 @@ export default function CareersPage() {
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
+                    aria-label={`Show ${roleCategoryMeta[category].label} roles`}
                     className="relative h-[24rem] w-full rounded-md border border-slate-200 bg-white shadow-sm transition hover:shadow-lg sm:h-[28rem] md:h-[32rem]"
                   >
                     <EvervaultCardWhite
@@ -349,15 +380,18 @@ export default function CareersPage() {
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setIsApplyOpen(false)}
-            aria-hidden
+            aria-hidden="true"
           />
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Apply for role"
+            aria-labelledby={dialogTitleId}
+            aria-describedby={dialogDescriptionId}
             className="relative z-10 w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl md:p-8"
           >
             <button
+              ref={closeButtonRef}
               type="button"
               onClick={() => setIsApplyOpen(false)}
               className="absolute right-4 top-4 rounded-full border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-400 hover:text-slate-900"
@@ -369,10 +403,10 @@ export default function CareersPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightBlue">
                 Role application
               </p>
-              <h3 className="text-2xl font-bold text-dcg-ink">
+              <h3 id={dialogTitleId} className="text-2xl font-bold text-dcg-ink">
                 Apply in a few minutes
               </h3>
-              <p className="text-sm text-slate-600">
+              <p id={dialogDescriptionId} className="text-sm text-slate-600">
                 We review every application manually and typically respond within
                 5 business days.
               </p>
@@ -381,6 +415,7 @@ export default function CareersPage() {
             <form
               onSubmit={submitApplication}
               aria-busy={applicationState === "submitting"}
+              aria-describedby={statusMessageId}
               className="mt-6 space-y-4"
             >
               <fieldset
@@ -527,17 +562,19 @@ export default function CareersPage() {
                   />
                 </label>
 
-                <label className="sr-only" htmlFor="website">
-                  Website
-                </label>
-                <input
-                  id="website"
-                  name="website"
-                  type="text"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  className="hidden"
-                />
+                <div aria-hidden="true" className="hidden">
+                  <label className="sr-only" htmlFor="website">
+                    Website
+                  </label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                  />
+                </div>
               </fieldset>
 
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -556,6 +593,10 @@ export default function CareersPage() {
                       : "Submit application"}
                 </Button>
                 <p
+                  id={statusMessageId}
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
                   className={`text-xs ${
                     applicationState === "error"
                       ? "text-red-600"

@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronDown, Globe2, Mail, MapPin, Search } from "lucide-react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { Check, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
-import ContactCtaSection from "@/components/ContactCtaSection";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -15,6 +13,9 @@ const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
     ssr: false,
+    loading: () => (
+      <div className="h-full w-full rounded-[2rem] border border-white/10 bg-white/5" />
+    ),
   },
 );
 
@@ -248,6 +249,7 @@ export default function ContactPage() {
   const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [countryQuery, setCountryQuery] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [activeCountryIndex, setActiveCountryIndex] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
@@ -256,9 +258,13 @@ export default function ContactPage() {
   );
   const [requestId, setRequestId] = useState<string | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+  const [shouldRenderGlobe, setShouldRenderGlobe] = useState(false);
   const statusTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const globeSectionRef = useRef<HTMLDivElement>(null);
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const countrySearchRef = useRef<HTMLInputElement>(null);
+  const countryListboxId = useId();
+  const countryLabelId = useId();
 
   useOutsideClick(countryDropdownRef, () => setIsCountryOpen(false));
 
@@ -286,12 +292,36 @@ export default function ContactPage() {
   }, [status]);
 
   useEffect(() => {
-    if (isCountryOpen) {
-      countrySearchRef.current?.focus();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        setShouldRenderGlobe(true);
+        observer.disconnect();
+      },
+      { rootMargin: "200px 0px" },
+    );
+
+    if (globeSectionRef.current) {
+      observer.observe(globeSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isCountryOpen) {
+      setCountryQuery("");
       return;
     }
 
-    setCountryQuery("");
+    const timer = window.setTimeout(() => {
+      countrySearchRef.current?.focus();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [isCountryOpen]);
 
   const resetStatus = () => {
@@ -373,9 +403,10 @@ export default function ContactPage() {
       }
 
       form.reset();
-      setSelectedCountry("");
-      setCountryQuery("");
       setIsCountryOpen(false);
+      setCountryQuery("");
+      setActiveCountryIndex(0);
+      setSelectedCountry("");
       track("contact_success", { topic: payload.topic || undefined });
       setSubmittedMessage(
         "Thanks for reaching out! We received your message and will reply soon.",
@@ -413,7 +444,9 @@ export default function ContactPage() {
   const filteredCountries = useMemo(() => {
     const normalizedQuery = countryQuery.trim().toLowerCase();
 
-    if (!normalizedQuery) return countries;
+    if (!normalizedQuery) {
+      return countries;
+    }
 
     return countries.filter(({ name, code }) => {
       const normalizedName = name.toLowerCase();
@@ -431,11 +464,81 @@ export default function ContactPage() {
     [selectedCountry],
   );
 
+  useEffect(() => {
+    if (!filteredCountries.length) {
+      setActiveCountryIndex(0);
+      return;
+    }
+
+    const selectedIndex = filteredCountries.findIndex(
+      (country) => country.name === selectedCountry,
+    );
+
+    setActiveCountryIndex(
+      selectedIndex >= 0 ? selectedIndex : Math.min(activeCountryIndex, filteredCountries.length - 1),
+    );
+  }, [filteredCountries, selectedCountry]);
+
   const handleCountrySelect = (country: string) => {
     setSelectedCountry(country);
     setCountryQuery("");
     setIsCountryOpen(false);
+    setActiveCountryIndex(0);
     resetStatus();
+  };
+
+  const openCountryDropdown = () => {
+    setIsCountryOpen(true);
+  };
+
+  const handleCountryTriggerKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+  ) => {
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "ArrowUp" ||
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+      openCountryDropdown();
+    }
+  };
+
+  const handleCountrySearchKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setIsCountryOpen(false);
+      return;
+    }
+
+    if (!filteredCountries.length) {
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveCountryIndex((current) =>
+        Math.min(current + 1, filteredCountries.length - 1),
+      );
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveCountryIndex((current) => Math.max(current - 1, 0));
+      return;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const activeCountry = filteredCountries[activeCountryIndex];
+      if (activeCountry) {
+        handleCountrySelect(activeCountry.name);
+      }
+    }
   };
 
   const globeConfig = useMemo(
@@ -579,6 +682,7 @@ export default function ContactPage() {
             <form
               onSubmit={handleSubmit}
               aria-busy={status === "submitting"}
+              aria-describedby="contact-form-status"
               className="relative overflow-hidden rounded-3xl border border-white/10 text-white/30 p-6 shadow-xl"
             >
               <div className="absolute -top-20 right-0 h-40 w-40 rounded-full blur-3xl" />
@@ -601,7 +705,7 @@ export default function ContactPage() {
                   className="space-y-4"
                 >
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm">
+                    <label className="space-y-2 text-sm font-medium text-white">
                       Name
                       <input
                         required
@@ -612,7 +716,7 @@ export default function ContactPage() {
                         placeholder="Your name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm">
+                    <label className="space-y-2 text-sm font-medium text-white">
                       Work email
                       <input
                         required
@@ -627,7 +731,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
-                    <label className="space-y-2 text-sm">
+                    <label className="space-y-2 text-sm font-medium text-white">
                       Company
                       <input
                         name="company"
@@ -637,8 +741,10 @@ export default function ContactPage() {
                         placeholder="Organization name"
                       />
                     </label>
-                    <div className="space-y-2 text-sm">
-                      <label htmlFor="country-search">Country</label>
+                    <div className="space-y-2 text-sm font-medium text-white">
+                      <label id={countryLabelId} htmlFor="country-search">
+                        Country
+                      </label>
                       <div className="relative" ref={countryDropdownRef}>
                         <input
                           type="hidden"
@@ -650,13 +756,16 @@ export default function ContactPage() {
                           onClick={() =>
                             setIsCountryOpen((currentOpen) => !currentOpen)
                           }
+                          onKeyDown={handleCountryTriggerKeyDown}
                           className={cn(
                             inputClassName,
                             "flex items-center justify-between gap-3 text-left",
                             !selectedCountryOption && "text-dcg-slate",
                           )}
+                          aria-labelledby={countryLabelId}
                           aria-haspopup="listbox"
                           aria-expanded={isCountryOpen}
+                          aria-controls={isCountryOpen ? countryListboxId : undefined}
                           disabled={status === "submitting"}
                         >
                           <span className="flex min-w-0 items-center gap-3">
@@ -687,11 +796,23 @@ export default function ContactPage() {
                                   id="country-search"
                                   ref={countrySearchRef}
                                   type="text"
+                                  role="combobox"
+                                  aria-autocomplete="list"
+                                  aria-expanded={isCountryOpen}
+                                  aria-controls={countryListboxId}
+                                  aria-labelledby={countryLabelId}
+                                  aria-activedescendant={
+                                    filteredCountries[activeCountryIndex]
+                                      ? `country-option-${filteredCountries[activeCountryIndex].code}`
+                                      : undefined
+                                  }
                                   value={countryQuery}
                                   onChange={(event) => {
                                     setCountryQuery(event.target.value);
+                                    setActiveCountryIndex(0);
                                     resetStatus();
                                   }}
+                                  onKeyDown={handleCountrySearchKeyDown}
                                   className="h-11 w-full bg-transparent text-sm text-white placeholder:text-dcg-slate focus:outline-none"
                                   placeholder="Search country"
                                   autoComplete="off"
@@ -700,24 +821,31 @@ export default function ContactPage() {
                             </div>
 
                             <div
+                              id={countryListboxId}
                               role="listbox"
+                              aria-labelledby={countryLabelId}
                               className="max-h-72 overflow-y-auto p-2"
                             >
                               {filteredCountries.length ? (
-                                filteredCountries.map((country) => {
+                                filteredCountries.map((country, index) => {
                                   const isSelected =
                                     country.name === selectedCountry;
+                                  const isActive = index === activeCountryIndex;
 
                                   return (
                                     <button
                                       key={country.code}
+                                      id={`country-option-${country.code}`}
                                       type="button"
                                       onClick={() =>
                                         handleCountrySelect(country.name)
                                       }
+                                      onMouseEnter={() =>
+                                        setActiveCountryIndex(index)
+                                      }
                                       className={cn(
                                         "flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm text-white transition hover:bg-white/5",
-                                        isSelected && "bg-white/5",
+                                        (isSelected || isActive) && "bg-white/5",
                                       )}
                                       role="option"
                                       aria-selected={isSelected}
@@ -748,7 +876,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <label className="space-y-2 text-sm">
+                  <label className="space-y-2 text-sm font-medium text-white">
                     Phone number (optional)
                     <input
                       type="tel"
@@ -760,7 +888,7 @@ export default function ContactPage() {
                     />
                   </label>
 
-                  <label className="space-y-2 text-sm">
+                  <label className="space-y-2 text-sm font-medium text-white">
                     Topic
                     <select
                       name="topic"
@@ -777,7 +905,7 @@ export default function ContactPage() {
                     </select>
                   </label>
 
-                  <label className="space-y-2 text-sm">
+                  <label className="space-y-2 text-sm font-medium text-white">
                     Message
                     <textarea
                       required
@@ -789,17 +917,19 @@ export default function ContactPage() {
                     />
                   </label>
 
-                  <label className="sr-only" htmlFor="website">
-                    Website
-                  </label>
-                  <input
-                    id="website"
-                    name="website"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    className="hidden"
-                  />
+                  <div aria-hidden="true" className="hidden">
+                    <label className="sr-only" htmlFor="website">
+                      Website
+                    </label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      className="hidden"
+                    />
+                  </div>
                 </fieldset>
 
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -818,7 +948,19 @@ export default function ContactPage() {
                         : "Submit"}
                   </Button>
 
-                  <p className="text-xs text-dcg-slate">
+                  <p
+                    id="contact-form-status"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    className={`text-xs ${
+                      status === "error"
+                        ? "text-red-300"
+                        : status === "submitted"
+                          ? "text-emerald-300"
+                          : "text-dcg-slate"
+                    }`}
+                  >
                     {status === "submitting"
                       ? `${statusMessage}${elapsedSeconds ? ` (${elapsedSeconds}s)` : ""}`
                       : statusMessage}
@@ -828,13 +970,21 @@ export default function ContactPage() {
             </form>
           </div>
 
-          <aside className="space-y-6">
+          <aside
+            ref={globeSectionRef}
+            className="space-y-6"
+            aria-label="Global delivery coverage"
+          >
             <div className="relative h-[36rem]">
               <div className="absolute inset-0">
-                <World
-                  data={globeArcs as any}
-                  globeConfig={globeConfig as any}
-                />
+                {shouldRenderGlobe ? (
+                  <World
+                    data={globeArcs as any}
+                    globeConfig={globeConfig as any}
+                  />
+                ) : (
+                  <div className="h-full w-full rounded-[2rem] border border-white/10 bg-white/5" />
+                )}
               </div>
             </div>
           </aside>

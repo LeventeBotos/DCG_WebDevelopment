@@ -6,11 +6,15 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   compress: true,
   distDir: ".next-artifacts",
   poweredByHeader: false,
   turbopack: {
     root: __dirname,
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@tabler/icons-react"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -33,6 +37,36 @@ const nextConfig = {
         hostname: "upload.wikimedia.org",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+        ],
+      },
+    ];
   },
 };
 

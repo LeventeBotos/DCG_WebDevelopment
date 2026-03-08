@@ -8,10 +8,14 @@ declare global {
 }
 
 export const GA_ID =
-  process.env.NEXT_PUBLIC_GA_ID || "G-T9WH3XWBH5";
+  process.env.NEXT_PUBLIC_GA_ID?.trim() || null;
 
 export function hasAnalytics(): boolean {
-  return typeof window !== "undefined" && typeof window.gtag === "function";
+  return (
+    Boolean(GA_ID) &&
+    typeof window !== "undefined" &&
+    typeof window.gtag === "function"
+  );
 }
 
 export function pageview(url: string) {
