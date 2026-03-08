@@ -58,6 +58,8 @@ const SuccessStories = () => {
                         src={story.logo}
                         alt={`${story.company} logo`}
                         className="h-8 w-auto grayscale transition duration-300 group-hover/card:grayscale-0"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                   </div>

@@ -1,36 +1,78 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 
-const Hero = () => {
-  return (
-    <section className="relative h-screen flex text-white flex-col items-center w-full justify-center overflow-hidden ">
-      <div className="pointer-events-none absolute inset-0 -z-10 md:block hidden">
-        <video
-          className="h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/bg_video_thumbnail.jpeg"
-          aria-hidden="true"
-        >
-          <source src="/bg_video.mov" type="video/mp4" />
-        </video>
+type ConnectionWithSaveData = {
+  saveData?: boolean;
+  addEventListener?: (type: string, listener: () => void) => void;
+  removeEventListener?: (type: string, listener: () => void) => void;
+};
 
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/85 " />
-      </div>
+const Hero = () => {
+  const [canPlayVideo, setCanPlayVideo] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    const connection = (navigator as Navigator & {
+      connection?: ConnectionWithSaveData;
+    }).connection;
+
+    const updatePlaybackPreference = () => {
+      setCanPlayVideo(
+        mediaQuery.matches &&
+          !reducedMotionQuery.matches &&
+          !connection?.saveData
+      );
+    };
+
+    updatePlaybackPreference();
+
+    mediaQuery.addEventListener("change", updatePlaybackPreference);
+    reducedMotionQuery.addEventListener("change", updatePlaybackPreference);
+    connection?.addEventListener?.("change", updatePlaybackPreference);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updatePlaybackPreference);
+      reducedMotionQuery.removeEventListener("change", updatePlaybackPreference);
+      connection?.removeEventListener?.("change", updatePlaybackPreference);
+    };
+  }, []);
+
+  return (
+    <section className="relative h-[100svh] md:min-h-screen flex text-white flex-col items-center w-full justify-center overflow-hidden ">
+      {canPlayVideo ? (
+        <div className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
+          <video
+            className="h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            poster="/bg_video_thumbnail.jpeg"
+            aria-hidden="true"
+          >
+            <source src="/bg_video.webm" type="video/webm" />
+            <source src="/bg_video.mp4" type="video/mp4" />
+          </video>
+
+          <div className="absolute inset-0 bg-black/85 " />
+        </div>
+      ) : null}
 
       {/* Static background for mobile / fallback */}
       <div
         className="pointer-events-none absolute inset-0 -z-20 "
         style={{
-          backgroundImage: "url('/bg_video_thumbnail.jpeg')",
+          backgroundImage:
+            "image-set(url('/bg_video_thumbnail_sm.jpeg') 1x, url('/bg_video_thumbnail.jpeg') 2x)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -94,6 +136,9 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 src={client}
+                alt=""
+                loading="lazy"
+                decoding="async"
                 transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
               ></motion.img>
             ))}

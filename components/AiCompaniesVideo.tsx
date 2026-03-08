@@ -10,7 +10,8 @@ const AiCompaniesVideo = () => {
         <VideoText
           src="/testingvideo.mp4"
           className="h-full w-full"
-          preload="metadata"
+          preload="none"
+          poster="/bg_video_thumbnail_sm.jpeg"
           // fontSize={24}
           fontWeight="1000"
           fontFamily="helvetica"

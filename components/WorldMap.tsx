@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import DottedMap from "dotted-map";
 import { motion, useInView } from "framer-motion";
 
@@ -15,14 +15,18 @@ interface MapProps {
 export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true });
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
+  const map = useMemo(() => new DottedMap({ height: 100, grid: "diagonal" }), []);
 
-  const svgMap = map.getSVG({
-    radius: 0.25,
-    color: "#999999",
-    shape: "circle",
-    backgroundColor: "transparent",
-  });
+  const svgMap = useMemo(
+    () =>
+      map.getSVG({
+        radius: 0.25,
+        color: "#999999",
+        shape: "circle",
+        backgroundColor: "transparent",
+      }),
+    [map]
+  );
 
   const projectPoint = (lat: number, lng: number) => {
     const { x, y } = map.getPin({ lat, lng });

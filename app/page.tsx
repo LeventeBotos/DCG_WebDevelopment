@@ -1,8 +1,4 @@
-"use client";
-
-import SuccessStories from "@/components/SuccessStories";
-import { WorldMap } from "@/components/WorldMap";
-import { InfiniteMovingCards } from "@/components/InfiniteScrollingCards";
+import dynamic from "next/dynamic";
 import SectionTitle from "@/components/SectionTitle";
 import DCGAIPlatformSection from "@/components/DCGAIPlatformSection";
 import ContactCtaSection from "@/components/ContactCtaSection";
@@ -10,10 +6,51 @@ import StrategicQuestionsSection from "@/components/StrategicQuestionsSection";
 import AIAtWorkSection from "@/components/AIAtWorkSection";
 import { WhyDcgBento } from "@/components/WhyDcgBento";
 import HeroVideoSection from "@/components/HeroVideo";
-import { Timeline } from "@/components/ui/timeline";
-import ServicesFullScreenScroll from "@/components/ThreeScroll";
-import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import AiCompaniesVideo from "@/components/AiCompaniesVideo";
+
+const Timeline = dynamic(
+  () => import("@/components/ui/timeline").then((module) => module.Timeline),
+  {
+    ssr: false,
+    loading: () => <div className="min-h-[720px] w-full bg-white" />,
+  }
+);
+
+const SuccessStoriesSection = dynamic(
+  () => import("@/components/SuccessStories"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }, (_, index) => (
+          <div
+            key={index}
+            className="min-h-[260px] rounded-2xl border border-slate-200 bg-slate-50/80"
+          />
+        ))}
+      </div>
+    ),
+  }
+);
+
+const WorldMapSection = dynamic(
+  () => import("@/components/WorldMap").then((module) => module.WorldMap),
+  {
+    ssr: false,
+    loading: () => <div className="h-[320px] w-full rounded-lg bg-slate-50" />,
+  }
+);
+
+const TestimonialsCarousel = dynamic(
+  () =>
+    import("@/components/InfiniteScrollingCards").then(
+      (module) => module.InfiniteMovingCards
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-[220px] w-full max-w-7xl rounded-2xl bg-slate-50" />,
+  }
+);
 
 const testimonials = [
   {
@@ -169,7 +206,13 @@ export default function Home() {
         />
         <DCGAIPlatformSection />
       </div>
-      <Timeline data={timeline} />
+      <SectionTitle
+        title="Five AI Agents Every Sales Leader Needs to Know"
+        subtitle="Humans and AI are beginning to work as coordinated systems. Specialized AI agents now connect across the revenue stack to orchestrate workflows, uncover opportunities, and drive customer adoption with precision."
+        nomb={false}
+        center
+      />
+      <Timeline data={timeline} showTitle={false} className="-mt-6" />
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title="Momentum is real. So are the capability gaps."
@@ -187,7 +230,7 @@ export default function Home() {
           subtitle="Real results from real projects with industry leaders."
           nomb={true}
         />
-        <SuccessStories />
+        <SuccessStoriesSection />
 
         {/* <SectionTitle
           title="From strategy to implementation, with data at the core"
@@ -206,7 +249,7 @@ export default function Home() {
         nomb={true}
         center
       />
-      <WorldMap
+      <WorldMapSection
         dots={[
           {
             start: { lat: 51.5074, lng: -0.1278 }, // London
@@ -232,7 +275,7 @@ export default function Home() {
         nomb={true}
         center={true}
       />
-      <InfiniteMovingCards items={testimonials} />
+      <TestimonialsCarousel items={testimonials} />
       {/* <BackgroundRippleEffectDemo /> */}
       {/* <AIFutureBuiltSection /> */}
       {/* <BackgroundBeamsWithCollision> */}

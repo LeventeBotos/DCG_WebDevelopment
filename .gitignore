@@ -6,6 +6,9 @@
 # next.js
 /.next/
 /.next-local/
+/.next-runtime/
+/.next-deploy/
+/.next-artifacts/
 /out/
 
 # production

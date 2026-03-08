@@ -1,8 +1,18 @@
 "use client";
 
-import React, { ElementType, ReactNode, useEffect, useState } from "react";
+import React, {
+  ElementType,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { cn } from "@/lib/utils";
+
+type ConnectionWithSaveData = {
+  saveData?: boolean;
+};
 
 export interface VideoTextProps {
   /**
@@ -33,6 +43,10 @@ export interface VideoTextProps {
    * The content to display (will have the video "inside" it)
    */
   children: ReactNode;
+  /**
+   * Poster image shown while the video is deferred or disabled
+   */
+  poster?: string;
   /**
    * Font size for the text mask (in viewport width units)
    * @default 10
@@ -73,6 +87,7 @@ export function VideoText({
   muted = true,
   loop = true,
   preload = "metadata",
+  poster,
   fontSize = 22,
   fontWeight = "bold",
   textAnchor = "middle",
@@ -80,7 +95,9 @@ export function VideoText({
   fontFamily = "sans-serif",
   as,
 }: VideoTextProps) {
+  const containerRef = useRef<HTMLElement | null>(null);
   const [svgMask, setSvgMask] = useState("");
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const content = React.Children.toArray(children).join("");
   const Component = (as ?? "div") as any;
 
@@ -97,12 +114,46 @@ export function VideoText({
     return () => window.removeEventListener("resize", updateSvgMask);
   }, [content, fontSize, fontWeight, textAnchor, dominantBaseline, fontFamily]);
 
+  useEffect(() => {
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    const connection = (navigator as Navigator & {
+      connection?: ConnectionWithSaveData;
+    }).connection;
+
+    if (reducedMotionQuery.matches || connection?.saveData) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        setShouldLoadVideo(true);
+        observer.disconnect();
+      },
+      { rootMargin: "240px 0px" }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(
     svgMask
   )}")`;
 
   return (
-    <Component className={cn(`relative size-full`, className)}>
+    <Component
+      ref={containerRef}
+      className={cn(`relative size-full overflow-hidden`, className)}
+    >
       {/* Create a container that masks the video to only show within text */}
       <div
         className="absolute inset-0 flex items-center justify-center"
@@ -117,17 +168,32 @@ export function VideoText({
           WebkitMaskPosition: "center",
         }}
       >
-        <video
-          className="h-full w-full object-cover"
-          autoPlay={autoPlay}
-          muted={muted}
-          loop={loop}
-          preload={preload}
-          playsInline
-        >
-          <source src={src} />
-          Your browser does not support the video tag.
-        </video>
+        {shouldLoadVideo ? (
+          <video
+            className="h-full w-full object-cover"
+            autoPlay={autoPlay}
+            muted={muted}
+            loop={loop}
+            preload={preload}
+            playsInline
+          >
+            <source src={src} />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <div
+            className="h-full w-full bg-slate-200"
+            style={
+              poster
+                ? {
+                    backgroundImage: `url('${poster}')`,
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                  }
+                : undefined
+            }
+          />
+        )}
       </div>
 
       {/* Add a backup text element for SEO/accessibility */}
