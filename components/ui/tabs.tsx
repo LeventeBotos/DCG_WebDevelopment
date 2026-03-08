@@ -50,6 +50,7 @@ export const Tabs = ({
             onClick={() => {
               moveSelectedTabToTop(idx);
             }}
+            aria-label={`Show ${tab.title}`}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
             className={cn("relative px-4 py-2 rounded-full", tabClassName)}

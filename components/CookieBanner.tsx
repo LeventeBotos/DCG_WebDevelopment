@@ -52,6 +52,7 @@ export default function CookieBanner() {
               });
               setConsent("denied");
             }}
+            aria-label="Reject analytics cookies"
             className="rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-white/60 hover:text-white"
           >
             Reject analytics
@@ -65,6 +66,7 @@ export default function CookieBanner() {
               });
               setConsent("granted");
             }}
+            aria-label="Accept analytics cookies"
             className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white/80"
           >
             Accept analytics

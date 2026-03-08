@@ -766,6 +766,11 @@ export default function ContactPage() {
                           aria-haspopup="listbox"
                           aria-expanded={isCountryOpen}
                           aria-controls={isCountryOpen ? countryListboxId : undefined}
+                          aria-label={
+                            selectedCountryOption
+                              ? `Select country, current selection ${selectedCountryOption.name}`
+                              : "Select country"
+                          }
                           disabled={status === "submitting"}
                         >
                           <span className="flex min-w-0 items-center gap-3">
@@ -849,6 +854,7 @@ export default function ContactPage() {
                                       )}
                                       role="option"
                                       aria-selected={isSelected}
+                                      aria-label={`Select ${country.name}`}
                                     >
                                       <span className="flex min-w-0 items-center gap-3">
                                         <span className="text-base leading-none">

@@ -245,6 +245,7 @@ export default function ServicesPage() {
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
+                    aria-label={`Show ${categoryMeta[category].label} services`}
                     className="relative h-[24rem] w-full rounded-md border border-slate-200 bg-white shadow-sm transition hover:shadow-lg sm:h-[28rem] md:h-[32rem]"
                   >
                     <EvervaultCardWhite
@@ -280,6 +281,7 @@ export default function ServicesPage() {
                       setActiveCategory(null);
                       setQuery("");
                     }}
+                    aria-label="Change service category"
                     className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-500 hover:text-slate-900"
                   >
                     Change category

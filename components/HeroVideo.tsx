@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
-import { motion } from "framer-motion";
 
 type ConnectionWithSaveData = {
   saveData?: boolean;
@@ -160,7 +158,7 @@ const Hero = () => {
             Trusted by industry leaders
           </p>
           <div className="flex flex-wrap w-full items-center justify-center lg:justify-start gap-2 md:gap-6">
-            {trustedClients.map((client, index) => (
+            {trustedClients.map((client) => (
               <img
                 key={client.name}
                 className="px-4 py-2 h-8 md:h-14 object-contain opacity-75 grayscale"

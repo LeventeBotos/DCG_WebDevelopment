@@ -35,6 +35,35 @@ export interface ButtonProps
   showArrow?: boolean;
 }
 
+const getTextLabel = (node: React.ReactNode): string => {
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node).trim();
+  }
+
+  if (Array.isArray(node)) {
+    return node
+      .map((child) => getTextLabel(child))
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+  }
+
+  if (React.isValidElement(node)) {
+    const props = node.props as {
+      children?: React.ReactNode;
+      "aria-hidden"?: boolean | "true" | "false";
+    };
+
+    if (props["aria-hidden"] === true || props["aria-hidden"] === "true") {
+      return "";
+    }
+
+    return getTextLabel(props.children);
+  }
+
+  return "";
+};
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -51,6 +80,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const shouldShowArrow =
       showArrow ?? (variant === "primary" && size !== "icon");
     const classes = cn(buttonVariants({ variant, size }), className);
+    const explicitAriaLabel = props["aria-label"];
+    const inferredAriaLabel =
+      explicitAriaLabel ?? (getTextLabel(children) || undefined);
 
     if (asChild && React.isValidElement(children)) {
       const childElement = children as React.ReactElement<
@@ -59,6 +91,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const childProps = childElement.props as {
         children?: React.ReactNode;
         className?: string;
+        "aria-label"?: string;
       };
       const existingChildContent = childProps.children || childElement;
 
@@ -78,6 +111,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         childElement,
         {
           ...props,
+          "aria-label":
+            explicitAriaLabel ??
+            childProps["aria-label"] ??
+            (getTextLabel(existingChildContent) || undefined),
           className: cn(classes, childProps.className),
           ref,
         },
@@ -86,7 +123,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button className={classes} ref={ref} {...props}>
+      <button className={classes} ref={ref} aria-label={inferredAriaLabel} {...props}>
         {children}
         {shouldShowArrow ? (
           <ArrowRight

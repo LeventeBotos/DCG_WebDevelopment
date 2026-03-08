@@ -197,6 +197,7 @@ export default function Footer() {
                     });
                     resetConsent();
                   }}
+                  aria-label="Manage cookie preferences"
                   className="text-white/80 transition-colors hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
                   Manage cookies

@@ -331,6 +331,7 @@ export default function CareersPage() {
                   <button
                     type="button"
                     onClick={() => setActiveCategory(null)}
+                    aria-label="Change role category"
                     className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-500 hover:text-slate-900"
                   >
                     Change category
@@ -394,6 +395,7 @@ export default function CareersPage() {
               ref={closeButtonRef}
               type="button"
               onClick={() => setIsApplyOpen(false)}
+              aria-label="Close application form"
               className="absolute right-4 top-4 rounded-full border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-400 hover:text-slate-900"
             >
               Close
