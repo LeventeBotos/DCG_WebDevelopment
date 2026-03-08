@@ -16,6 +16,8 @@ export default function CookiePolicyPage() {
       title="Cookie Policy"
       description="This page explains what cookies and similar technologies we use, why we use them, and how you can manage your preferences."
       lastUpdated="February 2026"
+      pdfHref="/documents/CookiePolicy.pdf"
+      pdfLabel="View Cookie Policy PDF"
       intro={[
         "To manage or change your cookie preferences, use the Manage cookies option at the bottom of the page.",
         "We use cookies and related web technologies to improve performance, enhance browsing experience, support security, and understand how visitors use the site.",

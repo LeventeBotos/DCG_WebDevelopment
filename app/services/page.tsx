@@ -195,7 +195,7 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="A clear, outcome-first catalog across data, AI, and cloud."
         emphasis="outcome-first"
-        description="We design, build, and operate the platforms and products that keep your business intelligent, covering data foundations, AI use cases, and cloud operations with security and cost control built in."
+        description="We design, build, and operate the platforms and products that keep your business intelligent, covering data foundations, AI use cases, and cloud operations with security and cost control."
         actions={[
           { label: "Talk with us", href: "/contact", variant: "primary" },
           {

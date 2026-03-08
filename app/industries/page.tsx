@@ -98,7 +98,7 @@ const industries = [
   },
   {
     key: "transport",
-    title: "Transportation",
+    title: "Transportation, Supply Chain & Logistics",
     summary: "Planning, routing, utilization, and service reliability.",
     capabilities: [
       "Capacity planning and route optimization",
@@ -156,7 +156,7 @@ export default function IndustriesPage() {
         <div className="grid gap-10 lg:grid-cols-[240px_1fr] lg:gap-14">
           <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightBlue">
-              Industry index
+              Industries we serve
             </p>
             <ul className="space-y-3 text-sm">
               {industries.map((industry) => (
@@ -175,10 +175,10 @@ export default function IndustriesPage() {
           <div className="space-y-10">
             <div className="max-w-3xl space-y-3">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-dcg-lightBlue">
-                Where we focus
+                INDUSTRY
               </p>
               <h2 className="text-3xl font-semibold text-dcg-ink md:text-4xl">
-                Built for sector realities, not generic templates.
+                Built For the Future
               </h2>
               <p className="text-dcg-slate md:text-lg">
                 Every industry has different constraints. We tailor delivery to
@@ -199,7 +199,9 @@ export default function IndustriesPage() {
                       <h3 className="text-2xl font-semibold text-dcg-ink">
                         {industry.title}
                       </h3>
-                      <p className="text-sm text-dcg-slate">{industry.summary}</p>
+                      <p className="text-sm text-dcg-slate">
+                        {industry.summary}
+                      </p>
                       <Link
                         href={industry.href}
                         className="inline-flex text-sm font-semibold text-dcg-blue hover:text-dcg-lightBlue"
@@ -257,7 +259,7 @@ export default function IndustriesPage() {
                 className="grid gap-4 border-b border-dcg-lightBlue/20 py-6 last:border-b-0 md:grid-cols-[220px_1fr]"
               >
                 <p className="text-sm font-semibold text-dcg-ink">
-                  {String(index + 1).padStart(2, "0")} {stage.title}
+                  {stage.title}
                 </p>
                 <ul className="space-y-2 text-sm text-dcg-slate">
                   {stage.bullets.map((bullet) => (
@@ -267,7 +269,6 @@ export default function IndustriesPage() {
               </div>
             ))}
           </div>
-
         </div>
       </section>
       <ContactCtaSection

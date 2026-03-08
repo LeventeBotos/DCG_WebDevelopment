@@ -135,7 +135,7 @@ const projects: Project[] = [
   },
   {
     id: "smart-manufacturing",
-    title: "Smart Manufacturing: Predictive Maintenance & Yield Optimization",
+    title: "Smart Manufacturing: Predictive Maintenance & Optimization",
     sector: "Manufacturing",
     summary:
       "A plant-scale optimization program combining machine telemetry, quality signals, and AI recommendations to reduce downtime and stabilize throughput.",

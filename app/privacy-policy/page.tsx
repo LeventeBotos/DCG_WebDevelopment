@@ -17,6 +17,8 @@ export default function PrivacyPolicyPage() {
       title="Privacy Policy"
       description="This notice explains how Data Consulting Group (DCG) Ltd and its subsidiaries process and protect personal data when you use this website."
       lastUpdated="February 2026"
+      pdfHref="/documents/PrivacyPolicy.pdf"
+      pdfLabel="View Privacy Policy PDF"
       intro={[
         "We respect your privacy and are committed to protecting your personal information. This notice describes how we look after your personal data and explains your legal rights under applicable data protection law.",
       ]}

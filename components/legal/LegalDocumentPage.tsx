@@ -12,6 +12,8 @@ type LegalDocumentPageProps = {
   lastUpdated: string;
   intro?: ReactNode[];
   sections: LegalSection[];
+  pdfHref?: string;
+  pdfLabel?: string;
 };
 
 export default function LegalDocumentPage({
@@ -20,6 +22,8 @@ export default function LegalDocumentPage({
   lastUpdated,
   intro = [],
   sections,
+  pdfHref,
+  pdfLabel = "Download PDF version",
 }: LegalDocumentPageProps) {
   return (
     <div className="min-h-screen bg-slate-50">
@@ -83,6 +87,19 @@ export default function LegalDocumentPage({
                 </section>
               ))}
             </div>
+
+            {pdfHref ? (
+              <div className="mt-10 border-t border-slate-200 pt-6">
+                <a
+                  href={pdfHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-dcg-lightBlue hover:underline md:text-base"
+                >
+                  {pdfLabel}
+                </a>
+              </div>
+            ) : null}
           </article>
         </div>
       </section>

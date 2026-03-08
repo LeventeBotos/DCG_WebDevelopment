@@ -17,6 +17,8 @@ export default function TermsOfServicePage() {
       title="Terms of Service"
       description="These terms govern your access to and use of www.dataconsulting-group.com as a guest or registered user."
       lastUpdated="February 2026"
+      pdfHref="/documents/TermsOfService.pdf"
+      pdfLabel="View Terms of Service PDF"
       intro={[
         "Please read these terms carefully before using our site. By using our site, you confirm that you accept these terms and agree to comply with them. If you do not agree, you must not use this website.",
       ]}

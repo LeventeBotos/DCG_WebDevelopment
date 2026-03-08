@@ -3,11 +3,13 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Globe2, Mail, MapPin } from "lucide-react";
+import { Check, ChevronDown, Globe2, Mail, MapPin, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SubpageHero from "@/components/SubpageHero";
 import ContactCtaSection from "@/components/ContactCtaSection";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import { track } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
@@ -24,6 +26,215 @@ const topics = [
   "Other",
 ];
 
+type CountryOption = {
+  name: string;
+  code: string;
+};
+
+const countries: CountryOption[] = [
+  { name: "Afghanistan", code: "AF" },
+  { name: "Albania", code: "AL" },
+  { name: "Algeria", code: "DZ" },
+  { name: "Andorra", code: "AD" },
+  { name: "Angola", code: "AO" },
+  { name: "Antigua and Barbuda", code: "AG" },
+  { name: "Argentina", code: "AR" },
+  { name: "Armenia", code: "AM" },
+  { name: "Australia", code: "AU" },
+  { name: "Austria", code: "AT" },
+  { name: "Azerbaijan", code: "AZ" },
+  { name: "Bahamas", code: "BS" },
+  { name: "Bahrain", code: "BH" },
+  { name: "Bangladesh", code: "BD" },
+  { name: "Barbados", code: "BB" },
+  { name: "Belarus", code: "BY" },
+  { name: "Belgium", code: "BE" },
+  { name: "Belize", code: "BZ" },
+  { name: "Benin", code: "BJ" },
+  { name: "Bhutan", code: "BT" },
+  { name: "Bolivia", code: "BO" },
+  { name: "Bosnia and Herzegovina", code: "BA" },
+  { name: "Botswana", code: "BW" },
+  { name: "Brazil", code: "BR" },
+  { name: "Brunei", code: "BN" },
+  { name: "Bulgaria", code: "BG" },
+  { name: "Burkina Faso", code: "BF" },
+  { name: "Burundi", code: "BI" },
+  { name: "Cambodia", code: "KH" },
+  { name: "Cameroon", code: "CM" },
+  { name: "Canada", code: "CA" },
+  { name: "Cape Verde", code: "CV" },
+  { name: "Central African Republic", code: "CF" },
+  { name: "Chad", code: "TD" },
+  { name: "Chile", code: "CL" },
+  { name: "China", code: "CN" },
+  { name: "Colombia", code: "CO" },
+  { name: "Comoros", code: "KM" },
+  { name: "Congo", code: "CG" },
+  { name: "Costa Rica", code: "CR" },
+  { name: "Croatia", code: "HR" },
+  { name: "Cuba", code: "CU" },
+  { name: "Cyprus", code: "CY" },
+  { name: "Czech Republic", code: "CZ" },
+  { name: "Denmark", code: "DK" },
+  { name: "Djibouti", code: "DJ" },
+  { name: "Dominica", code: "DM" },
+  { name: "Dominican Republic", code: "DO" },
+  { name: "Ecuador", code: "EC" },
+  { name: "Egypt", code: "EG" },
+  { name: "El Salvador", code: "SV" },
+  { name: "Equatorial Guinea", code: "GQ" },
+  { name: "Eritrea", code: "ER" },
+  { name: "Estonia", code: "EE" },
+  { name: "Eswatini", code: "SZ" },
+  { name: "Ethiopia", code: "ET" },
+  { name: "Fiji", code: "FJ" },
+  { name: "Finland", code: "FI" },
+  { name: "France", code: "FR" },
+  { name: "Gabon", code: "GA" },
+  { name: "Gambia", code: "GM" },
+  { name: "Georgia", code: "GE" },
+  { name: "Germany", code: "DE" },
+  { name: "Ghana", code: "GH" },
+  { name: "Greece", code: "GR" },
+  { name: "Grenada", code: "GD" },
+  { name: "Guatemala", code: "GT" },
+  { name: "Guinea", code: "GN" },
+  { name: "Guinea-Bissau", code: "GW" },
+  { name: "Guyana", code: "GY" },
+  { name: "Haiti", code: "HT" },
+  { name: "Honduras", code: "HN" },
+  { name: "Hungary", code: "HU" },
+  { name: "Iceland", code: "IS" },
+  { name: "India", code: "IN" },
+  { name: "Indonesia", code: "ID" },
+  { name: "Iran", code: "IR" },
+  { name: "Iraq", code: "IQ" },
+  { name: "Ireland", code: "IE" },
+  { name: "Israel", code: "IL" },
+  { name: "Italy", code: "IT" },
+  { name: "Jamaica", code: "JM" },
+  { name: "Japan", code: "JP" },
+  { name: "Jordan", code: "JO" },
+  { name: "Kazakhstan", code: "KZ" },
+  { name: "Kenya", code: "KE" },
+  { name: "Kiribati", code: "KI" },
+  { name: "Kuwait", code: "KW" },
+  { name: "Kyrgyzstan", code: "KG" },
+  { name: "Laos", code: "LA" },
+  { name: "Latvia", code: "LV" },
+  { name: "Lebanon", code: "LB" },
+  { name: "Lesotho", code: "LS" },
+  { name: "Liberia", code: "LR" },
+  { name: "Libya", code: "LY" },
+  { name: "Liechtenstein", code: "LI" },
+  { name: "Lithuania", code: "LT" },
+  { name: "Luxembourg", code: "LU" },
+  { name: "Madagascar", code: "MG" },
+  { name: "Malawi", code: "MW" },
+  { name: "Malaysia", code: "MY" },
+  { name: "Maldives", code: "MV" },
+  { name: "Mali", code: "ML" },
+  { name: "Malta", code: "MT" },
+  { name: "Marshall Islands", code: "MH" },
+  { name: "Mauritania", code: "MR" },
+  { name: "Mauritius", code: "MU" },
+  { name: "Mexico", code: "MX" },
+  { name: "Micronesia", code: "FM" },
+  { name: "Moldova", code: "MD" },
+  { name: "Monaco", code: "MC" },
+  { name: "Mongolia", code: "MN" },
+  { name: "Montenegro", code: "ME" },
+  { name: "Morocco", code: "MA" },
+  { name: "Mozambique", code: "MZ" },
+  { name: "Myanmar", code: "MM" },
+  { name: "Namibia", code: "NA" },
+  { name: "Nauru", code: "NR" },
+  { name: "Nepal", code: "NP" },
+  { name: "Netherlands", code: "NL" },
+  { name: "New Zealand", code: "NZ" },
+  { name: "Nicaragua", code: "NI" },
+  { name: "Niger", code: "NE" },
+  { name: "Nigeria", code: "NG" },
+  { name: "North Korea", code: "KP" },
+  { name: "North Macedonia", code: "MK" },
+  { name: "Norway", code: "NO" },
+  { name: "Oman", code: "OM" },
+  { name: "Pakistan", code: "PK" },
+  { name: "Palau", code: "PW" },
+  { name: "Panama", code: "PA" },
+  { name: "Papua New Guinea", code: "PG" },
+  { name: "Paraguay", code: "PY" },
+  { name: "Peru", code: "PE" },
+  { name: "Philippines", code: "PH" },
+  { name: "Poland", code: "PL" },
+  { name: "Portugal", code: "PT" },
+  { name: "Qatar", code: "QA" },
+  { name: "Romania", code: "RO" },
+  { name: "Russia", code: "RU" },
+  { name: "Rwanda", code: "RW" },
+  { name: "Saint Kitts and Nevis", code: "KN" },
+  { name: "Saint Lucia", code: "LC" },
+  { name: "Saint Vincent and the Grenadines", code: "VC" },
+  { name: "Samoa", code: "WS" },
+  { name: "San Marino", code: "SM" },
+  { name: "Sao Tome and Principe", code: "ST" },
+  { name: "Saudi Arabia", code: "SA" },
+  { name: "Senegal", code: "SN" },
+  { name: "Serbia", code: "RS" },
+  { name: "Seychelles", code: "SC" },
+  { name: "Sierra Leone", code: "SL" },
+  { name: "Singapore", code: "SG" },
+  { name: "Slovakia", code: "SK" },
+  { name: "Slovenia", code: "SI" },
+  { name: "Solomon Islands", code: "SB" },
+  { name: "Somalia", code: "SO" },
+  { name: "South Africa", code: "ZA" },
+  { name: "South Korea", code: "KR" },
+  { name: "South Sudan", code: "SS" },
+  { name: "Spain", code: "ES" },
+  { name: "Sri Lanka", code: "LK" },
+  { name: "Sudan", code: "SD" },
+  { name: "Suriname", code: "SR" },
+  { name: "Sweden", code: "SE" },
+  { name: "Switzerland", code: "CH" },
+  { name: "Syria", code: "SY" },
+  { name: "Taiwan", code: "TW" },
+  { name: "Tajikistan", code: "TJ" },
+  { name: "Tanzania", code: "TZ" },
+  { name: "Thailand", code: "TH" },
+  { name: "Timor-Leste", code: "TL" },
+  { name: "Togo", code: "TG" },
+  { name: "Tonga", code: "TO" },
+  { name: "Trinidad and Tobago", code: "TT" },
+  { name: "Tunisia", code: "TN" },
+  { name: "Turkey", code: "TR" },
+  { name: "Turkmenistan", code: "TM" },
+  { name: "Tuvalu", code: "TV" },
+  { name: "Uganda", code: "UG" },
+  { name: "Ukraine", code: "UA" },
+  { name: "United Arab Emirates", code: "AE" },
+  { name: "United Kingdom", code: "GB" },
+  { name: "United States", code: "US" },
+  { name: "Uruguay", code: "UY" },
+  { name: "Uzbekistan", code: "UZ" },
+  { name: "Vanuatu", code: "VU" },
+  { name: "Vatican City", code: "VA" },
+  { name: "Venezuela", code: "VE" },
+  { name: "Vietnam", code: "VN" },
+  { name: "Yemen", code: "YE" },
+  { name: "Zambia", code: "ZM" },
+  { name: "Zimbabwe", code: "ZW" },
+];
+
+const getFlagEmoji = (countryCode: string) =>
+  String.fromCodePoint(
+    ...countryCode
+      .toUpperCase()
+      .split("")
+      .map((char) => 127397 + char.charCodeAt(0)),
+  );
+
 type LogEntry = {
   level: "info" | "warn" | "error";
   message: string;
@@ -34,6 +245,9 @@ export default function ContactPage() {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "submitted" | "error"
   >("idle");
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
+  const [countryQuery, setCountryQuery] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedMessage, setSubmittedMessage] = useState<string | null>(null);
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
@@ -43,6 +257,10 @@ export default function ContactPage() {
   const [requestId, setRequestId] = useState<string | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const statusTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
+  const countrySearchRef = useRef<HTMLInputElement>(null);
+
+  useOutsideClick(countryDropdownRef, () => setIsCountryOpen(false));
 
   const clearStatusTimers = () => {
     statusTimers.current.forEach((timer) => clearTimeout(timer));
@@ -66,6 +284,15 @@ export default function ContactPage() {
 
     return () => clearInterval(interval);
   }, [status]);
+
+  useEffect(() => {
+    if (isCountryOpen) {
+      countrySearchRef.current?.focus();
+      return;
+    }
+
+    setCountryQuery("");
+  }, [isCountryOpen]);
 
   const resetStatus = () => {
     if (status !== "idle") {
@@ -146,6 +373,9 @@ export default function ContactPage() {
       }
 
       form.reset();
+      setSelectedCountry("");
+      setCountryQuery("");
+      setIsCountryOpen(false);
       track("contact_success", { topic: payload.topic || undefined });
       setSubmittedMessage(
         "Thanks for reaching out! We received your message and will reply soon.",
@@ -179,6 +409,34 @@ export default function ContactPage() {
     "w-full bg-transparent border border-white/10 rounded-2xl px-4 py-3 text-sm text-white shadow-sm transition focus:border-dcg-lightBlue focus:outline-none focus:ring-2 focus:ring-dcg-lightBlue/20";
 
   const textareaClassName = `${inputClassName} min-h-[140px]`;
+
+  const filteredCountries = useMemo(() => {
+    const normalizedQuery = countryQuery.trim().toLowerCase();
+
+    if (!normalizedQuery) return countries;
+
+    return countries.filter(({ name, code }) => {
+      const normalizedName = name.toLowerCase();
+      const normalizedCode = code.toLowerCase();
+
+      return (
+        normalizedName.includes(normalizedQuery) ||
+        normalizedCode.includes(normalizedQuery)
+      );
+    });
+  }, [countryQuery]);
+
+  const selectedCountryOption = useMemo(
+    () => countries.find(({ name }) => name === selectedCountry) ?? null,
+    [selectedCountry],
+  );
+
+  const handleCountrySelect = (country: string) => {
+    setSelectedCountry(country);
+    setCountryQuery("");
+    setIsCountryOpen(false);
+    resetStatus();
+  };
 
   const globeConfig = useMemo(
     () => ({
@@ -379,16 +637,115 @@ export default function ContactPage() {
                         placeholder="Organization name"
                       />
                     </label>
-                    <label className="space-y-2 text-sm">
-                      Country
-                      <input
-                        name="country"
-                        autoComplete="country-name"
-                        onChange={resetStatus}
-                        className={inputClassName}
-                        placeholder="Where you're based"
-                      />
-                    </label>
+                    <div className="space-y-2 text-sm">
+                      <label htmlFor="country-search">Country</label>
+                      <div className="relative" ref={countryDropdownRef}>
+                        <input
+                          type="hidden"
+                          name="country"
+                          value={selectedCountry}
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setIsCountryOpen((currentOpen) => !currentOpen)
+                          }
+                          className={cn(
+                            inputClassName,
+                            "flex items-center justify-between gap-3 text-left",
+                            !selectedCountryOption && "text-dcg-slate",
+                          )}
+                          aria-haspopup="listbox"
+                          aria-expanded={isCountryOpen}
+                          disabled={status === "submitting"}
+                        >
+                          <span className="flex min-w-0 items-center gap-3">
+                            <span className="text-base leading-none">
+                              {selectedCountryOption
+                                ? getFlagEmoji(selectedCountryOption.code)
+                                : "🌐"}
+                            </span>
+                            <span className="truncate">
+                              {selectedCountryOption?.name ||
+                                "Select your country"}
+                            </span>
+                          </span>
+                          <ChevronDown
+                            className={cn(
+                              "h-4 w-4 shrink-0 transition-transform",
+                              isCountryOpen && "rotate-180",
+                            )}
+                          />
+                        </button>
+
+                        {isCountryOpen ? (
+                          <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-2xl border border-white/10 bg-black/95 shadow-2xl backdrop-blur-xl">
+                            <div className="border-b border-white/10 p-3">
+                              <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3">
+                                <Search className="h-4 w-4 shrink-0 text-dcg-slate" />
+                                <input
+                                  id="country-search"
+                                  ref={countrySearchRef}
+                                  type="text"
+                                  value={countryQuery}
+                                  onChange={(event) => {
+                                    setCountryQuery(event.target.value);
+                                    resetStatus();
+                                  }}
+                                  className="h-11 w-full bg-transparent text-sm text-white placeholder:text-dcg-slate focus:outline-none"
+                                  placeholder="Search country"
+                                  autoComplete="off"
+                                />
+                              </div>
+                            </div>
+
+                            <div
+                              role="listbox"
+                              className="max-h-72 overflow-y-auto p-2"
+                            >
+                              {filteredCountries.length ? (
+                                filteredCountries.map((country) => {
+                                  const isSelected =
+                                    country.name === selectedCountry;
+
+                                  return (
+                                    <button
+                                      key={country.code}
+                                      type="button"
+                                      onClick={() =>
+                                        handleCountrySelect(country.name)
+                                      }
+                                      className={cn(
+                                        "flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm text-white transition hover:bg-white/5",
+                                        isSelected && "bg-white/5",
+                                      )}
+                                      role="option"
+                                      aria-selected={isSelected}
+                                    >
+                                      <span className="flex min-w-0 items-center gap-3">
+                                        <span className="text-base leading-none">
+                                          {getFlagEmoji(country.code)}
+                                        </span>
+                                        <span className="truncate">
+                                          {country.name}
+                                        </span>
+                                      </span>
+                                      {isSelected ? (
+                                        <Check className="h-4 w-4 shrink-0 text-dcg-lightBlue" />
+                                      ) : null}
+                                    </button>
+                                  );
+                                })
+                              ) : (
+                                <div className="px-3 py-4 text-sm text-dcg-slate">
+                                  No countries found.
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
 
                   <label className="space-y-2 text-sm">
