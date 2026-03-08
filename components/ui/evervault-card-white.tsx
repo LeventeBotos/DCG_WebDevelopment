@@ -34,7 +34,7 @@ export const EvervaultCardWhite = ({
   return (
     <div
       className={cn(
-        "relative flex h-full w-full aspect-square items-center justify-center bg-transparent p-0.5",
+        "relative flex h-full w-full items-center justify-center bg-transparent p-0.5",
         className
       )}
     >
@@ -47,10 +47,10 @@ export const EvervaultCardWhite = ({
           mouseY={mouseY}
           randomString={randomString}
         />
-        <div className="relative z-10 flex items-center justify-center">
-          <div className="relative flex h-44 w-44 items-center justify-center rounded-full text-4xl font-bold text-slate-900">
+        <div className="relative z-10 flex items-center justify-center px-4">
+          <div className="relative flex h-32 w-32 items-center justify-center rounded-full text-3xl font-bold text-slate-900 sm:h-40 sm:w-40 sm:text-4xl lg:h-44 lg:w-44">
             <div className="absolute inset-0 rounded-full bg-white blur-sm" />
-            <span className="z-20 text-slate-900">{text}</span>
+            <span className="z-20 text-center text-slate-900">{text}</span>
           </div>
         </div>
       </div>

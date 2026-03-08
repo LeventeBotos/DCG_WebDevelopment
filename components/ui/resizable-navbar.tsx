@@ -164,27 +164,24 @@ export const MobileNav = ({
   isMenuOpen = false,
 }: MobileNavProps) => {
   const isScrolled = Boolean(visible);
-  const isSolid = isScrolled || isMenuOpen;
 
   return (
     <motion.div
       animate={{
-        backgroundColor: isSolid
-          ? "rgba(255, 255, 255, 0.92)"
-          : "rgba(255, 255, 255, 0.0)",
-        backdropFilter: isSolid ? "blur(8px)" : "blur(0px)",
-        boxShadow: isSolid
-          ? "0 1px 2px rgba(0, 0, 0, 0.08)"
-          : "0 0 0 rgba(0, 0, 0, 0)",
+        backdropFilter: isMenuOpen ? "blur(8px)" : "blur(0px)",
+        boxShadow:
+          isScrolled || isMenuOpen
+            ? "0 1px 2px rgba(0, 0, 0, 0.08)"
+            : "0 0 0 rgba(0, 0, 0, 0)",
       }}
       transition={{
         default: { type: "tween", duration: 0.25 },
       }}
-      style={{
-        paddingTop: "max(env(safe-area-inset-top), 0.75rem)",
-      }}
+      // style={{
+      //   paddingTop: "max(env(safe-area-inset-top), 0.75rem)",
+      // }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 px-4 pb-3 lg:hidden",
+        "fixed inset-x-0 top-0 z-50 flex w-full flex-col items-start justify-between gap-3 bg-black px-4 pb-3 lg:hidden",
         className,
       )}
     >
@@ -244,7 +241,7 @@ export const MobileNavMenu = ({
             paddingTop: "max(calc(env(safe-area-inset-top) + 4.5rem), 6rem)",
           }}
           className={cn(
-            "fixed inset-0 z-[70] flex h-[100dvh] min-h-[100dvh] w-screen flex-col items-start justify-start gap-2 overflow-y-auto overscroll-contain bg-white px-5 pb-[max(env(safe-area-inset-bottom),2rem)]",
+            "fixed inset-0 z-[70] flex h-[100dvh] min-h-[100dvh] w-screen flex-col items-start justify-start gap-2 overflow-y-auto overscroll-contain bg-black md:bg-white px-5 pb-[max(env(safe-area-inset-bottom),2rem)]",
             className,
           )}
         >
@@ -276,14 +273,14 @@ export const MobileNavToggle = ({
         <IconX
           className={cn(
             "transition-colors duration-200",
-            isScrolled || isOpen ? "text-black" : "text-neutral-300",
+            isScrolled || isOpen ? "text-white" : "text-neutral-300",
           )}
         />
       ) : (
         <IconMenu2
           className={cn(
             "transition-colors duration-200",
-            isScrolled ? "text-black" : "text-neutral-300",
+            isScrolled ? "text-white" : "text-neutral-300",
           )}
         />
       )}
@@ -292,21 +289,16 @@ export const MobileNavToggle = ({
 };
 
 export const NavbarLogo = () => {
-  const { isScrolled, isMenuOpen } = React.useContext(MobileNavStateContext);
-
   return (
     <Link
       href="/"
-      className="relative z-20  mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-white"
     >
       <img
         src="/logo.png"
         alt="logo"
         className={cn(
-          "h-7 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
-          isScrolled || isMenuOpen
-            ? "brightness-[25%]"
-            : "invert-0 brightness-[75%]",
+          "h-7 invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
         )}
       />
       {/* <span className="font-medium text-black ">Startup</span> */}

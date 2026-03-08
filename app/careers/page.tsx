@@ -264,14 +264,14 @@ export default function CareersPage() {
 
         <div className="space-y-4">
           {!activeCategory ? (
-            <div className="space-y-4 max-w-4xl mx-auto self-center flex flex-row items-center">
-              <div className="grid gap-4 md:grid-cols-3">
+            <div className="mx-auto flex w-full max-w-4xl self-center">
+              <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                 {roleCategories.map((category) => (
                   <button
                     key={category}
                     type="button"
                     onClick={() => setActiveCategory(category)}
-                    className="relative h-[32rem] rounded-md border border-slate-200 bg-white shadow-sm hover:shadow-lg"
+                    className="relative h-[24rem] w-full rounded-md border border-slate-200 bg-white shadow-sm transition hover:shadow-lg sm:h-[28rem] md:h-[32rem]"
                   >
                     <EvervaultCardWhite
                       text={roleCategoryMeta[category].label}

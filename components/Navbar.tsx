@@ -88,7 +88,7 @@ export default function Header() {
                     });
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full rounded-md px-2 py-3 text-base font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                  className="w-full rounded-md px-2 py-3 text-base font-medium text-neutral-100 transition-colors hover:bg-white/10"
                 >
                   <span className="block">{item.name}</span>
                 </Link>

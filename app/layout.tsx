@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   },
   themeColor: "#000000",
   appleWebApp: {
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black",
   },
 };
 
