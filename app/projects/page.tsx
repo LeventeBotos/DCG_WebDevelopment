@@ -93,8 +93,6 @@ const projects: Project[] = [
       { label: "Relations mapped", value: "50M+" },
       { label: "Query response", value: "< 100 ms" },
     ],
-    detailsHref: "/projects/knowledge-graph",
-    detailsLabel: "View technical deep dive",
   },
   {
     id: "cloud-data-platform",
