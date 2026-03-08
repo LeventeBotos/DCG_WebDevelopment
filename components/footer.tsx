@@ -6,10 +6,12 @@ import { Mail, MapPin, Phone, Linkedin, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCookieConsent } from "@/hooks/use-cookie-consent";
 import { track } from "@/lib/analytics";
+import { hasMediaCredits } from "@/lib/media-credits";
 import { siteConfig } from "@/lib/site";
 
 export default function Footer() {
   const { resetConsent } = useCookieConsent();
+  const showCreditsLink = hasMediaCredits();
   const footerLinks = [
     {
       title: "Company",
@@ -46,6 +48,14 @@ export default function Footer() {
           label: "Terms of Service",
           href: "/terms-of-service",
         },
+        ...(showCreditsLink
+          ? [
+              {
+                label: "Media Credits",
+                href: "/credits",
+              },
+            ]
+          : []),
       ],
     },
   ];

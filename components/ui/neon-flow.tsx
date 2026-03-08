@@ -1,13 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from "@/lib/utils"; // We'll define this or use inline
+"use client";
 
-// Helper for random colors
-const randomColors = (count: number) => {
-  return new Array(count)
-    .fill(0)
-    .map(() => "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
-};
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface TubesBackgroundProps {
   children?: React.ReactNode;
@@ -15,101 +10,117 @@ interface TubesBackgroundProps {
   enableClickInteraction?: boolean;
 }
 
-export function TubesBackground({ 
-  children, 
+const palettes = [
+  {
+    background:
+      "radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.28), transparent 42%), radial-gradient(circle at 80% 18%, rgba(16, 185, 129, 0.24), transparent 36%), linear-gradient(135deg, #020617 0%, #020617 38%, #07142b 100%)",
+    tubes: ["#38bdf8", "#34d399", "#60a5fa"],
+  },
+  {
+    background:
+      "radial-gradient(circle at 18% 24%, rgba(244, 114, 182, 0.24), transparent 38%), radial-gradient(circle at 78% 16%, rgba(250, 204, 21, 0.2), transparent 34%), linear-gradient(135deg, #09090b 0%, #101828 48%, #1f2937 100%)",
+    tubes: ["#f472b6", "#f59e0b", "#facc15"],
+  },
+  {
+    background:
+      "radial-gradient(circle at 24% 18%, rgba(45, 212, 191, 0.22), transparent 38%), radial-gradient(circle at 76% 20%, rgba(96, 165, 250, 0.2), transparent 36%), linear-gradient(135deg, #020617 0%, #0f172a 42%, #111827 100%)",
+    tubes: ["#2dd4bf", "#22c55e", "#60a5fa"],
+  },
+];
+
+const beamPositions = [
+  { top: "10%", left: "-15%", rotate: "18deg", delay: 0 },
+  { top: "36%", left: "-10%", rotate: "-8deg", delay: 0.8 },
+  { top: "62%", left: "-18%", rotate: "12deg", delay: 1.4 },
+];
+
+export function TubesBackground({
+  children,
   className,
-  enableClickInteraction = true 
+  enableClickInteraction = true,
 }: TubesBackgroundProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const tubesRef = useRef<any>(null);
+  const [paletteIndex, setPaletteIndex] = useState(0);
+  const palette = palettes[paletteIndex];
 
-  useEffect(() => {
-    let mounted = true;
-    let cleanup: (() => void) | undefined;
-
-    const initTubes = async () => {
-      if (!canvasRef.current) return;
-
-      try {
-        // We use the specific build from the CDN as it contains the exact effect requested
-        // Using native dynamic import which works in modern browsers
-        // @ts-ignore
-        const module = await import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js');
-        const TubesCursor = module.default;
-
-        if (!mounted) return;
-
-        const app = TubesCursor(canvasRef.current, {
-          tubes: {
-            colors: ["#f967fb", "#53bc28", "#6958d5"],
-            lights: {
-              intensity: 200,
-              colors: ["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"]
-            }
-          }
-        });
-
-        tubesRef.current = app;
-        setIsLoaded(true);
-
-        // Handle resize if the library doesn't automatically
-        const handleResize = () => {
-          // The library might handle it, but typically we ensure canvas matches container
-          // For this specific lib, it likely attaches to window resize or we might need to manually resize
-        };
-
-        window.addEventListener('resize', handleResize);
-        
-        cleanup = () => {
-          window.removeEventListener('resize', handleResize);
-          // If the library has a destroy method, call it
-          // app.destroy?.(); 
-          // Based on typical threejs-components, it might not have an explicit destroy exposed easily
-          // but we should at least nullify the ref
-        };
-
-      } catch (error) {
-        console.error("Failed to load TubesCursor:", error);
-      }
-    };
-
-    initTubes();
-
-    return () => {
-      mounted = false;
-      if (cleanup) cleanup();
-    };
-  }, []);
+  const beams = useMemo(
+    () =>
+      beamPositions.map((beam, index) => ({
+        ...beam,
+        color: palette.tubes[index % palette.tubes.length],
+      })),
+    [palette],
+  );
 
   const handleClick = () => {
-    if (!enableClickInteraction || !tubesRef.current) return;
-    
-    const colors = randomColors(3);
-    const lightsColors = randomColors(4);
-    
-    tubesRef.current.tubes.setColors(colors);
-    tubesRef.current.tubes.setLightsColors(lightsColors);
+    if (!enableClickInteraction) {
+      return;
+    }
+
+    setPaletteIndex((current) => (current + 1) % palettes.length);
   };
 
   return (
-    <div 
-      className={cn("relative w-full h-full min-h-[400px] overflow-hidden bg-background", className)}
+    <div
+      className={cn(
+        "relative h-full min-h-[400px] w-full overflow-hidden bg-slate-950",
+        className,
+      )}
       onClick={handleClick}
     >
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 w-full h-full block"
-        style={{ touchAction: 'none' }}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 transition-[background] duration-700"
+        style={{ background: palette.background }}
       />
-      
-      {/* Content Overlay */}
-      <div className="relative z-10 w-full h-full pointer-events-none">
-        {children}
-      </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+          maskImage:
+            "radial-gradient(circle at center, black 40%, transparent 90%)",
+        }}
+      />
+
+      {beams.map((beam) => (
+        <motion.div
+          key={`${beam.top}-${beam.left}-${beam.color}`}
+          aria-hidden="true"
+          className="absolute h-24 rounded-full blur-3xl"
+          style={{
+            top: beam.top,
+            left: beam.left,
+            width: "140%",
+            rotate: beam.rotate,
+            background: `linear-gradient(90deg, transparent 0%, ${beam.color} 30%, rgba(255,255,255,0.9) 50%, ${beam.color} 70%, transparent 100%)`,
+            opacity: 0.45,
+          }}
+          animate={{
+            x: ["-3%", "4%", "-2%"],
+            y: ["0%", "2%", "-1%"],
+            opacity: [0.28, 0.5, 0.28],
+          }}
+          transition={{
+            duration: 9 + beam.delay,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+            delay: beam.delay,
+          }}
+        />
+      ))}
+
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.7)_100%)]"
+      />
+
+      {children ? (
+        <div className="relative z-10 h-full w-full">{children}</div>
+      ) : null}
     </div>
   );
 }
 
-// Default export
 export default TubesBackground;

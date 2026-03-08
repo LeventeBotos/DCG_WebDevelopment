@@ -10,6 +10,8 @@
 /.next-runtime/
 /.next-deploy/
 /.next-artifacts/
+/.next-app/
+/.next-user/
 /out/
 
 # production
@@ -38,3 +40,4 @@ next-env.d.ts
 
 node_modules.bak.20260308T1836/
 .npm-cache/
+.next-build/

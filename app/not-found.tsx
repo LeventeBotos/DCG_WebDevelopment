@@ -12,15 +12,17 @@ export default function NotFound() {
       aria-labelledby="not-found-title"
       aria-describedby="not-found-copy"
     >
+      <TubesBackground
+        className="absolute inset-0 min-h-screen opacity-40"
+        enableClickInteraction={false}
+      />
       <ThermodynamicGrid
         resolution={10}
         className="opacity-50"
         coolingFactor={0.975}
       />
-      {/* <TubesBackground /> */}
-      {/* <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/60 to-black/85" /> */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/40 via-black/60 to-black/85" />
 
-      {/* <div className="flex flex-col w-full items-center justify-center relative po text-center"> */}
       <div className="relative z-10 pointer-events-none mx-auto max-w-2xl text-center">
         <h1
           id="not-found-title"
@@ -35,7 +37,6 @@ export default function NotFound() {
           The page you were trying to reach does not exist, may have moved, or
           the URL might be incorrect.
         </p>
-        {/* </div> */}
         <Link
           href="/"
           className="mt-8 inline-flex pointer-events-auto rounded-full border border-white/20 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"

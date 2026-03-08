@@ -67,7 +67,6 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  themeColor: "#000000",
   manifest: "/manifest.webmanifest",
   formatDetection: {
     email: false,
@@ -87,6 +86,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -97,6 +97,7 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <body
+        suppressHydrationWarning
         className={`${inter.className} relative flex min-h-screen flex-col text-slate-900 antialiased`}
       >
         <a

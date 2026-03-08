@@ -6,7 +6,7 @@ import { platforms } from "@/lib/platforms";
 const industrySlugs = ["energy", "banking", "manufacturing", "retail"] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = getSiteUrl() ?? new URL("http://localhost:3000");
+  const base = getSiteUrl() ?? new URL("https://www.dataconsulting-group.com");
   const now = new Date();
 
   const staticRoutes = [
@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/insights",
     "/careers",
     "/contact",
+    "/credits",
     "/privacy-policy",
     "/cookie-policy",
     "/terms-of-service",

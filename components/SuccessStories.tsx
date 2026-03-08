@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const successStories = [
   {
     company: "Shell",
-    logo: "./shell.png",
+    logo: "/shell.png",
     industry: "Energy",
     result: "40% improvement in production forecasting accuracy",
     impact: "£12M+ annual cost savings",
@@ -15,7 +15,7 @@ const successStories = [
   {
     company: "British Airways",
     industry: "Aviation",
-    logo: "./british-airways.png",
+    logo: "/ba.png",
     result: "60% reduction in fraud detection time",
     impact: "Enhanced customer security",
 
@@ -27,7 +27,7 @@ const successStories = [
     result: "35% increase in supply chain efficiency",
     impact: "Faster time-to-market",
 
-    logo: "./infosys.png",
+    logo: "/infosys.png",
     delay: 0.3,
   },
 ];

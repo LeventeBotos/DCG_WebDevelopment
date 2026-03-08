@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
+import { hasMediaCredits } from "@/lib/media-credits";
 
 type ConnectionWithSaveData = {
   saveData?: boolean;
@@ -13,6 +14,7 @@ type ConnectionWithSaveData = {
 
 const Hero = () => {
   const [canPlayVideo, setCanPlayVideo] = useState(false);
+  const showCreditsLink = hasMediaCredits();
   const trustedClients = [
     {
       name: "BP",
@@ -170,6 +172,21 @@ const Hero = () => {
             ))}
           </div>
         </div>
+        {/* {showCreditsLink ? (
+          <Link
+            href="/credits"
+            className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium text-white/75 backdrop-blur transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black md:bottom-5 md:right-5 md:text-xs"
+            onClick={() =>
+              track("nav_click", {
+                label: "Media Credits",
+                href: "/credits",
+                location: "home_hero",
+              })
+            }
+          >
+            Footage credits
+          </Link>
+        ) : null} */}
       </div>
     </section>
   );
