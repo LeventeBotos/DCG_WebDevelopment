@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
-  distDir: ".next-artifacts",
   poweredByHeader: false,
   turbopack: {
     root: __dirname,
