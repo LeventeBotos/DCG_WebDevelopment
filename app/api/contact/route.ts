@@ -124,7 +124,7 @@ export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   const defaultFrom = "DCG Contact <onboarding@resend.dev>";
   const from = process.env.RESEND_FROM ?? defaultFrom;
-  const to = process.env.RESEND_TO ?? "botos.levente2007@gmail.com";
+  const to = process.env.RESEND_TO ?? "info@dataconsulting-group.com";
 
   if (!apiKey) {
     log("error", "Missing RESEND_API_KEY configuration.");
