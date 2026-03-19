@@ -100,7 +100,7 @@ export async function POST(request: Request) {
   const to =
     process.env.RESEND_CAREERS_TO ??
     process.env.RESEND_TO ??
-    "botos.levente2007@gmail.com";
+    "info@dataconsulting-group.com";
 
   if (!apiKey) {
     return NextResponse.json(
