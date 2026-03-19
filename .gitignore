@@ -12,6 +12,7 @@
 /.next-artifacts/
 /.next-app/
 /.next-user/
+/.next-*/
 /out/
 
 # production

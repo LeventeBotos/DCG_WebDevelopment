@@ -79,6 +79,7 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.181.0",
     "postcss": "^8",
+    "shadcn": "^4.0.7",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
