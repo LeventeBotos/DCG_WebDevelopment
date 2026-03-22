@@ -74,11 +74,6 @@ export default function Header() {
                 })
               }
             />
-            {/* Optional CTAs */}
-            {/* <div className="flex items-center gap-4">
-              <NavbarButton variant="secondary">Login</NavbarButton>
-              <NavbarButton variant="primary">Book a call</NavbarButton>
-            </div> */}
           </NavBody>
 
           {/* Mobile */}
@@ -114,31 +109,10 @@ export default function Header() {
                   <span className="block">{item.name}</span>
                 </Link>
               ))}
-
-              {/* Optional mobile CTAs */}
-              {/* <div className="flex w-full flex-col gap-4 pt-4">
-                <NavbarButton
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  variant="secondary"
-                  className="w-full"
-                >
-                  Login
-                </NavbarButton>
-                <NavbarButton
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  variant="primary"
-                  className="w-full"
-                >
-                  Book a call
-                </NavbarButton>
-              </div> */}
             </MobileNavMenu>
           </MobileNav>
         </Navbar>
       </div>
-
-      {/* Spacer so content starts below the fixed navbar */}
-      {/* <div className="h-16 md:h-20" /> */}
     </>
   );
 }

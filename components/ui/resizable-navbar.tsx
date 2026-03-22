@@ -137,7 +137,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
       aria-label="Primary"
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
+        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-md font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
         className,
       )}
     >
@@ -145,7 +145,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
         <Link
           onMouseEnter={() => setHovered(idx)}
           onClick={() => onItemClick?.(item)}
-          className="relative px-4 py-2 text-neutral-600 "
+          className="relative px-4 py-2 text-neutral-500 font-semibold"
           key={`link-${idx}`}
           href={item.link}
           aria-current={pathname === item.link ? "page" : undefined}
@@ -317,7 +317,7 @@ export const NavbarLogo = () => {
         height={338}
         priority
         className={cn(
-          "h-7 w-auto invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[25%]",
+          "h-7 w-auto invert brightness-0 transition-[filter] duration-200 md:h-8 md:invert-0 md:brightness-[35%]",
         )}
       />
       {/* <span className="font-medium text-black ">Startup</span> */}

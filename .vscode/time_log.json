@@ -9094,6 +9094,118 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 8
+      },
+      {
+        "date": "2026-03-22T18:26:22.251Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 6
+      },
+      {
+        "date": "2026-03-22T18:26:23.479Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 1
+      },
+      {
+        "date": "2026-03-22T18:27:14.022Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 51
+      },
+      {
+        "date": "2026-03-22T18:27:24.461Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 10
+      },
+      {
+        "date": "2026-03-22T18:27:29.875Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 5
+      },
+      {
+        "date": "2026-03-22T18:27:38.071Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 8
+      },
+      {
+        "date": "2026-03-22T18:27:43.082Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 5
+      },
+      {
+        "date": "2026-03-22T18:28:15.803Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 33
+      },
+      {
+        "date": "2026-03-22T18:28:32.944Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 17
+      },
+      {
+        "date": "2026-03-22T18:28:58.855Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 26
+      },
+      {
+        "date": "2026-03-22T18:29:46.425Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 48
+      },
+      {
+        "date": "2026-03-22T18:30:14.693Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 28
+      },
+      {
+        "date": "2026-03-22T18:30:42.927Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 28
+      },
+      {
+        "date": "2026-03-22T18:31:44.085Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 61
       }
     ],
     "components/ui/button.tsx.git": [
@@ -16086,6 +16198,46 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 1
+      },
+      {
+        "date": "2026-03-22T18:22:09.863Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 8
+      },
+      {
+        "date": "2026-03-22T18:22:13.688Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 4
+      },
+      {
+        "date": "2026-03-22T18:23:01.318Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 48
+      },
+      {
+        "date": "2026-03-22T18:23:10.062Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 9
+      },
+      {
+        "date": "2026-03-22T18:23:43.433Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 33
       }
     ],
     "app/api/contact/route.ts.git": [
@@ -21780,6 +21932,34 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 13
+      }
+    ],
+    ".next-artifacts/dev/package.json": [
+      {
+        "date": "2026-03-22T18:18:26.541Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 16
+      }
+    ],
+    "lib/analytics.ts.git": [
+      {
+        "date": "2026-03-22T18:20:08.077Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 7
+      },
+      {
+        "date": "2026-03-22T18:21:13.453Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 65
       }
     ]
   }
