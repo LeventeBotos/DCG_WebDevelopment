@@ -4,6 +4,25 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distDir = process.env.NEXT_DIST_DIR;
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+  "media-src 'self' blob:",
+  "frame-src 'self'",
+  "worker-src 'self' blob:",
+  "upgrade-insecure-requests",
+]
+  .join("; ")
+  .replace(/\s{2,}/g, " ")
+  .trim();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -60,6 +79,10 @@ const nextConfig = {
             key: "Permissions-Policy",
             value:
               "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: contentSecurityPolicy,
           },
           {
             key: "X-DNS-Prefetch-Control",

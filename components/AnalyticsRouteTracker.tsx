@@ -15,21 +15,20 @@ export default function AnalyticsRouteTracker() {
       searchParams?.toString() ? `?${searchParams.toString()}` : ""
     }`;
 
-    let attempts = 0;
-    const trySend = () => {
-      attempts += 1;
+    const sendPageview = () => {
       if (hasAnalytics()) {
         pageview(url);
-        return;
-      }
-      if (attempts < 5) {
-        window.setTimeout(trySend, 250);
       }
     };
 
-    trySend();
+    if (hasAnalytics()) {
+      sendPageview();
+      return;
+    }
+
+    window.addEventListener("ga-ready", sendPageview, { once: true });
+    return () => window.removeEventListener("ga-ready", sendPageview);
   }, [pathname, searchParams]);
 
   return null;
 }
-

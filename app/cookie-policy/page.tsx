@@ -15,67 +15,56 @@ export default function CookiePolicyPage() {
     <LegalDocumentPage
       title="Cookie Policy"
       description="This page explains what cookies and similar technologies we use, why we use them, and how you can manage your preferences."
-      lastUpdated="February 2026"
+      lastUpdated="April 2026"
       pdfHref="/documents/CookiePolicy.pdf"
       pdfLabel="View Cookie Policy PDF"
       intro={[
         "To manage or change your cookie preferences, use the Manage cookies option at the bottom of the page.",
-        "We use cookies and related web technologies to improve performance, enhance browsing experience, support security, and understand how visitors use the site.",
+        "We use a small number of cookies and related technologies to keep the website working, remember your analytics preference, and, if you agree, measure site usage in aggregate.",
       ]}
       sections={[
         {
           title: "What is a cookie?",
           paragraphs: [
             "A cookie is a small piece of data stored in your browser by a website. Cookies and related technologies help websites remember activity, maintain functionality, and measure usage.",
-            "Alongside cookies, we may use lightweight code snippets, software components, and server-side analytics/security tools.",
+            "Alongside cookies, our infrastructure providers may process server-side request data needed to deliver, secure, and troubleshoot the website.",
           ],
         },
         {
-          title: "Cookie preferences",
+          title: "Cookies we use",
           paragraphs: [
-            "On your first visit, you are asked whether to accept analytics cookies. You can change this choice at any time through Manage cookies.",
-            "For general information about cookies, visit allaboutcookies.org.",
+            "We currently use the following categories on this website.",
           ],
           bullets: [
-            "Functional cookies: required for basic website functionality.",
-            "Performance cookies: help us understand usage and improve content and navigation.",
+            "Strictly necessary preference cookie (`dcg_cookie_consent`): stores whether you accepted or rejected analytics so we can respect your choice on later visits.",
+            "Optional analytics cookies (`_ga`, `_ga_*`): set by Google Analytics only if you choose Accept analytics.",
           ],
         },
         {
-          title: "Analytics",
+          title: "How consent works",
           paragraphs: [
-            "We use Google Analytics to collect aggregated statistics about how visitors use our website.",
-          ],
-          bullets: [
-            "Approximate location and language settings.",
-            "Number of visits and page popularity.",
-            "Referral source information (how users found the site).",
-            "Technical browsing data such as IP-related signals.",
+            "On your first visit, we ask whether you want to allow analytics cookies. Google Analytics does not load unless you give that consent.",
+            "You can withdraw or change your choice at any time through Manage cookies in the footer. When consent is withdrawn, we stop loading Google Analytics and clear Google Analytics cookies from this browser where possible.",
           ],
         },
         {
-          title: "Content testing and performance",
+          title: "Google Analytics",
           paragraphs: [
-            "During content updates, we may compare content variants with different visitor groups to understand what performs better and improve the user experience.",
+            "If you opt in, we use Google Analytics to collect aggregated information about page views, navigation paths, approximate location, device/browser information, and referral sources.",
+            "Our Google Analytics configuration is set up for measurement only. We do not enable advertising features or ad-personalization signals in the site code.",
           ],
         },
         {
-          title: "Surveys",
+          title: "Infrastructure and server-side processing",
           paragraphs: [
-            "We may run optional surveys about our services and website. Cookie-based controls can help avoid repeatedly showing the same survey to returning visitors.",
+            "This website is hosted and protected using infrastructure providers such as Cloudflare. Those providers may process IP addresses, user-agent strings, and request metadata on the server side to deliver content, mitigate abuse, and keep the service available.",
+            "That server-side processing is separate from optional Google Analytics cookies and does not depend on the analytics banner.",
           ],
         },
         {
-          title: "Advertising and campaign cookies",
+          title: "What we do not currently use",
           paragraphs: [
-            "In some cases, social media or advertising partners may place third-party cookies to support campaign measurement and personalized services on their platforms.",
-            "Use of your information by third parties is governed by their own privacy policies, not this policy.",
-          ],
-        },
-        {
-          title: "Conversion tracking",
-          paragraphs: [
-            "We may use conversion pixels or similar tools to measure campaign effectiveness, for example when a visitor completes a sign-up or reaches a confirmation page.",
+            "We do not currently run third-party advertising cookies, social media tracking pixels, or cross-site remarketing tags on this website.",
           ],
         },
       ]}

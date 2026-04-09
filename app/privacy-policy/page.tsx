@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
     <LegalDocumentPage
       title="Privacy Policy"
       description="This notice explains how Data Consulting Group (DCG) Ltd and its subsidiaries process and protect personal data when you use this website."
-      lastUpdated="February 2026"
+      lastUpdated="April 2026"
       pdfHref="/documents/PrivacyPolicy.pdf"
       pdfLabel="View Privacy Policy PDF"
       intro={[
@@ -26,12 +26,12 @@ export default function PrivacyPolicyPage() {
         {
           title: "Who we are and important information",
           paragraphs: [
-            "This privacy notice applies to Data Consulting Group (DCG) Ltd and its subsidiaries and affiliates. It explains how we collect and process personal data when you visit our website, including when you contact us or sign up for publications.",
+            "This privacy notice applies to Data Consulting Group (DCG) Ltd and explains how we collect and process personal data when you visit our website, contact us, or apply for a role.",
             "This website is not intended for children, and we do not knowingly collect data relating to children.",
             <>
               Data Consulting Group Ltd is the data controller for personal
-              data processed under this notice. Contact: Data Protection
-              Officer, Data Consulting Group Ltd, BR4 9NG, England, or{" "}
+              data processed under this notice. For privacy questions, contact{" "}
+              us at{" "}
               <a
                 href="mailto:info@dataconsulting-group.com"
                 className="font-medium text-dcg-lightBlue hover:underline"
@@ -50,10 +50,10 @@ export default function PrivacyPolicyPage() {
             "We do not collect special categories of personal data (for example, health, biometric, religious, political, or criminal data) through this website.",
           ],
           bullets: [
-            "Identity data (such as first name, last name, username, title, and date of birth).",
-            "Contact data (such as billing or delivery address, email address, and telephone numbers).",
-            "Aggregated usage data for analytics and service improvement.",
-            "If required personal data is not provided, we may be unable to provide some products or services.",
+            "Identity and contact data you submit through our contact or careers forms, such as name, email address, phone number, company, and location.",
+            "Recruitment data you choose to provide, such as CV or portfolio links, experience, notice period, and application messages.",
+            "Technical and usage data such as IP address, browser or device information, page views, referral information, and basic server request metadata.",
+            "Preference data, including whether you accepted or rejected analytics cookies.",
           ],
         },
         {
@@ -62,24 +62,23 @@ export default function PrivacyPolicyPage() {
             "We use different methods to collect data from and about you, including direct interactions and usage of our website and services.",
           ],
           bullets: [
-            "When you apply for products or services.",
-            "When you create an account.",
-            "When you subscribe to publications or marketing communications.",
-            "When you request information from us.",
-            "When you engage with us through a business or contractual relationship.",
+            "When you complete the contact form or communicate with us by email or phone.",
+            "When you apply for a role through the careers section.",
+            "When you browse the website and our hosting, security, and analytics providers receive technical request data.",
+            "When you choose your cookie settings through the consent banner.",
           ],
         },
         {
           title: "How we use personal data",
           paragraphs: [
             "We only process personal data when the law allows us to. Most commonly, we rely on performance of a contract, legitimate interests, or legal obligations.",
-            "We may process your data for more than one lawful basis depending on the purpose. For details on the legal basis for a specific use case, contact our Data Protection Officer.",
+            "We may process your data for more than one lawful basis depending on the purpose. If you need more detail about the legal basis for a specific use case, contact us.",
           ],
           bullets: [
-            "Customer registration: identity and contact data, based on performance of a contract.",
-            "Marketing communications: identity and contact data, based on legitimate interests or consent where required.",
-            "Site traffic information and cookies: identity/contact signals and usage data, based on legitimate interests and consent for non-essential cookies.",
-            "You can opt out of marketing messages at any time by following the unsubscribe instructions in those messages.",
+            "Responding to enquiries and business requests: identity and contact data, based on our legitimate interests and pre-contract steps.",
+            "Recruitment administration: identity, contact, and career application data, based on our legitimate interests in hiring and assessing candidates.",
+            "Operating, securing, and troubleshooting the website: technical data and server logs, based on our legitimate interests.",
+            "Optional analytics measurement: usage data processed through Google Analytics only where you have consented to non-essential analytics cookies.",
           ],
         },
         {
@@ -104,11 +103,12 @@ export default function PrivacyPolicyPage() {
             "We may share personal data with trusted parties where necessary for business and legal purposes.",
           ],
           bullets: [
-            "Internal group companies, subsidiaries, and affiliates.",
+            "Cloudflare and similar infrastructure providers for hosting, content delivery, and security services.",
+            "Resend for transactional email delivery from our contact and careers forms.",
+            "Google Analytics, but only after you consent to optional analytics cookies.",
             "External partners and service providers acting as processors.",
             "Professional advisers such as lawyers, auditors, insurers, and consultants.",
             "Regulators, tax authorities, and other public bodies where required.",
-            "Prospective buyers or merged entities if our business is sold, transferred, or restructured.",
           ],
         },
         {
@@ -156,8 +156,8 @@ export default function PrivacyPolicyPage() {
           title: "Queries, requests, or concerns",
           paragraphs: [
             <>
-              For any privacy question, complaint, or rights request, contact
-              our Data Protection Officer at{" "}
+              For any privacy question, complaint, or rights request, contact us
+              at{" "}
               <a
                 href="mailto:info@dataconsulting-group.com"
                 className="font-medium text-dcg-lightBlue hover:underline"

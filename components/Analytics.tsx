@@ -22,6 +22,7 @@ export default function Analytics() {
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
           gtag('js', new Date());
           gtag('config', '${GA_ID}', {
             anonymize_ip: true,
@@ -29,6 +30,7 @@ export default function Analytics() {
             allow_google_signals: false,
             allow_ad_personalization_signals: false,
           });
+          window.dispatchEvent(new Event('ga-ready'));
         `}
       </Script>
       <AnalyticsRouteTracker />
