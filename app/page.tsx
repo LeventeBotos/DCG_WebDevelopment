@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import SectionTitle from "@/components/SectionTitle";
 import ContactCtaSection from "@/components/ContactCtaSection";
 import HeroVideoSection from "@/components/HeroVideo";
+import DeferredRender from "@/components/DeferredRender";
 
 const WhyDcgBento = dynamic(
   () => import("@/components/WhyDcgBento").then((module) => module.WhyDcgBento),
@@ -87,7 +88,11 @@ export default function Home() {
         />
         <DCGAIPlatformSection />
       </div>
-      <HomeTimelineSection />
+      <DeferredRender
+        placeholder={<div className="min-h-[620px] w-full bg-slate-50/60" />}
+      >
+        <HomeTimelineSection />
+      </DeferredRender>
       <div className="mx-auto max-w-7xl px-2 md:px-4 flex flex-col gap-10">
         <SectionTitle
           title="Momentum is real. So are the capability gaps."
@@ -98,8 +103,16 @@ export default function Home() {
         />
         <AIAtWorkSection />
       </div>
-      <AiCompaniesVideo />
-      <HomeDeferredSections />
+      <DeferredRender
+        placeholder={<div className="min-h-[440px] w-full bg-slate-50/60" />}
+      >
+        <AiCompaniesVideo />
+      </DeferredRender>
+      <DeferredRender
+        placeholder={<div className="min-h-[720px] w-full bg-slate-50/60" />}
+      >
+        <HomeDeferredSections />
+      </DeferredRender>
       <ContactCtaSection
         eyebrow="Next step"
         title="Let's build tomorrow together."

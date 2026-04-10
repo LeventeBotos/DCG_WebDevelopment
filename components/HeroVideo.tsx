@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { hasMediaCredits } from "@/lib/media-credits";
@@ -161,13 +162,15 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap w-full items-center justify-center lg:justify-start gap-2 md:gap-6">
             {trustedClients.map((client) => (
-              <img
+              <Image
                 key={client.name}
                 className="px-4 py-2 h-8 md:h-14 object-contain opacity-75 grayscale"
-                src={client.url}
                 alt={client.name}
+                src={client.url}
+                width={client.width}
+                height={client.height}
+                sizes="(max-width: 768px) 120px, 180px"
                 loading="lazy"
-                decoding="async"
               />
             ))}
           </div>
