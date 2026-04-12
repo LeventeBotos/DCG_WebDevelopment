@@ -21961,6 +21961,50 @@
         },
         "timeSpent": 65
       }
+    ],
+    ".next-deploy/dev/package.json": [
+      {
+        "date": "2026-04-12T15:30:04.677Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 5
+      }
+    ],
+    "lib/analytics-config.ts": [
+      {
+        "date": "2026-04-12T15:30:43.233Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 36
+      },
+      {
+        "date": "2026-04-12T15:30:45.222Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
+      },
+      {
+        "date": "2026-04-12T15:30:49.968Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 5
+      },
+      {
+        "date": "2026-04-12T15:31:32.818Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 43
+      }
     ]
   }
 }

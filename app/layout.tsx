@@ -6,11 +6,13 @@ import Header from "@/components/Navbar";
 import Footer from "@/components/footer";
 import Analytics from "@/components/Analytics";
 import CookieBanner from "@/components/CookieBanner";
+import { getGoogleAnalyticsId } from "@/lib/analytics-config";
 import { siteConfig, getSiteUrl } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const siteUrl = getSiteUrl();
+const googleAnalyticsId = "G-T9WH3XWBH5";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl ?? undefined,
@@ -106,7 +108,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Analytics />
+        <Analytics measurementId={googleAnalyticsId} />
         <Header />
         <main id="main-content" className="flex-grow" tabIndex={-1}>
           {children}

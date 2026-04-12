@@ -2,17 +2,23 @@ type GtagFn = (...args: any[]) => void;
 
 declare global {
   interface Window {
+    dcgGoogleAnalyticsId?: string;
     gtag?: GtagFn;
     dataLayer?: unknown[];
   }
 }
 
-export const GA_ID =
-  process.env.NEXT_PUBLIC_GA_ID?.trim() || null;
+const getAnalyticsId = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return window.dcgGoogleAnalyticsId?.trim() || null;
+};
 
 export function hasAnalytics(): boolean {
   return (
-    Boolean(GA_ID) &&
+    Boolean(getAnalyticsId()) &&
     typeof window !== "undefined" &&
     typeof window.gtag === "function"
   );
@@ -21,8 +27,9 @@ export function hasAnalytics(): boolean {
 export function pageview(url: string) {
   if (!hasAnalytics()) return;
   window.gtag!("event", "page_view", {
+    send_to: getAnalyticsId(),
     page_location: url,
-    page_title: document?.title,
+    page_title: document.title,
   });
 }
 
@@ -42,5 +49,8 @@ export function track(
   params?: Record<string, unknown>
 ) {
   if (!hasAnalytics()) return;
-  window.gtag!("event", name, params);
+  window.gtag!("event", name, {
+    send_to: getAnalyticsId(),
+    ...params,
+  });
 }
