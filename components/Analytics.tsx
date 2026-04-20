@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Script from "next/script";
 import AnalyticsRouteTracker from "@/components/AnalyticsRouteTracker";
 
@@ -78,7 +79,9 @@ export default function Analytics({ measurementId }: AnalyticsProps) {
         )}`}
         strategy="afterInteractive"
       />
-      <AnalyticsRouteTracker />
+      <Suspense fallback={null}>
+        <AnalyticsRouteTracker />
+      </Suspense>
     </>
   );
 }
