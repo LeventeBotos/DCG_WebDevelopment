@@ -61,29 +61,33 @@ export default async function ServiceDetailPage({
         title={service.title}
         description={service.intro}
         actions={[
-          { label: "Back to services", href: "/services", variant: "secondary" },
+          {
+            label: "Back to services",
+            href: "/services",
+            variant: "secondary",
+          },
           { label: "Talk with us", href: "/contact", variant: "primary" },
         ]}
         chips={[
           { label: "Outcome aligned" },
           { label: "Delivery focused", href: "/projects" },
         ]}
-        aside={
-          <div className="dcg-card space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
-              Service snapshot
-            </p>
-            <p className="text-sm text-dcg-slate">{service.summary}</p>
-            <ul className="space-y-2 text-sm text-dcg-ink">
-              {service.highlights.slice(0, 3).map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        }
+        // aside={
+        //   <div className="dcg-card space-y-3">
+        //     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dcg-lightGreen">
+        //       Service snapshot
+        //     </p>
+        //     <p className="text-sm text-dcg-slate">{service.summary}</p>
+        //     <ul className="space-y-2 text-sm text-dcg-ink">
+        //       {service.highlights.slice(0, 3).map((item) => (
+        //         <li key={item} className="flex gap-2">
+        //           <span className="mt-1 h-1.5 w-1.5 rounded-full bg-dcg-lightBlue" />
+        //           <span>{item}</span>
+        //         </li>
+        //       ))}
+        //     </ul>
+        //   </div>
+        // }
       />
 
       <section className="dcg-section py-14 md:py-20 space-y-10">
@@ -149,7 +153,6 @@ export default async function ServiceDetailPage({
             </div>
           ))}
         </div>
-
       </section>
       <ContactCtaSection
         eyebrow="Next step"

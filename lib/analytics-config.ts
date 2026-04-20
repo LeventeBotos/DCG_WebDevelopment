@@ -20,5 +20,5 @@ export function getGoogleAnalyticsId() {
     return configuredId.toUpperCase();
   }
 
-  return "G-T9WH3XWBH5";
+  return DEFAULT_GA_ID;
 }

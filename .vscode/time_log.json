@@ -20500,6 +20500,22 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 7
+      },
+      {
+        "date": "2026-04-20T07:40:44.353Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 7
+      },
+      {
+        "date": "2026-04-20T07:40:55.087Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 10
       }
     ],
     "components/ui/draggable-card.tsx": [
@@ -22004,6 +22020,26 @@
           "email": "botos.levente2007@gmail.com"
         },
         "timeSpent": 43
+      }
+    ],
+    "lib/analytics-config.ts.git": [
+      {
+        "date": "2026-04-12T15:32:13.335Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 3
+      }
+    ],
+    ".next-runtime/dev/package.json": [
+      {
+        "date": "2026-04-20T07:40:29.151Z",
+        "user": {
+          "name": "Levente Botos",
+          "email": "botos.levente2007@gmail.com"
+        },
+        "timeSpent": 2
       }
     ]
   }

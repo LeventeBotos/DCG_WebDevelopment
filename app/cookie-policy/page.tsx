@@ -20,7 +20,7 @@ export default function CookiePolicyPage() {
       pdfLabel="View Cookie Policy PDF"
       intro={[
         "To manage or change your cookie preferences, use the Manage cookies option at the bottom of the page.",
-        "We use a small number of cookies and related technologies to keep the website working, remember your analytics preference, and, if you agree, measure site usage in aggregate.",
+        "We use a small number of cookies and related technologies to keep the website working, remember your analytics preference, and measure site usage in aggregate.",
       ]}
       sections={[
         {
@@ -43,14 +43,14 @@ export default function CookiePolicyPage() {
         {
           title: "How consent works",
           paragraphs: [
-            "On your first visit, we ask whether you want to allow analytics cookies. Google Analytics does not load unless you give that consent.",
-            "You can withdraw or change your choice at any time through Manage cookies in the footer. When consent is withdrawn, we stop loading Google Analytics and clear Google Analytics cookies from this browser where possible.",
+            "On your first visit, we ask whether you want to allow analytics cookies. Google Analytics loads with analytics storage denied by default, so analytics cookies are not written unless you choose Accept analytics.",
+            "You can withdraw or change your choice at any time through Manage cookies in the footer. When consent is withdrawn, we keep analytics cookies blocked and clear Google Analytics cookies from this browser where possible.",
           ],
         },
         {
           title: "Google Analytics",
           paragraphs: [
-            "If you opt in, we use Google Analytics to collect aggregated information about page views, navigation paths, approximate location, device/browser information, and referral sources.",
+            "We use Google Analytics consent mode to collect aggregate, consent-aware measurement signals. If you opt in, Google Analytics may also use analytics cookies to measure repeat visits, navigation paths, approximate location, device/browser information, and referral sources.",
             "Our Google Analytics configuration is set up for measurement only. We do not enable advertising features or ad-personalization signals in the site code.",
           ],
         },

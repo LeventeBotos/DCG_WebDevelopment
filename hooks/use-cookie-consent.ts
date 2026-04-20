@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { updateGoogleAnalyticsConsent } from "@/lib/analytics";
 
 const CONSENT_KEY = "dcg_cookie_consent";
 const CONSENT_EVENT = "dcg-cookie-consent";
@@ -13,7 +14,15 @@ const readCookieConsent = (): CookieConsentValue => {
     return null;
   }
 
-  const stored = window.localStorage.getItem(CONSENT_KEY);
+  let stored: string | null = null;
+
+  try {
+    stored = window.localStorage.getItem(CONSENT_KEY);
+  } catch {
+    // Browser storage can be blocked; the cookie fallback still works.
+    stored = null;
+  }
+
   if (stored === "granted" || stored === "denied") {
     return stored;
   }
@@ -34,7 +43,11 @@ const persistCookieConsent = (value: Exclude<CookieConsentValue, null>) => {
     return;
   }
 
-  window.localStorage.setItem(CONSENT_KEY, value);
+  try {
+    window.localStorage.setItem(CONSENT_KEY, value);
+  } catch {
+    // Cookie persistence below is the fallback.
+  }
 
   const maxAge = 60 * 60 * 24 * 365;
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
@@ -46,6 +59,7 @@ const persistCookieConsent = (value: Exclude<CookieConsentValue, null>) => {
     clearAnalyticsCookies();
   }
 
+  updateGoogleAnalyticsConsent(value);
   window.dispatchEvent(new Event(CONSENT_EVENT));
 };
 
@@ -54,11 +68,16 @@ const clearCookieConsent = () => {
     return;
   }
 
-  window.localStorage.removeItem(CONSENT_KEY);
+  try {
+    window.localStorage.removeItem(CONSENT_KEY);
+  } catch {
+    // Expiring the preference cookie below is the fallback.
+  }
 
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
   document.cookie = `${CONSENT_KEY}=; Max-Age=0; Path=/; SameSite=Lax${secure}`;
   clearAnalyticsCookies();
+  updateGoogleAnalyticsConsent("denied");
 
   window.dispatchEvent(new Event(CONSENT_EVENT));
 };

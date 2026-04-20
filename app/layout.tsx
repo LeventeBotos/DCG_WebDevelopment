@@ -12,7 +12,7 @@ import { siteConfig, getSiteUrl } from "@/lib/site";
 const inter = Inter({ subsets: ["latin"] });
 
 const siteUrl = getSiteUrl();
-const googleAnalyticsId = "G-T9WH3XWBH5";
+const googleAnalyticsId = getGoogleAnalyticsId();
 
 export const metadata: Metadata = {
   metadataBase: siteUrl ?? undefined,

@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
             "Responding to enquiries and business requests: identity and contact data, based on our legitimate interests and pre-contract steps.",
             "Recruitment administration: identity, contact, and career application data, based on our legitimate interests in hiring and assessing candidates.",
             "Operating, securing, and troubleshooting the website: technical data and server logs, based on our legitimate interests.",
-            "Optional analytics measurement: usage data processed through Google Analytics only where you have consented to non-essential analytics cookies.",
+            "Analytics measurement: aggregate usage data processed through Google Analytics consent mode, with non-essential analytics cookies used only where you have consented.",
           ],
         },
         {
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
           bullets: [
             "Cloudflare and similar infrastructure providers for hosting, content delivery, and security services.",
             "Resend for transactional email delivery from our contact and careers forms.",
-            "Google Analytics, but only after you consent to optional analytics cookies.",
+            "Google Analytics for consent-aware aggregate measurement, with optional analytics cookies only after you consent.",
             "External partners and service providers acting as processors.",
             "Professional advisers such as lawyers, auditors, insurers, and consultants.",
             "Regulators, tax authorities, and other public bodies where required.",

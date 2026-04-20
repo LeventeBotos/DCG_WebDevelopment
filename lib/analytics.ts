@@ -1,8 +1,10 @@
 type GtagFn = (...args: any[]) => void;
+type AnalyticsConsentValue = "granted" | "denied";
 
 declare global {
   interface Window {
     dcgGoogleAnalyticsId?: string;
+    dcgAnalyticsConsent?: AnalyticsConsentValue | null;
     gtag?: GtagFn;
     dataLayer?: unknown[];
   }
@@ -16,12 +18,43 @@ const getAnalyticsId = () => {
   return window.dcgGoogleAnalyticsId?.trim() || null;
 };
 
+const getAnalyticsConsent = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return window.dcgAnalyticsConsent ?? null;
+};
+
 export function hasAnalytics(): boolean {
   return (
     Boolean(getAnalyticsId()) &&
     typeof window !== "undefined" &&
     typeof window.gtag === "function"
   );
+}
+
+export function hasAnalyticsConsent(): boolean {
+  return getAnalyticsConsent() === "granted";
+}
+
+const getConsentModeParams = (consent: AnalyticsConsentValue) => ({
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  analytics_storage: consent,
+});
+
+export function updateGoogleAnalyticsConsent(consent: AnalyticsConsentValue) {
+  if (typeof window === "undefined") return;
+
+  window.dcgAnalyticsConsent = consent;
+
+  if (typeof window.gtag !== "function") {
+    return;
+  }
+
+  window.gtag("consent", "update", getConsentModeParams(consent));
 }
 
 export function pageview(url: string) {
@@ -48,7 +81,7 @@ export function track(
   name: AnalyticsEventName,
   params?: Record<string, unknown>
 ) {
-  if (!hasAnalytics()) return;
+  if (!hasAnalytics() || !hasAnalyticsConsent()) return;
   window.gtag!("event", name, {
     send_to: getAnalyticsId(),
     ...params,

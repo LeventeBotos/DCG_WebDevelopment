@@ -24,9 +24,10 @@ export default function CookieBanner() {
             Cookie preferences
           </p>
           <p className="text-sm text-white/80">
-            We use analytics cookies to understand how the site is used. These
-            only load after you accept. We always store your cookie preference
-            so we can remember your choice. See our{" "}
+            We use Google Analytics to understand how the site is used. Until
+            you accept, analytics runs without analytics cookies. We always
+            store your cookie preference so we can remember your choice. See
+            our{" "}
             <Link
               href="/privacy-policy"
               className="font-semibold text-white underline underline-offset-4 hover:text-white/70"
