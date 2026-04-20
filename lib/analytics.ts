@@ -57,11 +57,14 @@ export function updateGoogleAnalyticsConsent(consent: AnalyticsConsentValue) {
   window.gtag("consent", "update", getConsentModeParams(consent));
 }
 
-export function pageview(url: string) {
+export function pageview(url?: string) {
   if (!hasAnalytics()) return;
+
+  const pageLocation = url || window.location.href;
+
   window.gtag!("event", "page_view", {
     send_to: getAnalyticsId(),
-    page_location: url,
+    page_location: pageLocation,
     page_title: document.title,
   });
 }

@@ -62,11 +62,11 @@ export default function CookieBanner() {
           <button
             type="button"
             onClick={() => {
+              setConsent("granted");
               track("cta_click", {
                 label: "Accept analytics",
                 location: "cookie_banner",
               });
-              setConsent("granted");
             }}
             aria-label="Accept analytics cookies"
             className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white/80"
