@@ -1,15 +1,22 @@
-import { sendGAEvent } from "@next/third-parties/google";
-
 type GtagFn = (...args: any[]) => void;
 type AnalyticsConsentValue = "granted" | "denied";
 
 declare global {
   interface Window {
+    dcgGoogleAnalyticsId?: string;
     dcgAnalyticsConsent?: AnalyticsConsentValue | null;
     gtag?: GtagFn;
     dataLayer?: Object[];
   }
 }
+
+const getAnalyticsId = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return window.dcgGoogleAnalyticsId?.trim() || null;
+};
 
 const getAnalyticsConsent = () => {
   if (typeof window === "undefined") {
@@ -20,7 +27,11 @@ const getAnalyticsConsent = () => {
 };
 
 export function hasAnalytics(): boolean {
-  return typeof window !== "undefined" && typeof window.gtag === "function";
+  return (
+    Boolean(getAnalyticsId()) &&
+    typeof window !== "undefined" &&
+    typeof window.gtag === "function"
+  );
 }
 
 export function hasAnalyticsConsent(): boolean {
@@ -46,6 +57,17 @@ export function updateGoogleAnalyticsConsent(consent: AnalyticsConsentValue) {
   window.gtag("consent", "update", getConsentModeParams(consent));
 }
 
+export function pageview(url?: string) {
+  if (!hasAnalytics() || !hasAnalyticsConsent()) return;
+
+  const pageLocation = url || window.location.href;
+
+  window.gtag!("event", "page_view", {
+    page_location: pageLocation,
+    page_title: document.title,
+  });
+}
+
 export type AnalyticsEventName =
   | "nav_click"
   | "cta_click"
@@ -62,5 +84,5 @@ export function track(
   params?: Record<string, unknown>
 ) {
   if (!hasAnalytics() || !hasAnalyticsConsent()) return;
-  sendGAEvent("event", name, params ?? {});
+  window.gtag!("event", name, params ?? {});
 }
