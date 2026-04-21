@@ -1,14 +1,12 @@
-"use client";
-
-import { Suspense } from "react";
 import Script from "next/script";
-import AnalyticsRouteTracker from "@/components/AnalyticsRouteTracker";
 
-type AnalyticsProps = {
+type AnalyticsConsentBootstrapProps = {
   measurementId: string | null;
 };
 
-export default function Analytics({ measurementId }: AnalyticsProps) {
+export default function AnalyticsConsentBootstrap({
+  measurementId,
+}: AnalyticsConsentBootstrapProps) {
   const analyticsId = measurementId?.trim() || null;
 
   if (!analyticsId) {
@@ -16,12 +14,14 @@ export default function Analytics({ measurementId }: AnalyticsProps) {
   }
 
   return (
-    <>
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          const gaMeasurementId = ${JSON.stringify(analyticsId)};
+    <Script id="google-analytics-consent" strategy="beforeInteractive">
+      {`
+        window.dcgGoogleAnalyticsId = ${JSON.stringify(analyticsId)};
+
+        (function () {
           const consentKey = 'dcg_cookie_consent';
-          const readStoredAnalyticsConsent = () => {
+
+          const readStoredAnalyticsConsent = function () {
             try {
               const stored = window.localStorage.getItem(consentKey);
               if (stored === 'granted' || stored === 'denied') {
@@ -46,42 +46,25 @@ export default function Analytics({ measurementId }: AnalyticsProps) {
           const analyticsStorage = storedAnalyticsConsent === 'granted' ? 'granted' : 'denied';
 
           window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          window.gtag = gtag;
-          window.dcgGoogleAnalyticsId = gaMeasurementId;
+          window.gtag = window.gtag || function () {
+            window.dataLayer.push(arguments);
+          };
           window.dcgAnalyticsConsent = storedAnalyticsConsent;
 
-          gtag('consent', 'default', {
+          window.gtag('consent', 'default', {
             ad_storage: 'denied',
             ad_user_data: 'denied',
             ad_personalization: 'denied',
             analytics_storage: analyticsStorage,
             wait_for_update: 500,
           });
-          gtag('set', {
+          window.gtag('set', {
             ads_data_redaction: true,
             allow_google_signals: false,
             allow_ad_personalization_signals: false,
           });
-          gtag('js', new Date());
-          gtag('config', gaMeasurementId, {
-            anonymize_ip: true,
-            send_page_view: false,
-            allow_google_signals: false,
-            allow_ad_personalization_signals: false,
-          });
-          window.dispatchEvent(new Event('ga-ready'));
-        `}
-      </Script>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
-          analyticsId,
-        )}`}
-        strategy="afterInteractive"
-      />
-      <Suspense fallback={null}>
-        <AnalyticsRouteTracker />
-      </Suspense>
-    </>
+        })();
+      `}
+    </Script>
   );
 }

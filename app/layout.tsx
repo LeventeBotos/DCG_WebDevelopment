@@ -1,10 +1,11 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Navbar";
 import Footer from "@/components/footer";
-import Analytics from "@/components/Analytics";
+import AnalyticsConsentBootstrap from "@/components/AnalyticsConsentBootstrap";
 import CookieBanner from "@/components/CookieBanner";
 import { getGoogleAnalyticsId } from "@/lib/analytics-config";
 import { siteConfig, getSiteUrl } from "@/lib/site";
@@ -98,6 +99,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-GB">
+      <AnalyticsConsentBootstrap measurementId={googleAnalyticsId} />
       <body
         suppressHydrationWarning
         className={`${inter.className} relative flex min-h-screen flex-col text-slate-900 antialiased`}
@@ -108,7 +110,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Analytics measurementId={googleAnalyticsId} />
         <Header />
         <main id="main-content" className="flex-grow" tabIndex={-1}>
           {children}
@@ -116,6 +117,7 @@ export default function RootLayout({
         <Footer />
         <CookieBanner />
       </body>
+      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>
   );
 }
