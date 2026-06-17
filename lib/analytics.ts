@@ -58,7 +58,7 @@ export function updateGoogleAnalyticsConsent(consent: AnalyticsConsentValue) {
 }
 
 export function pageview(url?: string) {
-  if (!hasAnalytics() || !hasAnalyticsConsent()) return;
+  if (!hasAnalytics()) return;
 
   const pageLocation = url || window.location.href;
 
@@ -83,6 +83,6 @@ export function track(
   name: AnalyticsEventName,
   params?: Record<string, unknown>
 ) {
-  if (!hasAnalytics() || !hasAnalyticsConsent()) return;
+  if (!hasAnalytics()) return;
   window.gtag!("event", name, params ?? {});
 }

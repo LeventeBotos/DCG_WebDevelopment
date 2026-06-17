@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { hasAnalytics, hasAnalyticsConsent, pageview } from "@/lib/analytics";
+import { hasAnalytics, pageview } from "@/lib/analytics";
 
 export default function AnalyticsRouteTracker() {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function AnalyticsRouteTracker() {
     }`;
 
     const sendPageview = () => {
-      if (hasAnalytics() && hasAnalyticsConsent()) {
+      if (hasAnalytics()) {
         pageview(url);
       }
     };
