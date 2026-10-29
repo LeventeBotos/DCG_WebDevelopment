@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { updateGoogleAnalyticsConsent } from "@/lib/analytics";
+import { pageview, updateGoogleAnalyticsConsent } from "@/lib/analytics";
 
 const CONSENT_KEY = "dcg_cookie_consent";
 const CONSENT_EVENT = "dcg-cookie-consent";
@@ -60,6 +60,10 @@ const persistCookieConsent = (value: Exclude<CookieConsentValue, null>) => {
   }
 
   updateGoogleAnalyticsConsent(value);
+
+  if (value === "granted") {
+    pageview();
+  }
 
   window.dispatchEvent(new Event(CONSENT_EVENT));
 };
