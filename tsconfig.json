@@ -47,7 +47,9 @@
     ".next-user/types/**/*.ts",
     ".next-user/dev/types/**/*.ts",
     ".next-workspace/types/**/*.ts",
-    ".next-workspace/dev/types/**/*.ts"
+    ".next-workspace/dev/types/**/*.ts",
+    ".next-cfcheck/types/**/*.ts",
+    ".next-cfcheck/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
