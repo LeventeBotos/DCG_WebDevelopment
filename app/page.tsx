@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import SectionTitle from "@/components/SectionTitle";
 import ContactCtaSection from "@/components/ContactCtaSection";
 import HeroVideoSection from "@/components/HeroVideo";
+
+const title = "Data Consulting Group | AI & Data Consulting";
+const description =
+  "AI predictions and data consulting for leading British companies.";
+
+export const metadata: Metadata = {
+  title: { absolute: title },
+  description,
+  alternates: { canonical: "/" },
+};
 
 const WhyDcgBento = dynamic(
   () => import("@/components/WhyDcgBento").then((module) => module.WhyDcgBento),

@@ -1,118 +1,34 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { track } from "@/lib/analytics";
-import { hasMediaCredits } from "@/lib/media-credits";
+import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
+import TrackedLink from "@/components/TrackedLink";
 
-type ConnectionWithSaveData = {
-  saveData?: boolean;
-  addEventListener?: (type: string, listener: () => void) => void;
-  removeEventListener?: (type: string, listener: () => void) => void;
-};
+const trustedClients = [
+  { name: "BP", url: "/bp.png", width: 480, height: 300 },
+  { name: "Shell", url: "/shell.png", width: 480, height: 147 },
+  { name: "British Airways", url: "/ba.png", width: 480, height: 270 },
+  { name: "Infosys", url: "/infosys.png", width: 480, height: 192 },
+];
 
 const Hero = () => {
-  const [canPlayVideo, setCanPlayVideo] = useState(false);
-  const showCreditsLink = hasMediaCredits();
-  const trustedClients = [
-    {
-      name: "BP",
-      url: "/bp.png",
-      width: 3840,
-      height: 2399,
-    },
-    {
-      name: "Shell",
-      url: "/shell.png",
-      width: 820,
-      height: 251,
-    },
-    {
-      name: "British Airways",
-      url: "/ba.png",
-      width: 3840,
-      height: 2160,
-    },
-    {
-      name: "Infosys",
-      url: "/infosys.png",
-      width: 1280,
-      height: 512,
-    },
-  ];
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
-    const reducedMotionQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
-    const connection = (
-      navigator as Navigator & {
-        connection?: ConnectionWithSaveData;
-      }
-    ).connection;
-
-    const updatePlaybackPreference = () => {
-      setCanPlayVideo(
-        mediaQuery.matches &&
-          !reducedMotionQuery.matches &&
-          !connection?.saveData,
-      );
-    };
-
-    updatePlaybackPreference();
-
-    mediaQuery.addEventListener("change", updatePlaybackPreference);
-    reducedMotionQuery.addEventListener("change", updatePlaybackPreference);
-    connection?.addEventListener?.("change", updatePlaybackPreference);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updatePlaybackPreference);
-      reducedMotionQuery.removeEventListener(
-        "change",
-        updatePlaybackPreference,
-      );
-      connection?.removeEventListener?.("change", updatePlaybackPreference);
-    };
-  }, []);
-
   return (
     <section
       className="relative h-[100svh] md:min-h-screen flex text-white flex-col items-center w-full justify-center overflow-hidden "
       aria-labelledby="home-hero-title"
       aria-describedby="home-hero-copy"
     >
-      {canPlayVideo ? (
-        <div className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
-          <video
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="/bg_video_thumbnail.jpeg"
-            aria-hidden="true"
-          >
-            <source src="/bg_video.webm" type="video/webm" />
-            <source src="/bg_video.mp4" type="video/mp4" />
-          </video>
-
-          <div className="absolute inset-0 bg-black/85 " />
-        </div>
-      ) : null}
+      <HeroBackgroundVideo />
 
       {/* Static background for mobile / fallback */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-20 "
-        style={{
-          backgroundImage:
-            "image-set(url('/bg_video_thumbnail_sm.jpeg') 1x, url('/bg_video_thumbnail.jpeg') 2x)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        <Image
+          src="/bg_video_thumbnail.jpeg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-black/85" />
       </div>
       <div className="h-full px-2 md:px-4 relative flex justify-center flex-col w-full">
@@ -139,19 +55,18 @@ const Hero = () => {
           </p>
 
           <Button asChild variant="primary" className="self-start" size="lg">
-            <Link
+            <TrackedLink
               href="/projects"
               className="text-xs md:text-sm"
-              onClick={() =>
-                track("cta_click", {
-                  label: "Digital, Technology & Data",
-                  href: "/projects",
-                  location: "home_hero",
-                })
-              }
+              event="cta_click"
+              eventParams={{
+                label: "Digital, Technology & Data",
+                href: "/projects",
+                location: "home_hero",
+              }}
             >
               Digital, Technology & Data
-            </Link>
+            </TrackedLink>
           </Button>
         </div>
         {/* Trust Indicators */}
@@ -161,32 +76,18 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap w-full items-center justify-center lg:justify-start gap-2 md:gap-6">
             {trustedClients.map((client) => (
-              <img
+              <Image
                 key={client.name}
-                className="px-4 py-2 h-8 md:h-14 object-contain opacity-75 grayscale"
+                className="px-4 py-2 h-8 md:h-14 w-auto object-contain opacity-75 grayscale"
                 src={client.url}
                 alt={client.name}
-                loading="lazy"
-                decoding="async"
+                width={client.width}
+                height={client.height}
+                sizes="(min-width: 768px) 180px, 120px"
               />
             ))}
           </div>
         </div>
-        {/* {showCreditsLink ? (
-          <Link
-            href="/credits"
-            className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[11px] font-medium text-white/75 backdrop-blur transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black md:bottom-5 md:right-5 md:text-xs"
-            onClick={() =>
-              track("nav_click", {
-                label: "Media Credits",
-                href: "/credits",
-                location: "home_hero",
-              })
-            }
-          >
-            Footage credits
-          </Link>
-        ) : null} */}
       </div>
     </section>
   );

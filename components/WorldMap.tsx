@@ -1,8 +1,33 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import DottedMap from "dotted-map";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+
+// Projection constants for the pre-rendered /world-map.svg, generated once with
+// dotted-map ({ height: 100, grid: "diagonal" }) so the library and its country
+// GeoJSON are no longer shipped to the browser.
+const MAP_WIDTH = 210;
+const MAP_HEIGHT = 100;
+const X_MIN = -19926188.85199597;
+const Y_MAX = 11402272.159297233;
+const X_RANGE = 39852377.70399194;
+const Y_RANGE = 18960687.815379016;
+const Y_STEP = Math.sqrt(3) / 2;
+const EARTH_RADIUS = 6378137;
+
+// Web Mercator projection snapped to the diagonal dot grid (mirrors dotted-map's getPin).
+function projectPoint(lat: number, lng: number) {
+  const mercX = (EARTH_RADIUS * lng * Math.PI) / 180;
+  const mercY =
+    EARTH_RADIUS * Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+  let rawX = (MAP_WIDTH * (mercX - X_MIN)) / X_RANGE;
+  const rawY = (MAP_HEIGHT * (Y_MAX - mercY)) / Y_RANGE;
+  const row = Math.round(rawY / Y_STEP);
+  const shifted = row % 2 === 0;
+  if (shifted) rawX -= 0.5;
+  const x = Math.round(rawX) + (shifted ? 0.5 : 0);
+  return { x, y: row * Y_STEP };
+}
 
 interface MapProps {
   dots?: Array<{
@@ -15,25 +40,8 @@ interface MapProps {
 export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true });
-  const map = useMemo(() => new DottedMap({ height: 100, grid: "diagonal" }), []);
-
-  const svgMap = useMemo(
-    () =>
-      map.getSVG({
-        radius: 0.25,
-        color: "#999999",
-        shape: "circle",
-        backgroundColor: "transparent",
-      }),
-    [map]
-  );
-
-  const projectPoint = (lat: number, lng: number) => {
-    const { x, y } = map.getPin({ lat, lng });
-    return { x, y };
-  };
-
-  const { width: mapWidth, height: mapHeight } = map.image;
+  const mapWidth = MAP_WIDTH;
+  const mapHeight = MAP_HEIGHT;
 
   const createCurvedPath = (
     start: { x: number; y: number },
@@ -51,7 +59,9 @@ export function WorldMap({ dots = [], lineColor = "#009ACA" }: MapProps) {
       style={{ aspectRatio: `${mapWidth} / ${mapHeight}` }}
     >
       <img
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+        src="/world-map.svg"
+        loading="lazy"
+        decoding="async"
         className="h-full w-full object-contain pointer-events-none select-none"
         alt="world map"
         height={mapHeight}

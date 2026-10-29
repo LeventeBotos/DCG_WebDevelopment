@@ -22,7 +22,7 @@ interface VortexProps {
 
 export const Vortex = (props: VortexProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>(0);
   const particleCount = props.particleCount || 700;
   const particlePropCount = 9;
@@ -93,6 +93,8 @@ export const Vortex = (props: VortexProps) => {
   const lerp = (n1: number, n2: number, speed: number): number =>
     (1 - speed) * n1 + speed * n2;
 
+  const isRunning = useRef(false);
+
   const setup = () => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -104,6 +106,24 @@ export const Vortex = (props: VortexProps) => {
         initParticles();
         draw(canvas, ctx);
       }
+    }
+  };
+
+  const start = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (isRunning.current || !canvas || !ctx) return;
+    isRunning.current = true;
+    animationFrameId.current = window.requestAnimationFrame(() =>
+      draw(canvas, ctx)
+    );
+  };
+
+  const stop = () => {
+    isRunning.current = false;
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = 0;
     }
   };
 
@@ -150,6 +170,7 @@ export const Vortex = (props: VortexProps) => {
       renderToScreen(canvas, ctx);
     }
 
+    if (!isRunning.current) return;
     animationFrameId.current = window.requestAnimationFrame(() =>
       draw(canvas, ctx)
     );
@@ -281,14 +302,32 @@ export const Vortex = (props: VortexProps) => {
   };
 
   useEffect(() => {
+    // Draw a single static frame; the loop only runs while the canvas is
+    // visible and the user has not asked for reduced motion.
     setup();
     window.addEventListener("resize", handleResize);
 
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    let isVisible = false;
+    const sync = () => {
+      if (isVisible && !reducedMotionQuery.matches) start();
+      else stop();
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      sync();
+    });
+    if (containerRef.current) observer.observe(containerRef.current);
+    reducedMotionQuery.addEventListener("change", sync);
+
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      reducedMotionQuery.removeEventListener("change", sync);
+      observer.disconnect();
+      stop();
     };
   }, []);
 

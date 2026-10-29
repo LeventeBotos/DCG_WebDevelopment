@@ -1,9 +1,19 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+
+// three.js + react-three-fiber are only needed once a card is hovered, so keep
+// them out of the homepage bundle (touch devices never download them).
+const CanvasRevealEffect = dynamic(
+  () =>
+    import("@/components/ui/canvas-reveal-effect").then(
+      (module) => module.CanvasRevealEffect
+    ),
+  { ssr: false }
+);
 import { platformCards } from "@/lib/platforms";
 
 export default function DCGAIPlatformSection() {
