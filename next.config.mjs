@@ -6,9 +6,10 @@ const __dirname = path.dirname(__filename);
 const distDir = process.env.NEXT_DIST_DIR;
 // React dev mode needs eval() for debugging features (callstack reconstruction).
 const isDev = process.env.NODE_ENV !== "production";
-// The Vercel toolbar/comments widget loads from vercel.live; only needed on preview deploys.
-const isVercelPreview = process.env.VERCEL_ENV === "preview";
-const vercelLive = isVercelPreview ? " https://vercel.live" : "";
+// The Vercel toolbar/comments widget loads from vercel.live; allow it on any Vercel build
+// (VERCEL is set automatically there) but not on other hosts such as Firebase.
+const isVercel = Boolean(process.env.VERCEL);
+const vercelLive = isVercel ? " https://vercel.live" : "";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -19,7 +20,7 @@ const contentSecurityPolicy = [
   `style-src 'self' 'unsafe-inline'${vercelLive}`,
   "img-src 'self' data: blob: https:",
   `font-src 'self' data:${vercelLive}`,
-  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercelPreview ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
+  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercel ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
   "media-src 'self' blob:",
   `frame-src 'self'${vercelLive}`,
   "worker-src 'self' blob:",
