@@ -28,7 +28,7 @@ export function WhyDcgBento() {
       <GridItem
         area="md:[grid-area:1/7/2/13] xl:[grid-area:1/4/2/7]"
         icon={<Rocket className="h-4 w-4 text-black" />}
-        title="Unified Data Platform (UDP)"
+        title="Artifical Intelligence Data Platform (AIDP)"
         description="Battle-tested teams move rapidly from idea to production, balancing innovation with governance and compliance."
       />
 

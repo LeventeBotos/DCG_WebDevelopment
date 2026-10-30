@@ -3,13 +3,6 @@ import { Button } from "@/components/ui/button";
 import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
 import TrackedLink from "@/components/TrackedLink";
 
-const trustedClients = [
-  { name: "BP", url: "/bp.png", width: 480, height: 300 },
-  { name: "Shell", url: "/shell.png", width: 480, height: 147 },
-  { name: "British Airways", url: "/ba.png", width: 480, height: 270 },
-  { name: "Infosys", url: "/infosys.png", width: 480, height: 192 },
-];
-
 const Hero = () => {
   return (
     <section
@@ -68,25 +61,6 @@ const Hero = () => {
               Digital, Technology & Data
             </TrackedLink>
           </Button>
-        </div>
-        {/* Trust Indicators */}
-        <div className="pt-8 w-full bottom-2 md:bottom-4 absolute flex flex-col md:items-start items-center">
-          <p className="text-xs md:text-sm text-gray-500 mb-4">
-            Trusted by industry leaders
-          </p>
-          <div className="flex flex-wrap w-full items-center justify-center lg:justify-start gap-2 md:gap-6">
-            {trustedClients.map((client) => (
-              <Image
-                key={client.name}
-                className="px-4 py-2 h-8 md:h-14 w-auto object-contain opacity-75 grayscale"
-                src={client.url}
-                alt={client.name}
-                width={client.width}
-                height={client.height}
-                sizes="(min-width: 768px) 180px, 120px"
-              />
-            ))}
-          </div>
         </div>
       </div>
     </section>

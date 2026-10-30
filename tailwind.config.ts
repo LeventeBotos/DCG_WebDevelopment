@@ -68,6 +68,9 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "logo-marquee": {
+          to: { transform: "translateX(-50%)" },
+        },
         scroll: {
           to: {
             transform: 'translate(calc(-50% - 0.5rem))',

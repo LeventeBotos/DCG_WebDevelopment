@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import SectionTitle from "@/components/SectionTitle";
 import ContactCtaSection from "@/components/ContactCtaSection";
 import HeroVideoSection from "@/components/HeroVideo";
+import PartnerLogosMarquee from "@/components/PartnerLogosMarquee";
 
 const title = "Data Consulting Group | AI & Data Consulting";
 const description =
@@ -120,6 +121,8 @@ export default function Home() {
         secondaryLabel="Explore services"
         secondaryHref="/services"
       />
+
+      <PartnerLogosMarquee />
     </div>
   );
 }
