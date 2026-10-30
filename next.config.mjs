@@ -6,19 +6,22 @@ const __dirname = path.dirname(__filename);
 const distDir = process.env.NEXT_DIST_DIR;
 // React dev mode needs eval() for debugging features (callstack reconstruction).
 const isDev = process.env.NODE_ENV !== "production";
+// The Vercel toolbar/comments widget loads from vercel.live; only needed on preview deploys.
+const isVercelPreview = process.env.VERCEL_ENV === "preview";
+const vercelLive = isVercelPreview ? " https://vercel.live" : "";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com`,
-  "style-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com${vercelLive}`,
+  `style-src 'self' 'unsafe-inline'${vercelLive}`,
   "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com",
+  `font-src 'self' data:${vercelLive}`,
+  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercelPreview ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
   "media-src 'self' blob:",
-  "frame-src 'self'",
+  `frame-src 'self'${vercelLive}`,
   "worker-src 'self' blob:",
   // Safari applies this to http://localhost too, which breaks every asset in dev.
   ...(isDev ? [] : ["upgrade-insecure-requests"]),
