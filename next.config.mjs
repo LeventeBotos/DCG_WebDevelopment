@@ -20,7 +20,8 @@ const contentSecurityPolicy = [
   "media-src 'self' blob:",
   "frame-src 'self'",
   "worker-src 'self' blob:",
-  "upgrade-insecure-requests",
+  // Safari applies this to http://localhost too, which breaks every asset in dev.
+  ...(isDev ? [] : ["upgrade-insecure-requests"]),
 ]
   .join("; ")
   .replace(/\s{2,}/g, " ")

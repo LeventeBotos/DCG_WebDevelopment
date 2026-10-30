@@ -5,7 +5,7 @@ export const siteConfig = {
   titleTemplate: "%s | Data Consulting Group",
   description:
     "Production-ready AI, data, and cloud consulting for ambitious enterprises.",
-  ogImagePath: "/logo.png",
+  ogImagePath: "/og-image.png",
   locale: "en_GB",
   defaultSiteUrl: "https://www.dataconsulting-group.com",
   socialLinks: {

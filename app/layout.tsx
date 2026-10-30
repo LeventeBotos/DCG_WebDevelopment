@@ -46,14 +46,14 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImagePath,
-        width: 512,
-        height: 512,
+        width: 1200,
+        height: 630,
         alt: siteConfig.defaultTitle,
       },
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: siteConfig.defaultTitle,
     description: siteConfig.description,
     images: [siteConfig.ogImagePath],
@@ -75,11 +75,8 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/logo.png",
-  },
   appleWebApp: {
+    title: siteConfig.shortName,
     statusBarStyle: "black",
   },
 };
@@ -89,6 +86,34 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: "#000000",
+};
+
+const canonicalSiteUrl = (siteUrl ?? new URL(siteConfig.defaultSiteUrl))
+  .toString()
+  .replace(/\/$/, "");
+
+// Tells search engines the site name shown above results and the brand logo.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${canonicalSiteUrl}/#website`,
+      url: `${canonicalSiteUrl}/`,
+      name: siteConfig.defaultTitle,
+      alternateName: [siteConfig.shortName, siteConfig.name],
+      publisher: { "@id": `${canonicalSiteUrl}/#organization` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${canonicalSiteUrl}/#organization`,
+      name: siteConfig.name,
+      alternateName: siteConfig.shortName,
+      url: `${canonicalSiteUrl}/`,
+      logo: `${canonicalSiteUrl}/icon-512.png`,
+      email: "info@dataconsulting-group.com",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -108,6 +133,10 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <Analytics measurementId={googleAnalyticsId} />
         <Header />
         <main id="main-content" className="flex-grow" tabIndex={-1}>
