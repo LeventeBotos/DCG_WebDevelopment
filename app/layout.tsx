@@ -75,6 +75,13 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  // Served from public/ rather than app/icon.png so Cloudflare Pages sees them as static files.
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+  },
   appleWebApp: {
     title: siteConfig.shortName,
     statusBarStyle: "black",
