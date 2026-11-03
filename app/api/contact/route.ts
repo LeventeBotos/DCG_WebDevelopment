@@ -8,6 +8,9 @@ import {
 } from "@/components/email-template";
 import { saveContactMessage } from "@/lib/inbox/server";
 import { hashIp } from "@/lib/ip-hash";
+import { rateLimit } from "@/lib/rate-limit";
+import { adminUrl } from "@/lib/email";
+import { clientIp, verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "edge";
 
@@ -26,6 +29,7 @@ const ContactSchema = z.object({
   topic: z.string().trim().optional(),
   message: z.string().trim().min(1),
   website: z.string().optional(),
+  turnstileToken: z.string().max(4096).optional(),
 });
 
 const serializeError = (error: unknown) => {
@@ -107,13 +111,44 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, phone, company, country, topic, message, website } =
-    parsed.data;
+  const {
+    name,
+    email,
+    phone,
+    company,
+    country,
+    topic,
+    message,
+    website,
+    turnstileToken,
+  } = parsed.data;
 
   if (website && website.trim().length > 0) {
     log("warn", "Bot detection triggered via honeypot field.");
     return jsonWithLogs(
       { error: "Submission rejected.", requestId },
+      logs,
+      400
+    );
+  }
+
+  // Abuse controls: per-IP hourly cap, global daily ceiling, then the Turnstile bot check.
+  const ipKey = (await hashIp(request)) ?? "noip";
+  const [perIp, globalLimit] = await Promise.all([
+    rateLimit(`contact_${ipKey}`, 5, 3600),
+    rateLimit("contact_global", 400, 86400),
+  ]);
+  if (!perIp.allowed || !globalLimit.allowed) {
+    log("warn", "Rate limit exceeded.");
+    return NextResponse.json(
+      { error: "Too many submissions. Please try again later.", requestId },
+      { status: 429, headers: { "Retry-After": String(perIp.allowed ? globalLimit.retryAfter : perIp.retryAfter) } },
+    );
+  }
+  if (!(await verifyTurnstile(turnstileToken, clientIp(request)))) {
+    log("warn", "Turnstile verification failed.");
+    return jsonWithLogs(
+      { error: "Security check failed. Please refresh the page and try again.", requestId },
       logs,
       400
     );
@@ -126,8 +161,9 @@ export async function POST(request: Request) {
 
   // Persist first so the message is never lost if email delivery fails.
   let persisted = false;
+  let storedId = "";
   try {
-    await saveContactMessage({
+    storedId = await saveContactMessage({
       name,
       email,
       phone: normalizedPhone,
@@ -205,6 +241,12 @@ export async function POST(request: Request) {
     submittedAt: safeSubmittedAt,
   });
 
+  const adminLink = storedId ? adminUrl(`/messages/${storedId}`) : "";
+  const textOut = adminLink ? `${text}\n\nOpen in admin: ${adminLink}` : text;
+  const htmlOut = adminLink
+    ? `${html}<div style="max-width:720px;margin:12px auto 0;font-family:Arial,sans-serif;font-size:14px;"><a href="${adminLink}" style="color:#0A4C8A;font-weight:600;text-decoration:none;">Open in admin →</a></div>`
+    : html;
+
   const confirmationHtml = buildConfirmationEmailHtml({
     safeName,
     safeCompany,
@@ -244,8 +286,8 @@ export async function POST(request: Request) {
           to,
           from,
           subject,
-          text,
-          html,
+          text: textOut,
+          html: htmlOut,
           replyTo: `${name} <${email}>`,
         },
         "Admin"

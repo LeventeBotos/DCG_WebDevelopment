@@ -1,7 +1,7 @@
 import { addDoc, deleteDoc, FirestoreBytes, getDoc, queryDocs, setDoc, updateDoc } from "@/lib/firestore/rest";
-import type { Application, ApplicationStatus, ContactMessage, MessageStatus } from "./types";
+import type { Application, ApplicationStatus, Communication, ContactMessage, MessageStatus } from "./types";
 
-type NewApplication = Omit<Application, "id" | "status" | "notes" | "createdAt" | "updatedAt" | "cvFileName" | "cvSize">;
+type NewApplication = Omit<Application, "id" | "status" | "notes" | "createdAt" | "updatedAt" | "cvFileName" | "cvSize" | "tags" | "communications">;
 type NewMessage = Omit<ContactMessage, "id" | "status" | "notes" | "createdAt" | "updatedAt">;
 
 const newestFirst = <T extends { createdAt: string }>(a: T, b: T) => b.createdAt.localeCompare(a.createdAt);
@@ -9,7 +9,7 @@ const newestFirst = <T extends { createdAt: string }>(a: T, b: T) => b.createdAt
 // ---- applications ----
 export async function saveApplication(input: NewApplication): Promise<string> {
   const now = new Date().toISOString();
-  return addDoc("applications", { ...input, status: "new", notes: "", createdAt: now, updatedAt: now });
+  return addDoc("applications", { ...input, status: "new", notes: "", tags: [], communications: [], createdAt: now, updatedAt: now });
 }
 
 export async function listApplications(limit = 500): Promise<Application[]> {
@@ -17,7 +17,7 @@ export async function listApplications(limit = 500): Promise<Application[]> {
     orderBy: { field: "createdAt", direction: "DESCENDING" },
     limit,
   });
-  return rows as Application[];
+  return (rows as Application[]).filter((a) => !a.deletedAt);
 }
 
 export async function getApplication(id: string): Promise<Application | null> {
@@ -26,7 +26,7 @@ export async function getApplication(id: string): Promise<Application | null> {
 
 export async function updateApplication(
   id: string,
-  patch: { status?: ApplicationStatus; notes?: string },
+  patch: { status?: ApplicationStatus; notes?: string; tags?: string[]; communications?: Communication[] },
 ): Promise<void> {
   await updateDoc(`applications/${encodeURIComponent(id)}`, { ...patch, updatedAt: new Date().toISOString() });
 }
@@ -80,7 +80,7 @@ export async function listMessages(limit = 500): Promise<ContactMessage[]> {
     orderBy: { field: "createdAt", direction: "DESCENDING" },
     limit,
   });
-  return rows as ContactMessage[];
+  return (rows as ContactMessage[]).filter((m) => !m.deletedAt);
 }
 
 export async function getMessage(id: string): Promise<ContactMessage | null> {
@@ -96,3 +96,12 @@ export async function deleteMessage(id: string): Promise<void> {
 }
 
 export { newestFirst };
+
+/** Number of records still in the "new" state, ignoring anything in the trash. */
+export async function countNew(collection: "applications" | "contactMessages"): Promise<number> {
+  const rows = await queryDocs<{ deletedAt?: string | null }>(collection, {
+    where: [{ field: "status", op: "EQUAL", value: "new" }],
+    limit: 500,
+  });
+  return rows.filter((r) => !r.deletedAt).length;
+}

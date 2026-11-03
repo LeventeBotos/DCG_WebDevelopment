@@ -8,6 +8,7 @@ import Analytics from "@/components/Analytics";
 import CookieBanner from "@/components/CookieBanner";
 import SiteChrome from "@/components/SiteChrome";
 import CollectPageview from "@/components/CollectPageview";
+import AnalyticsExtras from "@/components/AnalyticsExtras";
 import { getGoogleAnalyticsId } from "@/lib/analytics-config";
 import { siteConfig, getSiteUrl } from "@/lib/site";
 
@@ -151,6 +152,7 @@ export default function RootLayout({
             <>
               <Analytics measurementId={googleAnalyticsId} />
               <CollectPageview />
+              <AnalyticsExtras />
               <Header />
             </>
           }

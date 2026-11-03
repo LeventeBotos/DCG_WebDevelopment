@@ -4,6 +4,8 @@ export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
 export const MESSAGE_STATUSES = ["new", "read", "replied", "archived"] as const;
 export type MessageStatus = (typeof MESSAGE_STATUSES)[number];
 
+export type Communication = { at: string; by: string; templateId: string; subject: string; body: string };
+
 export type Application = {
   id: string;
   jobId: string;
@@ -17,6 +19,10 @@ export type Application = {
   /** Uploaded CV (stored in applicationFiles/{id}). Empty/0 when the applicant gave a link instead. */
   cvFileName?: string;
   cvSize?: number;
+  /** Free-form labels such as "strong", "phone screen", "talent pool". */
+  tags?: string[];
+  /** Emails sent to the candidate from the admin panel. */
+  communications?: Communication[];
   experience: string;
   noticePeriod: string;
   message: string;
@@ -28,6 +34,7 @@ export type Application = {
   ipHash: string | null;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 };
 
 export type ContactMessage = {
@@ -44,4 +51,5 @@ export type ContactMessage = {
   ipHash: string | null;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 };

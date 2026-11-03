@@ -1,10 +1,11 @@
 import { requireOwner } from "@/lib/auth/require-admin";
-import { queryDocs } from "@/lib/firestore/rest";
-import { removeAdminAction } from "../actions";
+import { getDoc, queryDocs } from "@/lib/firestore/rest";
+import { forceSignOutAction, removeAdminAction } from "../actions";
+import { CampaignsForm, ScheduledTools } from "@/components/admin/OwnerTools";
 import AddAdminForm from "@/components/admin/AddAdminForm";
 import PageHeader from "@/components/admin/PageHeader";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import ConfirmButton from "@/components/admin/ConfirmButton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export const metadata = { title: "Settings" };
@@ -12,6 +13,7 @@ export const metadata = { title: "Settings" };
 export default async function SettingsPage() {
   const me = await requireOwner();
   const stored = await queryDocs<{ role?: string; addedBy?: string }>("admins", { limit: 100 }).catch(() => []);
+  const campaigns = await getDoc<{ names?: string[] }>("config/campaigns").catch(() => null);
   const bootstrap = (process.env.ADMIN_OWNER_EMAILS ?? "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
@@ -51,14 +53,32 @@ export default async function SettingsPage() {
                   </TableCell>
                   <TableCell className="text-muted-foreground">{info.source}</TableCell>
                   <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                    <form action={forceSignOutAction}>
+                      <input type="hidden" name="email" value={email} />
+                      <ConfirmButton
+                        title={`Sign ${email} out everywhere?`}
+                        description="Every browser this account is signed in on is signed out immediately. They can sign in again with Google."
+                        confirmLabel="Sign out everywhere"
+                        destructive={false}
+                      >
+                        Sign out everywhere
+                      </ConfirmButton>
+                    </form>
                     {email !== me.email.toLowerCase() ? (
                       <form action={removeAdminAction}>
                         <input type="hidden" name="email" value={email} />
-                        <Button type="submit" size="sm" variant="ghost" showArrow={false} className="text-destructive">
+                        <ConfirmButton
+                          title={`Remove ${email}?`}
+                          description="They lose access to the admin panel on their next request."
+                          confirmLabel="Remove"
+                          className="text-destructive"
+                        >
                           Remove
-                        </Button>
+                        </ConfirmButton>
                       </form>
                     ) : null}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -74,6 +94,19 @@ export default async function SettingsPage() {
       <section className="space-y-3">
         <h2 className="text-base font-semibold">Add an admin</h2>
         <AddAdminForm />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-base font-semibold">Tracked campaigns</h2>
+        <CampaignsForm names={campaigns?.names ?? []} />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-base font-semibold">Scheduled jobs</h2>
+        <p className="text-sm text-muted-foreground">
+          A weekly digest and a daily clean-up run automatically (GitHub Actions calls <code>/api/cron/*</code> with <code>CRON_SECRET</code>). You can trigger them by hand here.
+        </p>
+        <ScheduledTools />
       </section>
     </div>
   );

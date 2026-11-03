@@ -25,8 +25,14 @@ export async function getAdmin(): Promise<AdminSession | null> {
   const store = await cookies();
   const session = await readSessionToken(store.get(SESSION_COOKIE)?.value);
   if (!session) return null;
-  const role = await resolveAdminRole(session.email);
-  return role ? { email: session.email, role } : null;
+  const [role, revoked] = await Promise.all([
+    resolveAdminRole(session.email),
+    getDoc<{ validAfter?: string }>(`adminSessions/${encodeURIComponent(session.email.toLowerCase())}`).catch(() => null),
+  ]);
+  if (!role) return null;
+  // "Sign out everywhere": any session issued before validAfter is dead.
+  if (revoked?.validAfter && (session.iat ?? 0) < Math.floor(Date.parse(revoked.validAfter) / 1000)) return null;
+  return { email: session.email, role };
 }
 
 /** For pages, layouts and server actions: redirects to the login page when not an admin. */

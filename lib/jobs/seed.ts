@@ -18,6 +18,7 @@ export const SEED_JOBS: PublicJob[] = [
       "Partner with clients to translate goals into experiments",
     ],
     requirements: [],
+    publishedAt: null,
   },
   {
     id: "cloud-solutions-engineer",
@@ -32,6 +33,7 @@ export const SEED_JOBS: PublicJob[] = [
       "Enable teams with templates for rapid delivery",
     ],
     requirements: [],
+    publishedAt: null,
   },
   {
     id: "data-analytics-consultant",
@@ -46,5 +48,6 @@ export const SEED_JOBS: PublicJob[] = [
       "Guide adoption, training, and change management",
     ],
     requirements: [],
+    publishedAt: null,
   },
 ];

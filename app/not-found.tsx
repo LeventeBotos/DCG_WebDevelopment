@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import NotFoundTracker from "@/components/NotFoundTracker";
 import ThermodynamicGrid from "@/components/ui/interactive-thermodynamic-grid";
 import TubesBackground from "@/components/ui/neon-flow";
 // import NeonFlow from "@/components/ui/neon-flow";
@@ -12,6 +13,7 @@ export default function NotFound() {
       aria-labelledby="not-found-title"
       aria-describedby="not-found-copy"
     >
+      <NotFoundTracker />
       <TubesBackground
         className="absolute inset-0 min-h-screen opacity-40"
         enableClickInteraction={false}

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Briefcase, FileText, Inbox, Mail } from "lucide-react";
 import { requireAdmin } from "@/lib/auth/require-admin";
-import { countDocs } from "@/lib/firestore/rest";
-import { listApplications } from "@/lib/inbox/server";
+import { countNew, listApplications } from "@/lib/inbox/server";
+import { listAllJobs } from "@/lib/jobs/server";
 import StatCard from "@/components/admin/StatCard";
 import PageHeader from "@/components/admin/PageHeader";
 import { Badge } from "@/components/ui/badge";
@@ -19,13 +19,14 @@ async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
 
 export default async function DashboardPage() {
   const admin = await requireAdmin();
-  const [published, drafts, newApplications, newMessages, recent] = await Promise.all([
-    safe(() => countDocs("jobs", { field: "status", value: "published" }), 0),
-    safe(() => countDocs("jobs", { field: "status", value: "draft" }), 0),
-    safe(() => countDocs("applications", { field: "status", value: "new" }), 0),
-    safe(() => countDocs("contactMessages", { field: "status", value: "new" }), 0),
+  const [jobs, newApplications, newMessages, recent] = await Promise.all([
+    safe(() => listAllJobs(), []),
+    safe(() => countNew("applications"), 0),
+    safe(() => countNew("contactMessages"), 0),
     safe(() => listApplications(6), []),
   ]);
+  const published = jobs.filter((j) => j.status === "published").length;
+  const drafts = jobs.filter((j) => j.status === "draft").length;
 
   const name = admin.email.split("@")[0];
 

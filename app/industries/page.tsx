@@ -128,6 +128,22 @@ const industries = [
     ],
     href: "/projects?industry=aviation",
   },
+  {
+    key: "proptech",
+    title: "PropTech & Real Estate",
+    summary: "Portfolio performance, building operations, and tenant experience.",
+    capabilities: [
+      "Digital twins for buildings and property portfolios",
+      "Occupancy, space-utilization, and energy analytics",
+      "Valuation, rent, and demand forecasting",
+    ],
+    outcomes: [
+      "Lower operating cost per property",
+      "Higher occupancy and tenant retention",
+      "Faster, better-informed investment decisions",
+    ],
+    href: "/projects?industry=proptech",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -137,7 +153,7 @@ export default function IndustriesPage() {
         eyebrow="Industries"
         title="Industry expertise delivered through practical AI and analytics programs."
         emphasis="playbooks"
-        description="We work with teams in retail, energy, finance, technology, transportation, and aviation to turn data and AI initiatives into measurable operational outcomes."
+        description="We work with teams in retail, energy, finance, technology, transportation, aviation, and property technology to turn data and AI initiatives into measurable operational outcomes."
         actions={[
           {
             label: "Explore case studies",

@@ -6,6 +6,7 @@ import { categoryMeta, type Job } from "@/lib/jobs/types";
 import { deleteJobAction, moveJobAction, seedJobsAction, setJobStatusAction } from "../actions";
 import PageHeader from "@/components/admin/PageHeader";
 import { Badge } from "@/components/ui/badge";
+import ConfirmButton from "@/components/admin/ConfirmButton";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -120,9 +121,14 @@ export default async function JobsPage({ searchParams }: { searchParams: Promise
                       {admin.role === "owner" ? (
                         <form action={deleteJobAction}>
                           <input type="hidden" name="id" value={job.id} />
-                          <Button type="submit" size="sm" variant="ghost" showArrow={false} className="text-destructive">
+                          <ConfirmButton
+                            title={`Move “${job.title}” to Trash?`}
+                            description="It disappears from the public site immediately. You can restore it from Trash for 30 days."
+                            confirmLabel="Move to Trash"
+                            className="text-destructive"
+                          >
                             Delete
-                          </Button>
+                          </ConfirmButton>
                         </form>
                       ) : null}
                     </div>

@@ -15,6 +15,7 @@ import {
   Moon,
   Settings,
   Sun,
+  Trash2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -43,6 +44,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { signOutEverywhereAction } from "@/app/admin/(panel)/actions";
 
 type NavItem = { href: string; label: string; icon: typeof LayoutDashboard; badge?: number; ownerOnly?: boolean };
 
@@ -94,6 +96,7 @@ export default function AdminShell({
       label: "System",
       items: [
         { href: "/admin/audit", label: "Audit log", icon: History },
+        { href: "/admin/trash", label: "Trash", icon: Trash2, ownerOnly: true },
         { href: "/admin/settings", label: "Settings", icon: Settings, ownerOnly: true },
       ],
     },
@@ -179,6 +182,16 @@ export default function AdminShell({
                   <DropdownMenuItem onSelect={signOutAdmin}>
                     <LogOut className="mr-2 size-4" />
                     Sign out
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={async () => {
+                      await signOutEverywhereAction();
+                      router.replace("/admin/login");
+                      router.refresh();
+                    }}
+                  >
+                    <LogOut className="mr-2 size-4" />
+                    Sign out everywhere
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

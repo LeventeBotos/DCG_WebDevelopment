@@ -4,7 +4,7 @@ import { siteConfig } from "@/lib/site";
 
 const title = "Industries | Data Consulting Group";
 const description =
-  "Industry playbooks for applying AI and analytics across energy, banking, manufacturing, retail, aviation, and transportation.";
+  "Industry playbooks for applying AI and analytics across energy, banking, manufacturing, retail, aviation, transportation, and property technology (PropTech) and real estate.";
 
 export const metadata: Metadata = {
   title: { absolute: title },

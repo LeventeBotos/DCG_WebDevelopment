@@ -1,3 +1,5 @@
+import { collect } from "@/lib/collect";
+
 type GtagFn = (...args: any[]) => void;
 type AnalyticsConsentValue = "granted" | "denied";
 
@@ -83,6 +85,8 @@ export function track(
   name: AnalyticsEventName,
   params?: Record<string, unknown>
 ) {
+  // Every existing track() call also feeds the cookieless first-party counters (independent of GA consent).
+  collect(name);
   if (!hasAnalytics()) return;
   window.gtag!("event", name, params ?? {});
 }

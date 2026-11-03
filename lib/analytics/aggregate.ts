@@ -1,97 +1,112 @@
-import { queryDocs } from "@/lib/firestore/rest";
+import { FirestoreRef, queryDocs } from "@/lib/firestore/rest";
+import { COLL } from "./collector";
 
-/** Reads the daily counter documents written by /api/collect and shapes them for the dashboard. */
+/** Reads the sharded daily counter documents written by /api/collect and merges them per day. */
 
-type DailyDoc = { id: string } & Record<string, unknown>;
-
+export type Counters = Record<string, number>;
 export type Ranked = { key: string; value: number }[];
 
-export type JobFunnel = { id: string; views: number; opens: number; submits: number; successes: number; errors: number };
+const DAY = 86_400_000;
+export const isoDay = (d: Date) => d.toISOString().slice(0, 10);
+const parseDay = (s: string) => new Date(`${s}T00:00:00.000Z`);
+const addDays = (s: string, n: number) => isoDay(new Date(parseDay(s).getTime() + n * DAY));
 
-export type AnalyticsSummary = {
-  days: number;
-  series: { date: string; pageviews: number; applications: number }[];
-  totals: { pageviews: number; jobViews: number; applyOpens: number; applySubmits: number; applySuccesses: number; contactSubmits: number };
-  previous: { pageviews: number; applySuccesses: number };
-  pages: Ranked;
-  referrers: Ranked;
-  campaigns: Ranked;
-  countries: Ranked;
-  devices: Ranked;
-  jobs: JobFunnel[];
+export type RangeKey = "today" | "yesterday" | "7d" | "30d" | "90d" | "365d" | "custom";
+
+export type DateRange = {
+  key: RangeKey;
+  from: string; // inclusive, UTC
+  to: string; // inclusive, UTC
+  days: string[];
+  prevFrom: string;
+  prevTo: string;
+  label: string;
 };
 
-const num = (v: unknown) => (typeof v === "number" ? v : 0);
+/** Parse ?range=&from=&to= into a validated range plus the equally long previous period for comparison. */
+export function resolveRange(params: { range?: string; from?: string; to?: string }): DateRange {
+  const today = isoDay(new Date());
+  let from = addDays(today, -29);
+  let to = today;
+  let key: RangeKey = "30d";
+  const re = /^\d{4}-\d{2}-\d{2}$/;
 
-function sumPrefix(docs: DailyDoc[], prefix: string): Ranked {
-  const totals = new Map<string, number>();
-  for (const d of docs) {
-    for (const [field, value] of Object.entries(d)) {
-      if (field.startsWith(prefix) && typeof value === "number") {
-        const key = field.slice(prefix.length);
-        totals.set(key, (totals.get(key) ?? 0) + value);
+  switch (params.range) {
+    case "today": key = "today"; from = to = today; break;
+    case "yesterday": key = "yesterday"; from = to = addDays(today, -1); break;
+    case "7d": key = "7d"; from = addDays(today, -6); break;
+    case "90d": key = "90d"; from = addDays(today, -89); break;
+    case "365d": key = "365d"; from = addDays(today, -364); break;
+    case "custom":
+      if (params.from && params.to && re.test(params.from) && re.test(params.to) && params.from <= params.to) {
+        key = "custom";
+        from = params.from;
+        to = params.to > today ? today : params.to;
+        if (from > to) from = to;
       }
-    }
+      break;
   }
-  return [...totals.entries()].map(([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value);
+
+  const count = Math.round((parseDay(to).getTime() - parseDay(from).getTime()) / DAY) + 1;
+  const capped = Math.min(count, 400);
+  if (capped !== count) from = addDays(to, -(capped - 1));
+  const days = Array.from({ length: capped }, (_, i) => addDays(from, i));
+  const prevTo = addDays(from, -1);
+  const prevFrom = addDays(prevTo, -(capped - 1));
+  const label =
+    key === "today" ? "Today" : key === "yesterday" ? "Yesterday" : key === "custom" ? `${from} → ${to}` : `Last ${capped} days`;
+  return { key, from, to, days, prevFrom, prevTo, label };
 }
 
-const sumField = (docs: DailyDoc[], field: string) => docs.reduce((n, d) => n + num(d[field]), 0);
+export type LoadedRange = {
+  range: DateRange;
+  perDay: Record<string, Counters>;
+  total: Counters;
+  prevTotal: Counters;
+};
 
-export async function getAnalyticsSummary(days: number): Promise<AnalyticsSummary> {
-  // Fetch the current and the previous period in one query, newest first (document ids are ISO dates).
-  // One document per day, so a few hundred at most. Sorted in memory because ordering by document id
-  // descending would need a custom Firestore index.
-  const docs = ((await queryDocs<Record<string, unknown>>("analyticsDaily", { limit: 1000 })) as DailyDoc[])
-    .sort((a, b) => b.id.localeCompare(a.id))
-    .slice(0, days * 2);
+const add = (into: Counters, from: Counters) => {
+  for (const [k, v] of Object.entries(from)) into[k] = (into[k] ?? 0) + v;
+};
 
-  const cutoff = new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10);
-  const current = docs.filter((d) => d.id > cutoff);
-  const previous = docs.filter((d) => d.id <= cutoff);
+/** Load current + previous period in one query (document ids start with the ISO date, so a range filter works). */
+export async function loadRange(range: DateRange): Promise<LoadedRange> {
+  const docs = await queryDocs<Record<string, unknown>>(COLL.daily, {
+    where: [
+      { field: "__name__", op: "GREATER_THAN_OR_EQUAL", value: new FirestoreRef(`${COLL.daily}/${range.prevFrom}`) },
+      { field: "__name__", op: "LESS_THAN", value: new FirestoreRef(`${COLL.daily}/${addDays(range.to, 1)}`) },
+    ],
+    limit: 10000,
+  });
 
-  const byDate = new Map(current.map((d) => [d.id, d]));
-  const series: AnalyticsSummary["series"] = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const date = new Date(Date.now() - i * 86_400_000).toISOString().slice(0, 10);
-    const d = byDate.get(date);
-    series.push({ date, pageviews: num(d?.ev_pageview), applications: num(d?.ev_apply_success) });
-  }
-
-  // Per-job funnel: counters are named job_<id with underscores>_<event>.
-  const funnel = new Map<string, JobFunnel>();
-  for (const d of current) {
-    for (const [field, value] of Object.entries(d)) {
-      const m = /^job_(.+)_(job_view|apply_open|apply_submit|apply_success|apply_error)$/.exec(field);
-      if (!m || typeof value !== "number") continue;
-      const id = m[1].replace(/_/g, "-");
-      const row = funnel.get(id) ?? { id, views: 0, opens: 0, submits: 0, successes: 0, errors: 0 };
-      if (m[2] === "job_view") row.views += value;
-      if (m[2] === "apply_open") row.opens += value;
-      if (m[2] === "apply_submit") row.submits += value;
-      if (m[2] === "apply_success") row.successes += value;
-      if (m[2] === "apply_error") row.errors += value;
-      funnel.set(id, row);
+  const perDay: Record<string, Counters> = {};
+  const total: Counters = {};
+  const prevTotal: Counters = {};
+  for (const d of docs) {
+    const day = d.id.slice(0, 10);
+    const counters: Counters = {};
+    for (const [k, v] of Object.entries(d)) if (k !== "id" && typeof v === "number") counters[k] = v;
+    if (day >= range.from && day <= range.to) {
+      add((perDay[day] ??= {}), counters);
+      add(total, counters);
+    } else if (day >= range.prevFrom && day <= range.prevTo) {
+      add(prevTotal, counters);
     }
   }
-
-  return {
-    days,
-    series,
-    totals: {
-      pageviews: sumField(current, "ev_pageview"),
-      jobViews: sumField(current, "ev_job_view"),
-      applyOpens: sumField(current, "ev_apply_open"),
-      applySubmits: sumField(current, "ev_apply_submit"),
-      applySuccesses: sumField(current, "ev_apply_success"),
-      contactSubmits: sumField(current, "ev_contact_submit"),
-    },
-    previous: { pageviews: sumField(previous, "ev_pageview"), applySuccesses: sumField(previous, "ev_apply_success") },
-    pages: sumPrefix(current, "pv_"),
-    referrers: sumPrefix(current, "ref_"),
-    campaigns: sumPrefix(current, "utm_"),
-    countries: sumPrefix(current, "cty_"),
-    devices: sumPrefix(current, "dev_"),
-    jobs: [...funnel.values()].sort((a, b) => b.views - a.views),
-  };
+  return { range, perDay, total, prevTotal };
 }
+
+/** Counters whose name starts with `prefix`, summed and sorted descending. */
+export function rank(c: Counters, prefix: string, opts: { exclude?: string[]; limit?: number } = {}): Ranked {
+  const out: Ranked = [];
+  for (const [k, v] of Object.entries(c)) {
+    if (!k.startsWith(prefix) || v <= 0) continue;
+    const key = k.slice(prefix.length);
+    if (opts.exclude?.includes(key)) continue;
+    out.push({ key, value: v });
+  }
+  out.sort((a, b) => b.value - a.value);
+  return opts.limit ? out.slice(0, opts.limit) : out;
+}
+
+export const n = (c: Counters, k: string) => c[k] ?? 0;

@@ -69,6 +69,8 @@ applications, contact messages and analytics. See `docs/admin-setup.md` for setu
 - Data: `lib/firestore/rest.ts` is an edge-safe Firestore REST client (service account). `firebase-admin` cannot run on the edge runtime. Security rules are deny-all.
 - Jobs: `lib/jobs/` (types are client-safe; `server.ts` is server-only). Public pages `app/careers/page.tsx` and `app/careers/[slug]/page.tsx` read published jobs. `/api/careers/apply` and `/api/contact` persist to Firestore before emailing.
 - Analytics: `lib/collect.ts` + `app/api/collect/route.ts` write cookieless daily counters; `lib/analytics/` aggregates them and reads GA4 (optional).
+- Abuse controls: Turnstile (`lib/turnstile.ts`, `components/TurnstileWidget.tsx`) + Firestore-backed `lib/rate-limit.ts` on public forms; soft-delete/trash in `lib/trash.ts`; scheduled jobs in `lib/maintenance.ts` and `lib/digest.ts` (called via `/api/cron/*`).
+- Analytics v2: `lib/analytics/{collector,vocab,aggregate,metrics,insights,business,ga4}.ts`; counters are sharded daily docs, dimensions are allowlisted in `vocab.ts` (never write free-text counter names).
 - `/admin` has its own CSP and `no-store`/`noindex` headers in `next.config.mjs`; the marketing chrome and GA are skipped there (`components/SiteChrome.tsx`).
 - Every user-supplied URL rendered in admin must go through `lib/safe-url.ts`.
 - All new server routes/pages must declare `export const runtime = "edge"`.
@@ -88,3 +90,5 @@ applications, contact messages and analytics. See `docs/admin-setup.md` for setu
 | `ADMIN_SESSION_SECRET` | Admin panel: signs session cookie (secret) |
 | `ADMIN_OWNER_EMAILS` | Admin panel: bootstrap owner emails |
 | `GA4_PROPERTY_ID` | Optional: GA4 Data API property for the analytics page |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Turnstile keys for the public forms |
+| `CRON_SECRET` | Bearer secret for `/api/cron/*` (weekly digest, daily maintenance) |

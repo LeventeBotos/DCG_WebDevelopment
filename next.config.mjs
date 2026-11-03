@@ -20,11 +20,11 @@ const firebaseAuthDomain = "dataconsultinggroup.firebaseapp.com";
 function buildCsp({ admin }) {
   const scripts = admin
     ? `'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://apis.google.com`
-    : `'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com${vercelLive}`;
+    : `'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com https://challenges.cloudflare.com${vercelLive}`;
   const connect = admin
     ? `'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://${firebaseAuthDomain}`
-    : `'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercel ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`;
-  const frames = admin ? `'self' https://${firebaseAuthDomain} https://accounts.google.com` : `'self'${vercelLive}`;
+    : `'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com https://challenges.cloudflare.com${isVercel ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`;
+  const frames = admin ? `'self' https://${firebaseAuthDomain} https://accounts.google.com` : `'self' https://challenges.cloudflare.com${vercelLive}`;
 
   return [
     "default-src 'self'",

@@ -14,6 +14,7 @@ type FirestoreValue =
   | { doubleValue: number }
   | { stringValue: string }
   | { bytesValue: string }
+  | { referenceValue: string }
   | { timestampValue: string }
   | { arrayValue: { values?: FirestoreValue[] } }
   | { mapValue: { fields?: Record<string, FirestoreValue> } };
@@ -23,12 +24,20 @@ type FirestoreDoc = { name: string; fields?: Record<string, FirestoreValue> };
 const DOCS = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents`;
 
 /** Wraps base64 data so it is stored as a Firestore bytes value (raw size counts toward the 1 MiB doc limit). */
+/** A reference to another document path (used to filter/order by document id). */
+export class FirestoreRef {
+  constructor(public readonly path: string) {}
+}
+
 export class FirestoreBytes {
   constructor(public readonly base64: string) {}
 }
 
 export function encodeValue(v: unknown): FirestoreValue {
   if (v instanceof FirestoreBytes) return { bytesValue: v.base64 };
+  if (v instanceof FirestoreRef) {
+    return { referenceValue: `projects/${firebaseProjectId}/databases/(default)/documents/${v.path}` };
+  }
   if (v === null || v === undefined) return { nullValue: null };
   if (typeof v === "boolean") return { booleanValue: v };
   if (typeof v === "string") return { stringValue: v };
@@ -167,7 +176,11 @@ export async function updateDoc(path: string, data: Record<string, unknown>): Pr
 }
 
 export type QueryOptions = {
-  where?: { field: string; op: "EQUAL" | "LESS_THAN" | "GREATER_THAN_OR_EQUAL"; value: unknown }[];
+  where?: {
+    field: string;
+    op: "EQUAL" | "LESS_THAN" | "LESS_THAN_OR_EQUAL" | "GREATER_THAN" | "GREATER_THAN_OR_EQUAL";
+    value: unknown;
+  }[];
   orderBy?: { field: string; direction?: "ASCENDING" | "DESCENDING" };
   limit?: number;
 };
@@ -222,11 +235,19 @@ export async function countDocs(collection: string, where?: { field: string; val
   return Number(rows[0]?.result?.aggregateFields?.n?.integerValue ?? 0);
 }
 
-/** Atomically add to numeric counters on one document (created if missing). Field names must be [A-Za-z0-9_]. */
-export async function incrementCounters(path: string, increments: Record<string, number>): Promise<void> {
-  const fieldTransforms = Object.entries(increments).map(([fieldPath, n]) => {
+/**
+ * Atomically add to numeric counters on one document (created if missing) and return the NEW values.
+ * Field names must be [A-Za-z0-9_]. Because the new value comes back in the same call, this is also safe to
+ * use for rate limiting (no read-then-write race).
+ */
+export async function incrementCounters(
+  path: string,
+  increments: Record<string, number>,
+): Promise<Record<string, number>> {
+  const names = Object.keys(increments);
+  const fieldTransforms = names.map((fieldPath) => {
     if (!/^[A-Za-z0-9_]+$/.test(fieldPath)) throw new Error(`Invalid counter field: ${fieldPath}`);
-    return { fieldPath, increment: { integerValue: String(n) } };
+    return { fieldPath, increment: { integerValue: String(increments[fieldPath]) } };
   });
   const token = await getAccessToken();
   const res = await fetch(`${DOCS}:commit`, {
@@ -245,6 +266,48 @@ export async function incrementCounters(path: string, increments: Record<string,
     }),
   });
   if (!res.ok) throw new Error(`Firestore increment ${path} failed (${res.status})`);
+  const json = (await res.json()) as { writeResults?: { transformResults?: { integerValue?: string }[] }[] };
+  const results = json.writeResults?.[0]?.transformResults ?? [];
+  return Object.fromEntries(names.map((n, i) => [n, Number(results[i]?.integerValue ?? 0)]));
+}
+
+/**
+ * One atomic write that sets some fields AND increments counters on a document (creating it if missing).
+ * Returns the new counter values. `set` must not contain the counter fields.
+ */
+export async function upsertWithCounters(
+  path: string,
+  set: Record<string, unknown>,
+  increments: Record<string, number>,
+): Promise<Record<string, number>> {
+  const names = Object.keys(increments);
+  const updateTransforms = names.map((fieldPath) => {
+    if (!/^[A-Za-z0-9_]+$/.test(fieldPath)) throw new Error(`Invalid counter field: ${fieldPath}`);
+    return { fieldPath, increment: { integerValue: String(increments[fieldPath]) } };
+  });
+  const setKeys = Object.keys(set).filter((k) => set[k] !== undefined);
+  const token = await getAccessToken();
+  const res = await fetch(`${DOCS}:commit`, {
+    method: "POST",
+    cache: "no-store",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      writes: [
+        {
+          update: {
+            name: `projects/${firebaseProjectId}/databases/(default)/documents/${path}`,
+            fields: encodeFields(set),
+          },
+          updateMask: { fieldPaths: setKeys },
+          updateTransforms,
+        },
+      ],
+    }),
+  });
+  if (!res.ok) throw new Error(`Firestore upsert ${path} failed (${res.status})`);
+  const json = (await res.json()) as { writeResults?: { transformResults?: { integerValue?: string }[] }[] };
+  const results = json.writeResults?.[0]?.transformResults ?? [];
+  return Object.fromEntries(names.map((n, i) => [n, Number(results[i]?.integerValue ?? 0)]));
 }
 
 export async function deleteDoc(path: string): Promise<void> {

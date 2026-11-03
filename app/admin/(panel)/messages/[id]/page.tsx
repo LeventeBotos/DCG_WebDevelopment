@@ -5,6 +5,7 @@ import { MESSAGE_STATUSES } from "@/lib/inbox/types";
 import { deleteMessageAction, updateMessageAction } from "../../actions";
 import InboxUpdateForm from "@/components/admin/InboxUpdateForm";
 import PageHeader from "@/components/admin/PageHeader";
+import ConfirmButton from "@/components/admin/ConfirmButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -14,7 +15,7 @@ export default async function MessageDetailPage({ params }: { params: Promise<{ 
   const admin = await requireAdmin();
   const { id } = await params;
   const m = await getMessage(decodeURIComponent(id));
-  if (!m) notFound();
+  if (!m || m.deletedAt) notFound();
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -29,9 +30,14 @@ export default async function MessageDetailPage({ params }: { params: Promise<{ 
             {admin.role === "owner" ? (
               <form action={deleteMessageAction}>
                 <input type="hidden" name="id" value={m.id} />
-                <Button type="submit" variant="destructive" size="sm" showArrow={false}>
+                <ConfirmButton
+                  variant="destructive"
+                  title="Move this message to Trash?"
+                  description="You can restore it from Trash for 30 days."
+                  confirmLabel="Move to Trash"
+                >
                   Delete
-                </Button>
+                </ConfirmButton>
               </form>
             ) : null}
           </>

@@ -2,7 +2,7 @@ import { createRemoteJWKSet, jwtVerify, SignJWT } from "jose";
 import { firebaseProjectId } from "@/lib/firebase/config";
 
 export type AdminRole = "owner" | "editor";
-export type AdminSession = { email: string; role: AdminRole };
+export type AdminSession = { email: string; role: AdminRole; /** Issued-at, seconds. Used for "sign out everywhere". */ iat?: number };
 
 const isProd = process.env.NODE_ENV === "production";
 /** __Host- prefix pins the cookie to this exact host over HTTPS; plain name in dev (http://localhost). */
@@ -54,7 +54,7 @@ export async function readSessionToken(token: string | undefined): Promise<Admin
     const { payload } = await jwtVerify(token, sessionSecret(), { algorithms: ["HS256"] });
     const role = payload.role === "owner" ? "owner" : payload.role === "editor" ? "editor" : null;
     if (!payload.sub || !role) return null;
-    return { email: payload.sub, role };
+    return { email: payload.sub, role, iat: typeof payload.iat === "number" ? payload.iat : undefined };
   } catch {
     return null;
   }

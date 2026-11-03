@@ -5,6 +5,9 @@ import { getPublishedJob } from "@/lib/jobs/server";
 import { deleteApplication, saveApplication, saveCv } from "@/lib/inbox/server";
 import { base64Size, CV_MAX_BYTES, CV_TYPES, detectCvType, sanitizeFileName } from "@/lib/cv";
 import { hashIp } from "@/lib/ip-hash";
+import { rateLimit } from "@/lib/rate-limit";
+import { adminUrl } from "@/lib/email";
+import { clientIp, verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "edge";
 
@@ -43,6 +46,7 @@ const ApplicationSchema = z
   utmMedium: z.string().trim().max(60).optional(),
   utmCampaign: z.string().trim().max(80).optional(),
   website: z.string().optional(),
+  turnstileToken: z.string().max(4096).optional(),
   })
   .refine((d) => Boolean(d.resumeUrl) || Boolean(d.cv), {
     message: "Add a CV link or upload a file.",
@@ -114,11 +118,32 @@ export async function POST(request: Request) {
     utmMedium,
     utmCampaign,
     website,
+    turnstileToken,
   } = parsed.data;
 
   if (website && website.trim().length > 0) {
     return NextResponse.json(
       { error: "Submission rejected.", requestId },
+      { status: 400 },
+    );
+  }
+
+  // Abuse controls: per-IP hourly cap and a global daily ceiling (each submission can store up to ~900 KB),
+  // then the Turnstile bot check.
+  const ipKey = (await hashIp(request)) ?? "noip";
+  const [perIp, global] = await Promise.all([
+    rateLimit(`apply_${ipKey}`, 5, 3600),
+    rateLimit("apply_global", 400, 86400),
+  ]);
+  if (!perIp.allowed || !global.allowed) {
+    return NextResponse.json(
+      { error: "Too many submissions. Please try again later.", requestId },
+      { status: 429, headers: { "Retry-After": String(perIp.allowed ? global.retryAfter : perIp.retryAfter) } },
+    );
+  }
+  if (!(await verifyTurnstile(turnstileToken, clientIp(request)))) {
+    return NextResponse.json(
+      { error: "Security check failed. Please refresh the page and try again.", requestId },
       { status: 400 },
     );
   }
@@ -156,6 +181,7 @@ export async function POST(request: Request) {
   // Persist first, so an email problem can never lose a candidate.
   let persisted = false;
   let cvStored = false;
+  let storedId = "";
   try {
     const applicationId = await saveApplication({
       jobId: job.id,
@@ -175,6 +201,7 @@ export async function POST(request: Request) {
       ipHash: await hashIp(request),
     });
     persisted = true;
+    storedId = applicationId;
 
     if (cvFile) {
       try {
@@ -251,6 +278,7 @@ export async function POST(request: Request) {
     `Portfolio: ${normalizeOptional(portfolio)}`,
     `Notice period: ${normalizeOptional(noticePeriod)}`,
     `Submitted: ${submittedAt}`,
+    ...(storedId ? [`Open in admin: ${adminUrl(`/applications/${storedId}`)}`] : []),
     "",
     "Candidate message:",
     message,
@@ -278,6 +306,7 @@ export async function POST(request: Request) {
               <tr><td style="padding:6px 0;color:#64748b;">LinkedIn</td><td style="padding:6px 0;">${safe.linkedin === "-" ? "-" : `<a href="${safe.linkedin}" style="color:#0A4C8A;text-decoration:none;">${safe.linkedin}</a>`}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Portfolio</td><td style="padding:6px 0;">${safe.portfolio === "-" ? "-" : `<a href="${safe.portfolio}" style="color:#0A4C8A;text-decoration:none;">${safe.portfolio}</a>`}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Submitted</td><td style="padding:6px 0;">${safe.submittedAt}</td></tr>
+              ${storedId ? `<tr><td style="padding:6px 0;color:#64748b;">Review</td><td style="padding:6px 0;"><a href="${adminUrl(`/applications/${storedId}`)}" style="color:#0A4C8A;font-weight:600;text-decoration:none;">Open in admin →</a></td></tr>` : ""}
             </table>
             <div style="margin-top:20px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#64748b;">Motivation</div>
             <div style="margin-top:10px;padding:16px;border:1px solid #e2e8f0;border-left:4px solid #00CACA;border-radius:12px;background:#f8fafc;line-height:1.7;">

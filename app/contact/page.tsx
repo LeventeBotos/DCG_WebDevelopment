@@ -4,9 +4,11 @@ import dynamic from "next/dynamic";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Check, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import TurnstileWidget, { turnstileSiteKey, type TurnstileHandle } from "@/components/TurnstileWidget";
 import SubpageHero from "@/components/SubpageHero";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { track } from "@/lib/analytics";
+import { collect } from "@/lib/collect";
 import { cn } from "@/lib/utils";
 
 const World = dynamic(
@@ -257,6 +259,9 @@ export default function ContactPage() {
     "Ready when you are.",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef<TurnstileHandle>(null);
+  const contactStartedRef = useRef(false);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [shouldRenderGlobe, setShouldRenderGlobe] = useState(false);
   const statusTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -359,6 +364,13 @@ export default function ContactPage() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    if (turnstileSiteKey && !turnstileToken) {
+      clearStatusTimers();
+      setErrorMessage("Please wait for the security check to finish, then submit again.");
+      setStatusDetail("Security check still running.");
+      setStatus("error");
+      return;
+    }
     const payload = {
       name: String(formData.get("name") || ""),
       email: String(formData.get("email") || ""),
@@ -368,6 +380,7 @@ export default function ContactPage() {
       topic: String(formData.get("topic") || ""),
       message: String(formData.get("message") || ""),
       website: String(formData.get("website") || ""),
+      turnstileToken,
     };
 
     try {
@@ -388,6 +401,7 @@ export default function ContactPage() {
       setLogEntries(logs);
       setRequestId(typeof data?.requestId === "string" ? data.requestId : null);
       clearStatusTimers();
+      turnstileRef.current?.reset(); // tokens are single-use
 
       if (!response.ok) {
         track("contact_error", {
@@ -681,6 +695,11 @@ export default function ContactPage() {
           <div className="space-y-6">
             <form
               onSubmit={handleSubmit}
+              onFocusCapture={() => {
+                if (contactStartedRef.current) return;
+                contactStartedRef.current = true;
+                collect("contact_start");
+              }}
               aria-busy={status === "submitting"}
               aria-describedby="contact-form-status"
               className="relative overflow-hidden rounded-3xl border border-white/10 text-white/30 p-6 shadow-xl"
@@ -922,6 +941,8 @@ export default function ContactPage() {
                       placeholder="Share goals, timelines, and any constraints we should know."
                     />
                   </label>
+
+                  <TurnstileWidget ref={turnstileRef} onToken={setTurnstileToken} />
 
                   <div aria-hidden="true" className="hidden">
                     <label className="sr-only" htmlFor="website">

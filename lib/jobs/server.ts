@@ -1,6 +1,6 @@
 import { countDocs, createDoc, getDoc, queryDocs, updateDoc } from "@/lib/firestore/rest";
 import { SEED_JOBS } from "./seed";
-import { toPublicJob, type Job, type JobCategory, type JobStatus, type PublicJob } from "./types";
+import { isJobOpen, toPublicJob, type Job, type JobCategory, type JobStatus, type PublicJob, type SalaryPeriod } from "./types";
 
 /** Server-only job data access. Sorting is done in memory (tiny collection) to avoid composite indexes. */
 
@@ -8,7 +8,7 @@ const bySort = (a: Job, b: Job) => a.sortOrder - b.sortOrder || a.title.localeCo
 
 export async function listAllJobs(): Promise<Job[]> {
   const jobs = await queryDocs<Omit<Job, "id">>("jobs", { limit: 500 });
-  return (jobs as Job[]).sort(bySort);
+  return (jobs as Job[]).filter((j) => !j.deletedAt).sort(bySort);
 }
 
 export async function getJob(id: string): Promise<Job | null> {
@@ -31,7 +31,10 @@ export async function getPublishedJobs(): Promise<PublicJob[]> {
       limit: 200,
     });
     if (jobs.length === 0 && (await isUnseeded())) return SEED_JOBS;
-    return (jobs as Job[]).sort(bySort).map(toPublicJob);
+    return (jobs as Job[])
+      .filter((j) => isJobOpen(j))
+      .sort(bySort)
+      .map(toPublicJob);
   } catch (error) {
     console.error("[jobs] Falling back to static roles:", error instanceof Error ? error.message : error);
     return SEED_JOBS;
@@ -42,7 +45,7 @@ export async function getPublishedJob(id: string): Promise<PublicJob | null> {
   try {
     const job = await getJob(id);
     if (!job && (await isUnseeded())) return SEED_JOBS.find((j) => j.id === id) ?? null;
-    return job && job.status === "published" ? toPublicJob(job) : null;
+    return job && isJobOpen(job) ? toPublicJob(job) : null;
   } catch {
     return SEED_JOBS.find((j) => j.id === id) ?? null;
   }
@@ -58,6 +61,14 @@ export type JobInput = {
   requirements: string[];
   status: JobStatus;
   sortOrder: number;
+  closesAt: string | null;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  salaryCurrency: string;
+  salaryPeriod: SalaryPeriod;
+  remote: boolean;
+  addressLocality: string;
+  addressCountry: string;
 };
 
 export function slugify(input: string): string {
@@ -108,4 +119,12 @@ export async function setJobStatus(id: string, status: JobStatus, actor: string,
     updatedBy: actor,
     updatedAt: now,
   });
+}
+
+/** Archive published jobs whose closing date has passed (called by the maintenance cron). Returns how many. */
+export async function archiveExpiredJobs(actor = "system"): Promise<number> {
+  const today = new Date().toISOString().slice(0, 10);
+  const expired = (await listAllJobs()).filter((j) => j.status === "published" && j.closesAt && j.closesAt.slice(0, 10) < today);
+  await Promise.all(expired.map((j) => setJobStatus(j.id, "archived", actor, j)));
+  return expired.length;
 }

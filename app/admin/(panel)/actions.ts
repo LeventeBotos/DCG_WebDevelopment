@@ -6,12 +6,17 @@ import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { requireAdmin, requireOwner } from "@/lib/auth/require-admin";
 import { createDoc, deleteDoc, setDoc, updateDoc } from "@/lib/firestore/rest";
+import { emailShell, escapeHtml, notifyAddress, sendEmail } from "@/lib/email";
+import { buildDigest } from "@/lib/digest";
+import { runMaintenance } from "@/lib/maintenance";
+import { clearCampaignCache } from "@/lib/analytics/collector";
+import { fieldSafe } from "@/lib/analytics/vocab";
+import { CANDIDATE_TEMPLATES, normalizeTags } from "@/lib/inbox/templates";
+import { isTrashEntity, purgeExpiredTrash, purgeForever, restore, softDelete } from "@/lib/trash";
 import { createJob, getJob, listAllJobs, setJobStatus, updateJob, type JobInput } from "@/lib/jobs/server";
 import { SEED_JOBS } from "@/lib/jobs/seed";
-import { JOB_CATEGORIES, JOB_STATUSES } from "@/lib/jobs/types";
+import { JOB_CATEGORIES, JOB_STATUSES, SALARY_PERIODS } from "@/lib/jobs/types";
 import {
-  deleteApplication,
-  deleteMessage,
   getApplication,
   getMessage,
   purgeRejectedApplications,
@@ -44,6 +49,20 @@ const JobSchema = z.object({
   status: z.enum(JOB_STATUSES as [string, ...string[]]),
   sortOrder: z.coerce.number().int().min(0).max(9999),
   slug: z.string().trim().max(60).optional(),
+  closesAt: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v), "Closing date must be a valid date")
+    .transform((v) => (v === "" ? null : v)),
+  salaryMin: z.string().trim().transform((v) => (v === "" ? null : Number(v))).pipe(z.number().int().min(0).max(10_000_000).nullable()),
+  salaryMax: z.string().trim().transform((v) => (v === "" ? null : Number(v))).pipe(z.number().int().min(0).max(10_000_000).nullable()),
+  salaryCurrency: z.string().trim().toUpperCase().regex(/^[A-Z]{3}$/, "Currency must be a 3-letter code").default("GBP"),
+  salaryPeriod: z.enum(SALARY_PERIODS).default("YEAR"),
+  remote: z.string().optional().transform((v) => v === "on"),
+  addressLocality: z.string().trim().max(80).default(""),
+  addressCountry: z.string().trim().toUpperCase().regex(/^[A-Z]{2}$/, "Country must be a 2-letter code").default("GB"),
+}).refine((d) => d.salaryMin === null || d.salaryMax === null || d.salaryMin <= d.salaryMax, {
+  message: "Minimum salary cannot be higher than the maximum",
 });
 
 function parseJob(formData: FormData) {
@@ -107,8 +126,8 @@ export async function deleteJobAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   const job = await getJob(id);
   if (!job) return;
-  await deleteDoc(`jobs/${encodeURIComponent(id)}`);
-  await audit(admin.email, "job.delete", "job", id, { title: job.title });
+  await softDelete("job", id, admin.email);
+  await audit(admin.email, "job.trash", "job", id, { title: job.title });
   revalidatePath("/admin/jobs");
 }
 
@@ -157,8 +176,8 @@ export async function deleteApplicationAction(formData: FormData): Promise<void>
   const id = String(formData.get("id") ?? "");
   const existing = await getApplication(id);
   if (!existing) return;
-  await deleteApplication(id);
-  await audit(admin.email, "application.delete", "application", id, { jobTitle: existing.jobTitle });
+  await softDelete("application", id, admin.email);
+  await audit(admin.email, "application.trash", "application", id, { jobTitle: existing.jobTitle });
   revalidatePath("/admin/applications");
   redirect("/admin/applications");
 }
@@ -195,8 +214,8 @@ export async function deleteMessageAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   const existing = await getMessage(id);
   if (!existing) return;
-  await deleteMessage(id);
-  await audit(admin.email, "message.delete", "message", id);
+  await softDelete("message", id, admin.email);
+  await audit(admin.email, "message.trash", "message", id);
   revalidatePath("/admin/messages");
   redirect("/admin/messages");
 }
@@ -226,4 +245,137 @@ export async function removeAdminAction(formData: FormData): Promise<void> {
   await deleteDoc(`admins/${encodeURIComponent(email)}`);
   await audit(owner.email, "admin.remove", "admin", email);
   revalidatePath("/admin/settings");
+}
+
+// ---------- trash (owner only) ----------
+export async function restoreAction(formData: FormData): Promise<void> {
+  const owner = await requireOwner();
+  const entity = formData.get("entity");
+  const id = String(formData.get("id") ?? "");
+  if (!isTrashEntity(entity) || !id) return;
+  await restore(entity, id);
+  await audit(owner.email, `${entity}.restore`, entity, id);
+  revalidatePath("/admin", "layout");
+}
+
+export async function purgeForeverAction(formData: FormData): Promise<void> {
+  const owner = await requireOwner();
+  const entity = formData.get("entity");
+  const id = String(formData.get("id") ?? "");
+  if (!isTrashEntity(entity) || !id) return;
+  await purgeForever(entity, id);
+  await audit(owner.email, `${entity}.purge`, entity, id);
+  revalidatePath("/admin/trash");
+}
+
+export async function emptyExpiredTrashAction(): Promise<void> {
+  const owner = await requireOwner();
+  const removed = await purgeExpiredTrash();
+  await audit(owner.email, "trash.purge_expired", "trash", undefined, { removed });
+  revalidatePath("/admin/trash");
+}
+
+// ---------- candidate workflow ----------
+const EmailSchema = z.object({
+  id: z.string().min(1),
+  templateId: z.string().min(1).max(40),
+  subject: z.string().trim().min(1, "Add a subject").max(200),
+  body: z.string().trim().min(1, "Write a message").max(5000),
+  updateStatus: z.string().optional(),
+});
+
+/** Sends an email to the candidate (replies go to the shared inbox) and records it on the application. */
+export async function emailCandidateAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const admin = await requireAdmin();
+  const parsed = EmailSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Please check the form." };
+  const { id, templateId, subject, body, updateStatus } = parsed.data;
+
+  const application = await getApplication(id);
+  if (!application || application.deletedAt) return { error: "Application not found." };
+
+  const paragraphs = body
+    .split(/\n{2,}/)
+    .map((p) => `<p style="margin:0 0 14px;">${escapeHtml(p).replace(/\n/g, "<br />")}</p>`)
+    .join("");
+  const sent = await sendEmail({
+    to: application.email,
+    subject,
+    html: emailShell("Data Consulting Group", paragraphs, "Careers"),
+    text: body,
+    replyTo: notifyAddress(),
+  });
+  if (!sent.ok) return { error: `Could not send the email: ${sent.error}` };
+
+  const template = CANDIDATE_TEMPLATES.find((t) => t.id === templateId);
+  const communications = [...(application.communications ?? []), { at: new Date().toISOString(), by: admin.email, templateId, subject, body }];
+  const patchData: Parameters<typeof updateApplication>[1] = { communications };
+  if (updateStatus === "on" && template?.status) patchData.status = template.status;
+  await updateApplication(id, patchData);
+  await audit(admin.email, "application.email", "application", id, { template: templateId, statusChanged: patchData.status ?? null });
+  revalidatePath(`/admin/applications/${id}`);
+  return { ok: patchData.status ? `Sent. Status set to ${patchData.status}.` : "Sent." };
+}
+
+export async function updateTagsAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const admin = await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { error: "Missing application." };
+  const tags = normalizeTags(String(formData.get("tags") ?? ""));
+  await updateApplication(id, { tags });
+  await audit(admin.email, "application.tags", "application", id, { tags });
+  revalidatePath(`/admin/applications/${id}`);
+  return { ok: "Tags saved." };
+}
+
+// ---------- sessions ----------
+/** Invalidate every session this account has ever been issued (cookies issued before now stop working). */
+async function revokeSessions(email: string) {
+  await setDoc(`adminSessions/${encodeURIComponent(email.toLowerCase())}`, { validAfter: new Date().toISOString() });
+}
+
+export async function signOutEverywhereAction(): Promise<void> {
+  const admin = await requireAdmin();
+  await revokeSessions(admin.email);
+  await audit(admin.email, "auth.sign_out_everywhere", "auth", admin.email);
+}
+
+export async function forceSignOutAction(formData: FormData): Promise<void> {
+  const owner = await requireOwner();
+  const email = String(formData.get("email") ?? "").toLowerCase();
+  if (!email) return;
+  await revokeSessions(email);
+  await audit(owner.email, "auth.force_sign_out", "auth", email);
+  revalidatePath("/admin/settings");
+}
+
+// ---------- owner tools ----------
+const CampaignSchema = z.object({ names: z.string().max(2000) });
+
+/** Campaign names are the only free-text analytics dimension, so they are allowlisted here. */
+export async function saveCampaignsAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const owner = await requireOwner();
+  const parsed = CampaignSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { error: "Invalid input." };
+  const names = [...new Set(parsed.data.names.split(/[\n,]/).map((n) => fieldSafe(n)).filter(Boolean))].slice(0, 50);
+  await setDoc("config/campaigns", { names, updatedBy: owner.email, updatedAt: new Date().toISOString() });
+  clearCampaignCache();
+  await audit(owner.email, "analytics.campaigns", "config", "campaigns", { count: names.length });
+  revalidatePath("/admin/settings");
+  return { ok: `Saved ${names.length} campaign${names.length === 1 ? "" : "s"}.` };
+}
+
+export async function sendTestDigestAction(_prev: ActionState): Promise<ActionState> {
+  const owner = await requireOwner();
+  const digest = await buildDigest();
+  const result = await sendEmail({ to: owner.email, ...digest });
+  await audit(owner.email, "digest.test", "email", undefined, { ok: result.ok });
+  return result.ok ? { ok: `Sent to ${owner.email}.` } : { error: result.error };
+}
+
+export async function runMaintenanceAction(_prev: ActionState): Promise<ActionState> {
+  const owner = await requireOwner();
+  const result = await runMaintenance();
+  await audit(owner.email, "maintenance.run", "system", undefined, result as Record<string, unknown>);
+  return { ok: JSON.stringify(result) };
 }

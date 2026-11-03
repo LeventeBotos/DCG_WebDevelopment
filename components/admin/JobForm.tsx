@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { categoryMeta, JOB_CATEGORIES, JOB_STATUSES, type Job } from "@/lib/jobs/types";
+import { categoryMeta, JOB_CATEGORIES, JOB_STATUSES, SALARY_PERIODS, type Job } from "@/lib/jobs/types";
 
 const toLines = (s: string) =>
   s
@@ -98,6 +98,54 @@ export default function JobForm({ job }: { job?: Job }) {
             <Input id="employmentType" name="employmentType" required value={employmentType} onChange={(e) => setEmploymentType(e.target.value)} />
           </div>
         </div>
+
+        <fieldset className="space-y-4 rounded-lg border p-4">
+          <legend className="px-1 text-sm font-medium">Google for Jobs details</legend>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="addressLocality">City</Label>
+              <Input id="addressLocality" name="addressLocality" defaultValue={job?.addressLocality ?? "London"} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="addressCountry">Country code</Label>
+              <Input id="addressCountry" name="addressCountry" maxLength={2} defaultValue={job?.addressCountry ?? "GB"} className="w-24 uppercase" />
+            </div>
+          </div>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" name="remote" defaultChecked={job?.remote ?? true} className="size-4" />
+            Remote working is possible
+          </label>
+          <div className="grid gap-4 sm:grid-cols-4">
+            <div className="space-y-2">
+              <Label htmlFor="salaryMin">Salary from</Label>
+              <Input id="salaryMin" name="salaryMin" type="number" min={0} defaultValue={job?.salaryMin ?? ""} placeholder="optional" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="salaryMax">Salary to</Label>
+              <Input id="salaryMax" name="salaryMax" type="number" min={0} defaultValue={job?.salaryMax ?? ""} placeholder="optional" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="salaryCurrency">Currency</Label>
+              <Input id="salaryCurrency" name="salaryCurrency" maxLength={3} defaultValue={job?.salaryCurrency ?? "GBP"} className="uppercase" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="salaryPeriod">Per</Label>
+              <Select id="salaryPeriod" name="salaryPeriod" defaultValue={job?.salaryPeriod ?? "YEAR"}>
+                {SALARY_PERIODS.map((p) => (
+                  <option key={p} value={p}>
+                    {p.toLowerCase()}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">If you enter a salary it is shown on the job page, which Google requires for pay to appear in search.</p>
+          <div className="space-y-2">
+            <Label htmlFor="closesAt">Closing date (optional)</Label>
+            <Input id="closesAt" name="closesAt" type="date" defaultValue={job?.closesAt?.slice(0, 10) ?? ""} className="w-48" />
+            <p className="text-xs text-muted-foreground">After this day the job disappears and stops taking applications automatically.</p>
+          </div>
+        </fieldset>
 
         <div className="space-y-2">
           <Label htmlFor="summary">Summary</Label>

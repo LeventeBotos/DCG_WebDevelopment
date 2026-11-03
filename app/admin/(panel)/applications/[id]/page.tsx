@@ -4,9 +4,11 @@ import { getApplication } from "@/lib/inbox/server";
 import { APPLICATION_STATUSES } from "@/lib/inbox/types";
 import { safeHref } from "@/lib/safe-url";
 import { deleteApplicationAction, updateApplicationAction } from "../../actions";
+import EmailCandidateForm from "@/components/admin/EmailCandidateForm";
 import InboxUpdateForm from "@/components/admin/InboxUpdateForm";
+import TagsForm from "@/components/admin/TagsForm";
 import PageHeader from "@/components/admin/PageHeader";
-import { Button } from "@/components/ui/button";
+import ConfirmButton from "@/components/admin/ConfirmButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata = { title: "Application" };
@@ -35,7 +37,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
   const admin = await requireAdmin();
   const { id } = await params;
   const a = await getApplication(decodeURIComponent(id));
-  if (!a) notFound();
+  if (!a || a.deletedAt) notFound();
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -46,9 +48,14 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
           admin.role === "owner" ? (
             <form action={deleteApplicationAction}>
               <input type="hidden" name="id" value={a.id} />
-              <Button type="submit" variant="destructive" size="sm" showArrow={false}>
+              <ConfirmButton
+                variant="destructive"
+                title={`Move ${a.name}’s application to Trash?`}
+                description="You can restore it from Trash for 30 days, after which the application and CV are permanently deleted."
+                confirmLabel="Move to Trash"
+              >
                 Delete candidate
-              </Button>
+              </ConfirmButton>
             </form>
           ) : null
         }
@@ -94,6 +101,30 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
 
           <Card>
             <CardHeader>
+              <CardTitle className="text-base">Email the candidate</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmailCandidateForm applicationId={a.id} name={a.name} role={a.jobTitle} email={a.email} />
+              {(a.communications ?? []).length > 0 ? (
+                <div className="mt-6 border-t pt-4">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sent so far</p>
+                  <ul className="space-y-2 text-sm">
+                    {[...(a.communications ?? [])].reverse().map((c) => (
+                      <li key={c.at} className="rounded-md border p-3">
+                        <p className="font-medium">{c.subject}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(c.at).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })} · {c.by}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle className="text-base">Why this role</CardTitle>
             </CardHeader>
             <CardContent>
@@ -103,6 +134,15 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
           </Card>
         </div>
 
+        <div className="space-y-6">
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle className="text-base">Tags</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <TagsForm applicationId={a.id} tags={a.tags ?? []} />
+          </CardContent>
+        </Card>
         <Card className="h-fit">
           <CardHeader>
             <CardTitle className="text-base">Review</CardTitle>
@@ -117,6 +157,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
             />
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

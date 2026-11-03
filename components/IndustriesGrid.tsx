@@ -1,4 +1,4 @@
-import { Building2, Plane, ShoppingBag, Train, Workflow, Factory } from "lucide-react";
+import { Building2, Home, Plane, ShoppingBag, Train, Workflow, Factory } from "lucide-react";
 
 const industries = [
   {
@@ -59,6 +59,16 @@ const industries = [
       "Dynamic pricing and revenue management",
       "Customer analytics for loyalty and service design",
       "Forecasting and operational decision support",
+    ],
+  },
+  {
+    title: "PropTech & Real Estate",
+    icon: Home,
+    summary: "Portfolio performance, building operations, and tenant experience.",
+    bullets: [
+      "Digital twins for buildings and property portfolios",
+      "Occupancy, space-utilization, and energy analytics",
+      "Valuation, rent, and demand forecasting",
     ],
   },
 ];

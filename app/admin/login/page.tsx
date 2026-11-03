@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getAdmin } from "@/lib/auth/require-admin";
 import LoginCard from "@/components/admin/LoginCard";
+import LoginArt from "@/components/admin/LoginArt";
 
 export default async function AdminLoginPage({
   searchParams,
@@ -12,12 +13,13 @@ export default async function AdminLoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-neutral-950 p-4">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(0,202,202,0.18),transparent_70%)]"
-      />
-      <LoginCard initialError={error === "denied" ? "This Google account is not authorised." : undefined} />
+    <div className="grid min-h-screen bg-black lg:grid-cols-[1.05fr_1fr]">
+      <div className="relative hidden lg:block">
+        <LoginArt />
+      </div>
+      <main className="flex items-center justify-center px-6 py-16">
+        <LoginCard initialError={error === "denied" ? "This account is not authorised for the admin panel." : undefined} />
+      </main>
     </div>
   );
 }

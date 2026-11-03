@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useId, useMemo, useRef, useState } from "react";
+import TurnstileWidget, { turnstileSiteKey, type TurnstileHandle } from "@/components/TurnstileWidget";
 import SubpageHero from "@/components/SubpageHero";
 import RoleCard from "@/components/careers/RoleCard";
 import { Button } from "@/components/ui/button";
@@ -67,6 +68,9 @@ export default function CareersClient({
     "Complete the form and submit your application.",
   );
   const [requestId, setRequestId] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const startedRef = useRef(false);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const dialogTitleId = useId();
@@ -168,6 +172,12 @@ export default function CareersClient({
       return;
     }
 
+    if (turnstileSiteKey && !turnstileToken) {
+      setApplicationState("error");
+      setApplicationMessage("Please wait for the security check to finish, then submit again.");
+      return;
+    }
+
     const payload = {
       jobId: String(formData.get("jobId") || ""),
       name: String(formData.get("name") || ""),
@@ -177,6 +187,7 @@ export default function CareersClient({
       portfolio: String(formData.get("portfolio") || ""),
       resumeUrl: String(formData.get("resumeUrl") || ""),
       ...(cv ? { cv } : {}),
+      turnstileToken,
       experience: String(formData.get("experience") || ""),
       noticePeriod: String(formData.get("noticePeriod") || ""),
       message: String(formData.get("message") || ""),
@@ -197,6 +208,7 @@ export default function CareersClient({
 
       if (!response.ok) {
         collect("apply_error", { job: payload.jobId });
+        turnstileRef.current?.reset();
         setApplicationState("error");
         setApplicationMessage(
           data?.error || "We could not submit your application. Please try again.",
@@ -206,6 +218,7 @@ export default function CareersClient({
 
       form.reset();
       setSelectedRole(payload.jobId);
+      turnstileRef.current?.reset();
       collect("apply_success", { job: payload.jobId });
       setApplicationState("submitted");
       setApplicationMessage(
@@ -375,6 +388,11 @@ export default function CareersClient({
 
             <form
               onSubmit={submitApplication}
+              onFocusCapture={() => {
+                if (startedRef.current) return;
+                startedRef.current = true;
+                collect("apply_start", { job: selectedRole });
+              }}
               aria-busy={applicationState === "submitting"}
               aria-describedby={statusMessageId}
               className="mt-6 space-y-4"
@@ -532,6 +550,8 @@ export default function CareersClient({
                     placeholder="Share your relevant projects and why this role is a fit."
                   />
                 </label>
+
+                <TurnstileWidget ref={turnstileRef} onToken={setTurnstileToken} />
 
                 <div aria-hidden="true" className="hidden">
                   <label className="sr-only" htmlFor="website">

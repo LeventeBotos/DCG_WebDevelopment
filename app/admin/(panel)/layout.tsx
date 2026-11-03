@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import { requireAdmin } from "@/lib/auth/require-admin";
-import { countDocs } from "@/lib/firestore/rest";
+import { countNew } from "@/lib/inbox/server";
 import AdminShell from "@/components/admin/AdminShell";
 
-async function safeCount(collection: string): Promise<number> {
+async function safeCount(collection: "applications" | "contactMessages"): Promise<number> {
   try {
-    return await countDocs(collection, { field: "status", value: "new" });
+    return await countNew(collection);
   } catch {
     return 0;
   }

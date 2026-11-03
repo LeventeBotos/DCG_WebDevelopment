@@ -4,6 +4,7 @@ import { services } from "@/lib/services";
 import { platforms } from "@/lib/platforms";
 import { getPublishedJobs } from "@/lib/jobs/server";
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const industrySlugs = ["energy", "banking", "manufacturing", "retail"] as const;
