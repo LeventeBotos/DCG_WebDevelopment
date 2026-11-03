@@ -39,7 +39,6 @@ async function runReport(property: string, token: string, body: Record<string, u
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    cache: "no-store",
   });
   if (!res.ok) {
     const detail = await res.json().catch(() => null);

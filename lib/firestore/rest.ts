@@ -122,7 +122,6 @@ async function call(path: string, init: RequestInit = {}): Promise<Response> {
   const token = await getAccessToken();
   return fetch(`${DOCS}/${path}`, {
     ...init,
-    cache: "no-store",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", ...init.headers },
   });
 }
@@ -206,7 +205,6 @@ export async function queryDocs<T = Record<string, unknown>>(
   const token = await getAccessToken();
   const res = await fetch(`${DOCS}:runQuery`, {
     method: "POST",
-    cache: "no-store",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({ structuredQuery }),
   });
@@ -226,7 +224,6 @@ export async function countDocs(collection: string, where?: { field: string; val
   const token = await getAccessToken();
   const res = await fetch(`${DOCS}:runAggregationQuery`, {
     method: "POST",
-    cache: "no-store",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({ structuredAggregationQuery: { structuredQuery, aggregations: [{ alias: "n", count: {} }] } }),
   });
@@ -252,7 +249,6 @@ export async function incrementCounters(
   const token = await getAccessToken();
   const res = await fetch(`${DOCS}:commit`, {
     method: "POST",
-    cache: "no-store",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       writes: [
@@ -289,7 +285,6 @@ export async function upsertWithCounters(
   const token = await getAccessToken();
   const res = await fetch(`${DOCS}:commit`, {
     method: "POST",
-    cache: "no-store",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       writes: [
