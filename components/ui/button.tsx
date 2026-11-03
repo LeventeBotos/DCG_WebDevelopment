@@ -13,6 +13,12 @@ const buttonVariants = cva(
           "bg-gradient-to-r from-dcg-lightBlue to-dcg-lightGreen text-white shadow-lg hover:shadow-xl",
         secondary:
           "border hover:border-dcg-lightGreen/50  hover:text-dcg-lightGreen shadow-sm hover:shadow-lg ",
+        // Admin / utility variants (no arrow, neutral styling).
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       },
       size: {
         default: "h-10 px-4 py-2",

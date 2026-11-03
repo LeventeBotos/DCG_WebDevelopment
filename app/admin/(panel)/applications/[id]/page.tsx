@@ -1,0 +1,123 @@
+import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/auth/require-admin";
+import { getApplication } from "@/lib/inbox/server";
+import { APPLICATION_STATUSES } from "@/lib/inbox/types";
+import { safeHref } from "@/lib/safe-url";
+import { deleteApplicationAction, updateApplicationAction } from "../../actions";
+import InboxUpdateForm from "@/components/admin/InboxUpdateForm";
+import PageHeader from "@/components/admin/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export const metadata = { title: "Application" };
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
+      <dd className="mt-0.5 break-words text-sm">{children || "—"}</dd>
+    </div>
+  );
+}
+
+function ExternalLink({ url }: { url: string }) {
+  const href = safeHref(url);
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer nofollow" className="text-primary underline-offset-4 hover:underline">
+      {url}
+    </a>
+  ) : (
+    <>{url}</>
+  );
+}
+
+export default async function ApplicationDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const admin = await requireAdmin();
+  const { id } = await params;
+  const a = await getApplication(decodeURIComponent(id));
+  if (!a) notFound();
+
+  return (
+    <div className="mx-auto max-w-5xl">
+      <PageHeader
+        title={a.name}
+        description={`${a.jobTitle} · received ${new Date(a.createdAt).toLocaleString("en-GB")}`}
+        actions={
+          admin.role === "owner" ? (
+            <form action={deleteApplicationAction}>
+              <input type="hidden" name="id" value={a.id} />
+              <Button type="submit" variant="destructive" size="sm" showArrow={false}>
+                Delete candidate
+              </Button>
+            </form>
+          ) : null
+        }
+      />
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Candidate</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid gap-4 sm:grid-cols-2">
+                <Field label="Email">
+                  <a href={`mailto:${a.email}`} className="text-primary underline-offset-4 hover:underline">
+                    {a.email}
+                  </a>
+                </Field>
+                <Field label="Location">{a.location}</Field>
+                <Field label="Experience">{a.experience}</Field>
+                <Field label="Notice period">{a.noticePeriod}</Field>
+                <Field label="CV file">
+                  {a.cvFileName ? (
+                    <a
+                      href={`/api/admin/applications/${a.id}/cv`}
+                      className="text-primary underline-offset-4 hover:underline"
+                    >
+                      Download {a.cvFileName} ({Math.max(1, Math.round((a.cvSize ?? 0) / 1024))} KB)
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                </Field>
+                <Field label="CV link">{a.resumeUrl ? <ExternalLink url={a.resumeUrl} /> : ""}</Field>
+                <Field label="LinkedIn">{a.linkedin ? <ExternalLink url={a.linkedin} /> : ""}</Field>
+                <Field label="Portfolio">{a.portfolio ? <ExternalLink url={a.portfolio} /> : ""}</Field>
+                <Field label="Source">
+                  {[a.utmSource, a.utmMedium, a.utmCampaign].filter(Boolean).join(" / ")}
+                </Field>
+              </dl>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Why this role</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Plain text, preserved line breaks; never rendered as HTML. */}
+              <p className="whitespace-pre-wrap text-sm leading-relaxed">{a.message}</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle className="text-base">Review</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <InboxUpdateForm
+              action={updateApplicationAction}
+              id={a.id}
+              statuses={APPLICATION_STATUSES}
+              status={a.status}
+              notes={a.notes}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

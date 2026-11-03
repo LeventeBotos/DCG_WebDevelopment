@@ -6,6 +6,8 @@ import {
   buildAdminEmailHtml,
   buildConfirmationEmailHtml,
 } from "@/components/email-template";
+import { saveContactMessage } from "@/lib/inbox/server";
+import { hashIp } from "@/lib/ip-hash";
 
 export const runtime = "edge";
 
@@ -121,6 +123,25 @@ export async function POST(request: Request) {
   const normalizedCompany = company?.trim() || "";
   const normalizedCountry = country?.trim() || "";
   const normalizedTopic = topic?.trim() || "General inquiry";
+
+  // Persist first so the message is never lost if email delivery fails.
+  let persisted = false;
+  try {
+    await saveContactMessage({
+      name,
+      email,
+      phone: normalizedPhone,
+      company: normalizedCompany,
+      country: normalizedCountry,
+      topic: normalizedTopic,
+      message: message.slice(0, 5000),
+      ipHash: await hashIp(request),
+    });
+    persisted = true;
+  } catch (error) {
+    log("error", "Could not store contact message.", serializeError(error).message);
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   const defaultFrom = "DCG Contact <onboarding@resend.dev>";
   const from = process.env.RESEND_FROM ?? defaultFrom;
@@ -128,6 +149,7 @@ export async function POST(request: Request) {
 
   if (!apiKey) {
     log("error", "Missing RESEND_API_KEY configuration.");
+    if (persisted) return jsonWithLogs({ ok: true, requestId }, logs, 200);
     return jsonWithLogs(
       { error: "Email service is not configured.", requestId },
       logs,
@@ -252,6 +274,7 @@ export async function POST(request: Request) {
 
     if (errors.length > 0) {
       log("error", "Resend returned errors.", errors.join(" | "));
+      if (persisted) return jsonWithLogs({ ok: true, requestId }, logs, 200);
       return jsonWithLogs(
         { error: "Failed to send message.", requestId },
         logs,
@@ -264,6 +287,7 @@ export async function POST(request: Request) {
   } catch (error) {
     const serialized = serializeError(error);
     log("error", "Unexpected error while sending emails.", serialized.message);
+    if (persisted) return jsonWithLogs({ ok: true, requestId }, logs, 200);
     return jsonWithLogs(
       { error: "Failed to send message.", requestId },
       logs,

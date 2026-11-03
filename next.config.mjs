@@ -10,26 +10,54 @@ const isDev = process.env.NODE_ENV !== "production";
 // (VERCEL is set automatically there) but not on other hosts such as Firebase.
 const isVercel = Boolean(process.env.VERCEL);
 const vercelLive = isVercel ? " https://vercel.live" : "";
-const contentSecurityPolicy = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'none'",
-  "object-src 'none'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com${vercelLive}`,
-  `style-src 'self' 'unsafe-inline'${vercelLive}`,
-  "img-src 'self' data: blob: https:",
-  `font-src 'self' data:${vercelLive}`,
-  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercel ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
-  "media-src 'self' blob:",
-  `frame-src 'self'${vercelLive}`,
-  "worker-src 'self' blob:",
-  // Safari applies this to http://localhost too, which breaks every asset in dev.
-  ...(isDev ? [] : ["upgrade-insecure-requests"]),
-]
-  .join("; ")
-  .replace(/\s{2,}/g, " ")
-  .trim();
+const firebaseAuthDomain = "dataconsultinggroup.firebaseapp.com";
+
+/**
+ * Public-site CSP. The admin panel gets its own (see below) because Google sign-in needs extra origins that
+ * the marketing site must not allow. Browsers enforce multiple CSP headers as an intersection, so the two
+ * header rules in headers() are mutually exclusive by path.
+ */
+function buildCsp({ admin }) {
+  const scripts = admin
+    ? `'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://apis.google.com`
+    : `'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://static.cloudflareinsights.com${vercelLive}`;
+  const connect = admin
+    ? `'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://${firebaseAuthDomain}`
+    : `'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com${isVercel ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`;
+  const frames = admin ? `'self' https://${firebaseAuthDomain} https://accounts.google.com` : `'self'${vercelLive}`;
+
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    `script-src ${scripts}`,
+    `style-src 'self' 'unsafe-inline'${vercelLive}`,
+    "img-src 'self' data: blob: https:",
+    `font-src 'self' data:${vercelLive}`,
+    `connect-src ${connect}`,
+    "media-src 'self' blob:",
+    `frame-src ${frames}`,
+    "worker-src 'self' blob:",
+    // Safari applies this to http://localhost too, which breaks every asset in dev.
+    ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  ]
+    .join("; ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+const commonSecurityHeaders = [
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
+];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -68,33 +96,27 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/:path*",
+        // Everything except /admin (negative lookahead keeps the two CSP headers from stacking).
+        source: "/((?!admin).*)",
         headers: [
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "Permissions-Policy",
-            value:
-              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: contentSecurityPolicy,
-          },
-          {
-            key: "X-DNS-Prefetch-Control",
-            value: "on",
-          },
+          ...commonSecurityHeaders,
+          { key: "Content-Security-Policy", value: buildCsp({ admin: false }) },
+        ],
+      },
+      {
+        source: "/admin/:path*",
+        headers: [
+          ...commonSecurityHeaders,
+          { key: "Content-Security-Policy", value: buildCsp({ admin: true }) },
+          { key: "Cache-Control", value: "no-store, max-age=0" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+        ],
+      },
+      {
+        source: "/api/admin/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, max-age=0" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
     ];

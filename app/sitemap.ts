@@ -2,10 +2,13 @@ import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/site";
 import { services } from "@/lib/services";
 import { platforms } from "@/lib/platforms";
+import { getPublishedJobs } from "@/lib/jobs/server";
+
+export const dynamic = "force-dynamic";
 
 const industrySlugs = ["energy", "banking", "manufacturing", "retail"] as const;
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl() ?? new URL("https://www.dataconsulting-group.com");
   const now = new Date();
 
@@ -46,6 +49,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const slug of industrySlugs) {
     entries.push({
       url: new URL(`/industries/${slug}`, base).toString(),
+      lastModified: now,
+    });
+  }
+
+  // Published jobs from the admin panel (falls back to the static roles if Firestore is unreachable).
+  for (const job of await getPublishedJobs()) {
+    entries.push({
+      url: new URL(`/careers/${job.id}`, base).toString(),
       lastModified: now,
     });
   }

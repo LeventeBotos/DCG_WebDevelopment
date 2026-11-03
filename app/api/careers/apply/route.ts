@@ -1,31 +1,52 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
+import { getPublishedJob } from "@/lib/jobs/server";
+import { deleteApplication, saveApplication, saveCv } from "@/lib/inbox/server";
+import { base64Size, CV_MAX_BYTES, CV_TYPES, detectCvType, sanitizeFileName } from "@/lib/cv";
+import { hashIp } from "@/lib/ip-hash";
 
 export const runtime = "edge";
 
-const OPEN_ROLES = [
-  "ML Engineer",
-  "Cloud Solutions Engineer",
-  "Data & Analytics Consultant",
-] as const;
+// z.string().url() also accepts javascript:/data: URLs; these values are later rendered as links in the admin panel.
+const optionalHttpUrl = z
+  .string()
+  .trim()
+  .max(500)
+  .refine((v) => v === "" || /^https?:\/\/\S+$/i.test(v), "Links must start with http:// or https://")
+  .optional();
 
-const ApplicationSchema = z.object({
-  role: z.enum(OPEN_ROLES),
-  name: z.string().trim().min(1, "Name is required."),
-  email: z.string().trim().email("Valid email is required."),
-  location: z.string().trim().min(1, "Location is required."),
-  linkedin: z.string().trim().optional(),
-  portfolio: z.string().trim().optional(),
-  resumeUrl: z.string().trim().url("Resume URL must be valid."),
-  experience: z.string().trim().min(1, "Experience is required."),
-  noticePeriod: z.string().trim().optional(),
+const ApplicationSchema = z
+  .object({
+  jobId: z.string().trim().regex(/^[a-z0-9-]{1,60}$/, "Choose a valid role."),
+  name: z.string().trim().min(1, "Name is required.").max(120),
+  email: z.string().trim().email("Valid email is required.").max(200),
+  location: z.string().trim().min(1, "Location is required.").max(120),
+  linkedin: optionalHttpUrl,
+  portfolio: optionalHttpUrl,
+  resumeUrl: optionalHttpUrl,
+  cv: z
+    .object({
+      name: z.string().max(200),
+      // base64 text; the decoded size is checked separately against CV_MAX_BYTES
+      data: z.string().regex(/^[A-Za-z0-9+/]+={0,2}$/).max(1_300_000),
+    })
+    .optional(),
+  experience: z.string().trim().min(1, "Experience is required.").max(60),
+  noticePeriod: z.string().trim().max(60).optional(),
   message: z
     .string()
     .trim()
-    .min(30, "Please share at least 30 characters about your fit."),
+    .min(30, "Please share at least 30 characters about your fit.")
+    .max(5000),
+  utmSource: z.string().trim().max(60).optional(),
+  utmMedium: z.string().trim().max(60).optional(),
+  utmCampaign: z.string().trim().max(80).optional(),
   website: z.string().optional(),
-});
+  })
+  .refine((d) => Boolean(d.resumeUrl) || Boolean(d.cv), {
+    message: "Add a CV link or upload a file.",
+  });
 
 const escapeHtml = (value: string) =>
   value.replace(/[&<>"']/g, (char) => {
@@ -55,6 +76,10 @@ const formatOptionalLink = (value?: string) => {
 
 export async function POST(request: Request) {
   const requestId = crypto.randomUUID();
+  // Reject oversized bodies early (a 900 KB CV is ~1.2 MB once base64-encoded).
+  if (Number(request.headers.get("content-length") ?? 0) > 1_500_000) {
+    return NextResponse.json({ error: "Request is too large.", requestId }, { status: 413 });
+  }
   const body = await request.json().catch(() => null);
 
   if (!body) {
@@ -74,16 +99,20 @@ export async function POST(request: Request) {
   }
 
   const {
-    role,
+    jobId,
     name,
     email,
     location,
     linkedin,
     portfolio,
-    resumeUrl,
+    resumeUrl: resumeUrlInput,
+    cv,
     experience,
     noticePeriod,
     message,
+    utmSource,
+    utmMedium,
+    utmCampaign,
     website,
   } = parsed.data;
 
@@ -91,6 +120,86 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "Submission rejected.", requestId },
       { status: 400 },
+    );
+  }
+
+  // The role must be a currently published job; its title is taken from our data, never from the client.
+  const job = await getPublishedJob(jobId);
+  if (!job) {
+    return NextResponse.json(
+      { error: "This role is no longer open.", requestId },
+      { status: 400 },
+    );
+  }
+  const role = job.title;
+  const resumeUrl = resumeUrlInput ?? "";
+
+  // Validate the uploaded file by content, not by name or declared type.
+  let cvFile: { fileName: string; contentType: string; size: number; base64: string } | null = null;
+  if (cv) {
+    const size = base64Size(cv.data);
+    const kind = detectCvType(cv.data);
+    if (size <= 0 || size > CV_MAX_BYTES) {
+      return NextResponse.json(
+        { error: `The CV must be under ${Math.round(CV_MAX_BYTES / 1024)} KB.`, requestId },
+        { status: 400 },
+      );
+    }
+    if (!kind) {
+      return NextResponse.json({ error: "Upload your CV as a PDF or DOCX file.", requestId }, { status: 400 });
+    }
+    // Keep the extension consistent with the real type.
+    const base = sanitizeFileName(cv.name).replace(/\.(pdf|docx)$/i, "") || "cv";
+    cvFile = { fileName: `${base}.${kind}`, contentType: CV_TYPES[kind], size, base64: cv.data };
+  }
+
+  // Persist first, so an email problem can never lose a candidate.
+  let persisted = false;
+  let cvStored = false;
+  try {
+    const applicationId = await saveApplication({
+      jobId: job.id,
+      jobTitle: role,
+      name,
+      email,
+      location,
+      linkedin: linkedin ?? "",
+      portfolio: portfolio ?? "",
+      resumeUrl,
+      experience,
+      noticePeriod: noticePeriod ?? "",
+      message,
+      utmSource: utmSource ?? "",
+      utmMedium: utmMedium ?? "",
+      utmCampaign: utmCampaign ?? "",
+      ipHash: await hashIp(request),
+    });
+    persisted = true;
+
+    if (cvFile) {
+      try {
+        await saveCv(applicationId, cvFile);
+        cvStored = true;
+      } catch (error) {
+        console.error(
+          `[careers][${requestId}] could not store CV:`,
+          error instanceof Error ? error.message : error,
+        );
+        // With no CV link to fall back on, an application without a CV is useless: undo it and ask to retry.
+        if (!resumeUrl) {
+          await deleteApplication(applicationId).catch(() => undefined);
+          persisted = false;
+          return NextResponse.json(
+            { error: "We could not save your CV. Please try again or paste a link instead.", requestId },
+            { status: 502 },
+          );
+        }
+      }
+    }
+  } catch (error) {
+    console.error(
+      `[careers][${requestId}] could not store application:`,
+      error instanceof Error ? error.message : error,
     );
   }
 
@@ -103,12 +212,15 @@ export async function POST(request: Request) {
     "info@dataconsulting-group.com";
 
   if (!apiKey) {
+    if (persisted) return NextResponse.json({ ok: true, requestId }, { status: 200 });
     return NextResponse.json(
       { error: "Email service is not configured.", requestId },
       { status: 500 },
     );
   }
 
+  const resumeLabel =
+    resumeUrl || (cvStored && cvFile ? `Uploaded file ${cvFile.fileName} (open it in the admin panel)` : "-");
   const submittedAt = new Date().toISOString();
   const safe = {
     role: escapeHtml(role),
@@ -118,6 +230,7 @@ export async function POST(request: Request) {
     linkedin: escapeHtml(formatOptionalLink(linkedin)),
     portfolio: escapeHtml(formatOptionalLink(portfolio)),
     resumeUrl: escapeHtml(resumeUrl),
+    resumeLabel: escapeHtml(resumeLabel),
     experience: escapeHtml(experience),
     noticePeriod: escapeHtml(normalizeOptional(noticePeriod)),
     message: escapeHtml(message).replace(/\n/g, "<br />"),
@@ -133,7 +246,7 @@ export async function POST(request: Request) {
     `Email: ${email}`,
     `Location: ${location}`,
     `Experience: ${experience}`,
-    `Resume URL: ${resumeUrl}`,
+    `Resume: ${resumeLabel}`,
     `LinkedIn: ${normalizeOptional(linkedin)}`,
     `Portfolio: ${normalizeOptional(portfolio)}`,
     `Notice period: ${normalizeOptional(noticePeriod)}`,
@@ -161,7 +274,7 @@ export async function POST(request: Request) {
               <tr><td style="padding:6px 0;color:#64748b;">Location</td><td style="padding:6px 0;">${safe.location}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Experience</td><td style="padding:6px 0;">${safe.experience}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Notice period</td><td style="padding:6px 0;">${safe.noticePeriod}</td></tr>
-              <tr><td style="padding:6px 0;color:#64748b;">Resume</td><td style="padding:6px 0;"><a href="${safe.resumeUrl}" style="color:#0A4C8A;text-decoration:none;">${safe.resumeUrl}</a></td></tr>
+              <tr><td style="padding:6px 0;color:#64748b;">Resume</td><td style="padding:6px 0;">${resumeUrl ? `<a href="${safe.resumeUrl}" style="color:#0A4C8A;text-decoration:none;">${safe.resumeUrl}</a>` : safe.resumeLabel}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">LinkedIn</td><td style="padding:6px 0;">${safe.linkedin === "-" ? "-" : `<a href="${safe.linkedin}" style="color:#0A4C8A;text-decoration:none;">${safe.linkedin}</a>`}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Portfolio</td><td style="padding:6px 0;">${safe.portfolio === "-" ? "-" : `<a href="${safe.portfolio}" style="color:#0A4C8A;text-decoration:none;">${safe.portfolio}</a>`}</td></tr>
               <tr><td style="padding:6px 0;color:#64748b;">Submitted</td><td style="padding:6px 0;">${safe.submittedAt}</td></tr>
@@ -235,7 +348,7 @@ export async function POST(request: Request) {
     ]);
 
     const hasError = Boolean(adminResult?.error || confirmationResult?.error);
-    if (hasError) {
+    if (hasError && !persisted) {
       return NextResponse.json(
         { error: "Failed to send application.", requestId },
         { status: 502 },
@@ -244,6 +357,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, requestId }, { status: 200 });
   } catch {
+    // Stored but email threw: the candidate is not lost and appears in the admin panel.
+    if (persisted) return NextResponse.json({ ok: true, requestId }, { status: 200 });
     return NextResponse.json(
       { error: "Failed to send application.", requestId },
       { status: 500 },

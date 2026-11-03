@@ -6,6 +6,8 @@ import Header from "@/components/Navbar";
 import Footer from "@/components/footer";
 import Analytics from "@/components/Analytics";
 import CookieBanner from "@/components/CookieBanner";
+import SiteChrome from "@/components/SiteChrome";
+import CollectPageview from "@/components/CollectPageview";
 import { getGoogleAnalyticsId } from "@/lib/analytics-config";
 import { siteConfig, getSiteUrl } from "@/lib/site";
 
@@ -144,13 +146,23 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <Analytics measurementId={googleAnalyticsId} />
-        <Header />
-        <main id="main-content" className="flex-grow" tabIndex={-1}>
+        <SiteChrome
+          top={
+            <>
+              <Analytics measurementId={googleAnalyticsId} />
+              <CollectPageview />
+              <Header />
+            </>
+          }
+          bottom={
+            <>
+              <Footer />
+              <CookieBanner />
+            </>
+          }
+        >
           {children}
-        </main>
-        <Footer />
-        <CookieBanner />
+        </SiteChrome>
       </body>
     </html>
   );

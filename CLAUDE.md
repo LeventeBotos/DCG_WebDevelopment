@@ -18,7 +18,7 @@ npx tsc --noEmit
 
 ## Architecture
 
-**Next.js 15 App Router** marketing site for Data Consulting Group. React 19, TypeScript strict mode, Tailwind CSS, Framer Motion for animations, shadcn/ui (Radix UI) components.
+**Next.js 16 App Router** marketing site for Data Consulting Group. React 19, TypeScript strict mode, Tailwind CSS, Framer Motion for animations, shadcn/ui (Radix UI) components.
 
 Path alias: `@/` maps to the repo root.
 
@@ -60,6 +60,19 @@ Defined in `next.config.mjs` and applied to all routes: CSP (allows GTM/GA scrip
 
 `NEXT_DIST_DIR` env var can override the default `.next` output directory (used in CI/deploy scripts).
 
+## Admin panel
+
+`/admin` is a private panel (Google sign-in via Firebase Auth, data in Firestore) for managing job listings,
+applications, contact messages and analytics. See `docs/admin-setup.md` for setup and env vars.
+
+- Auth: `lib/auth/` (`requireAdmin()`, `requireOwner()`, `requireAdminApi()`); session cookie issued by `app/api/admin/session/route.ts`. Do not rely on middleware/`proxy.ts` for auth.
+- Data: `lib/firestore/rest.ts` is an edge-safe Firestore REST client (service account). `firebase-admin` cannot run on the edge runtime. Security rules are deny-all.
+- Jobs: `lib/jobs/` (types are client-safe; `server.ts` is server-only). Public pages `app/careers/page.tsx` and `app/careers/[slug]/page.tsx` read published jobs. `/api/careers/apply` and `/api/contact` persist to Firestore before emailing.
+- Analytics: `lib/collect.ts` + `app/api/collect/route.ts` write cookieless daily counters; `lib/analytics/` aggregates them and reads GA4 (optional).
+- `/admin` has its own CSP and `no-store`/`noindex` headers in `next.config.mjs`; the marketing chrome and GA are skipped there (`components/SiteChrome.tsx`).
+- Every user-supplied URL rendered in admin must go through `lib/safe-url.ts`.
+- All new server routes/pages must declare `export const runtime = "edge"`.
+
 ## Environment variables
 
 | Variable | Purpose |
@@ -71,3 +84,7 @@ Defined in `next.config.mjs` and applied to all routes: CSP (allows GTM/GA scrip
 | `NEXT_PUBLIC_GA_ID` | GA4 measurement ID override |
 | `NEXT_PUBLIC_LINKEDIN_URL` | LinkedIn link in footer/social |
 | `NEXT_PUBLIC_X_URL` | X/Twitter link in footer/social |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | Admin panel: Firestore service account (secret) |
+| `ADMIN_SESSION_SECRET` | Admin panel: signs session cookie (secret) |
+| `ADMIN_OWNER_EMAILS` | Admin panel: bootstrap owner emails |
+| `GA4_PROPERTY_ID` | Optional: GA4 Data API property for the analytics page |
