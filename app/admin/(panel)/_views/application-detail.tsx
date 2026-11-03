@@ -3,7 +3,7 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { getApplication } from "@/lib/inbox/server";
 import { APPLICATION_STATUSES } from "@/lib/inbox/types";
 import { safeHref } from "@/lib/safe-url";
-import { deleteApplicationAction, updateApplicationAction } from "../../actions";
+import { deleteApplicationAction, updateApplicationAction } from "../actions";
 import EmailCandidateForm from "@/components/admin/EmailCandidateForm";
 import InboxUpdateForm from "@/components/admin/InboxUpdateForm";
 import TagsForm from "@/components/admin/TagsForm";

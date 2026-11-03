@@ -34,7 +34,6 @@
     "react": "^19",
     "react-dom": "^19",
     "recharts": "^3.10.1",
-    "resend": "^4.8.0",
     "rough-notation": "^0.5.1",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^2.6.0",

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { getMessage } from "@/lib/inbox/server";
 import { MESSAGE_STATUSES } from "@/lib/inbox/types";
-import { deleteMessageAction, updateMessageAction } from "../../actions";
+import { deleteMessageAction, updateMessageAction } from "../actions";
 import InboxUpdateForm from "@/components/admin/InboxUpdateForm";
 import PageHeader from "@/components/admin/PageHeader";
 import ConfirmButton from "@/components/admin/ConfirmButton";

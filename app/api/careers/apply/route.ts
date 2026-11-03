@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { Resend } from "resend";
+import { Resend } from "@/lib/resend-lite";
 import { getPublishedJob } from "@/lib/jobs/server";
 import { deleteApplication, saveApplication, saveCv } from "@/lib/inbox/server";
 import { base64Size, CV_MAX_BYTES, CV_TYPES, detectCvType, sanitizeFileName } from "@/lib/cv";

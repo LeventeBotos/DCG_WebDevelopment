@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+import dynamic from "next/dynamic";
+
+// Client-only: keeps motion/framer-motion out of every admin edge function (Cloudflare Pages 25 MiB bundle limit).
+const GlowingEffect = dynamic(() => import("@/components/ui/glowing-effect").then((m) => m.GlowingEffect), { ssr: false });
 
 /** Dashboard tile with the Aceternity glowing border. Optional link makes the whole tile clickable. */
 export default function StatCard({

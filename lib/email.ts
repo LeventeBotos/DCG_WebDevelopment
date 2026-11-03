@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import { Resend } from "@/lib/resend-lite";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 
 /** Shared Resend sender for admin-originated email (notifications, digest, candidate replies). */

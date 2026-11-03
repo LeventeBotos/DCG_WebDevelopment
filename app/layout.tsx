@@ -2,20 +2,11 @@ import type React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Navbar";
-import Footer from "@/components/footer";
-import Analytics from "@/components/Analytics";
-import CookieBanner from "@/components/CookieBanner";
-import SiteChrome from "@/components/SiteChrome";
-import CollectPageview from "@/components/CollectPageview";
-import AnalyticsExtras from "@/components/AnalyticsExtras";
-import { getGoogleAnalyticsId } from "@/lib/analytics-config";
 import { siteConfig, getSiteUrl } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const siteUrl = getSiteUrl();
-const googleAnalyticsId = getGoogleAnalyticsId();
 
 export const metadata: Metadata = {
   metadataBase: siteUrl ?? undefined,
@@ -147,24 +138,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <SiteChrome
-          top={
-            <>
-              <Analytics measurementId={googleAnalyticsId} />
-              <CollectPageview />
-              <AnalyticsExtras />
-              <Header />
-            </>
-          }
-          bottom={
-            <>
-              <Footer />
-              <CookieBanner />
-            </>
-          }
-        >
-          {children}
-        </SiteChrome>
+        {children}
       </body>
     </html>
   );

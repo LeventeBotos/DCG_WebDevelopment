@@ -2,12 +2,19 @@
 
 import Link from "next/link";
 import NotFoundTracker from "@/components/NotFoundTracker";
-import ThermodynamicGrid from "@/components/ui/interactive-thermodynamic-grid";
-import TubesBackground from "@/components/ui/neon-flow";
-// import NeonFlow from "@/components/ui/neon-flow";
+import dynamic from "next/dynamic";
+
+// Client-only so the heavy canvas/motion code and site chrome stay out of every edge function bundle
+// (Cloudflare Pages Functions 25 MiB limit). The root not-found is bundled into all routes.
+const ThermodynamicGrid = dynamic(() => import("@/components/ui/interactive-thermodynamic-grid"), { ssr: false });
+const TubesBackground = dynamic(() => import("@/components/ui/neon-flow"), { ssr: false });
+const Header = dynamic(() => import("@/components/Navbar"), { ssr: false });
+const Footer = dynamic(() => import("@/components/footer"), { ssr: false });
 
 export default function NotFound() {
   return (
+    <>
+    <Header />
     <section
       className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[#050505] px-6 py-20 text-zinc-100"
       aria-labelledby="not-found-title"
@@ -47,5 +54,7 @@ export default function NotFound() {
         </Link>
       </div>
     </section>
+    <Footer />
+    </>
   );
 }

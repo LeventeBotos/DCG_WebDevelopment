@@ -92,3 +92,11 @@ applications, contact messages and analytics. See `docs/admin-setup.md` for setu
 | `GA4_PROPERTY_ID` | Optional: GA4 Data API property for the analytics page |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | Turnstile keys for the public forms |
 | `CRON_SECRET` | Bearer secret for `/api/cron/*` (weekly digest, daily maintenance) |
+
+## Cloudflare Pages bundle limit (25 MiB)
+
+`next-on-pages` bundles every dynamic route as its own copy of the Next runtime (~1.7 MB per page route), so the Pages Functions bundle must stay under 25 MiB. To keep it small:
+- The whole admin panel is ONE catch-all route: `app/admin/(panel)/[[...slug]]/page.tsx` dispatching to plain components in `app/admin/(panel)/_views/`. Add new admin pages as views there, not as new `page.tsx` files.
+- Public marketing chrome lives in `app/(site)/layout.tsx` (route group), not the root layout, so admin/API functions don't bundle it.
+- Don't add the `resend` SDK (pulls in prettier/react-email); use `lib/resend-lite.ts`.
+- Check size locally: `pnpm_config_strict_dep_builds=false npx --legacy-peer-deps @cloudflare/next-on-pages@1`, then sum `.vercel/output/static/_worker.js/__next-on-pages-dist__/functions`.
