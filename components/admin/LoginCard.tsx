@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  getRedirectResult,
   GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
 } from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
-import { getFirebaseAuth } from "@/lib/firebase/client";
+import { canUseRedirect, getFirebaseAuth } from "@/lib/firebase/client";
 
 const fieldClass =
   "h-14 w-full rounded-2xl bg-white/[0.06] px-5 text-[15px] text-white placeholder:text-neutral-500 outline-none ring-1 ring-transparent transition focus:ring-[#00cacc]/70 disabled:opacity-50";
@@ -57,22 +59,60 @@ export default function LoginCard({ initialError }: { initialError?: string }) {
     return true;
   }
 
+  /** Complete a Google sign-in that returned from the redirect flow. */
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const auth = getFirebaseAuth();
+      try {
+        const result = await getRedirectResult(auth);
+        if (!result || cancelled) return;
+        setBusy("google");
+        await finish(await result.user.getIdToken(true));
+      } catch (e) {
+        const code = (e as { code?: string }).code ?? "";
+        if (!cancelled) {
+          setError(
+            code === "auth/too-many-requests"
+              ? "Too many attempts. Wait a few minutes and try again."
+              : "Sign-in failed. Try again.",
+          );
+        }
+      } finally {
+        await signOut(auth).catch(() => undefined);
+        if (!cancelled) setBusy(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function run(kind: "google" | "password") {
     setBusy(kind);
     setError(undefined);
     setNotice(undefined);
     const auth = getFirebaseAuth();
+    let redirecting = false;
     try {
       let credential;
       if (kind === "google") {
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: "select_account" });
+        // Full-page redirect on HTTPS (popups need a second tap in Safari); popup on http://localhost.
+        if (canUseRedirect()) {
+          redirecting = true;
+          await signInWithRedirect(auth, provider);
+          return; // page navigates away; getRedirectResult handles the return
+        }
         credential = await signInWithPopup(auth, provider);
       } else {
         credential = await signInWithEmailAndPassword(auth, email.trim(), password);
       }
       await finish(await credential.user.getIdToken(true));
     } catch (e) {
+      redirecting = false;
       const code = (e as { code?: string }).code ?? "";
       if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return;
       if (code === "auth/operation-not-allowed") setError("Email sign-in is not enabled for this project yet.");
@@ -80,9 +120,11 @@ export default function LoginCard({ initialError }: { initialError?: string }) {
       else if (kind === "password" && code.startsWith("auth/")) setError("Incorrect email or password.");
       else setError("Sign-in failed. Try again.");
     } finally {
-      // The ID token is only needed once; drop the browser-side Firebase session.
-      await signOut(auth).catch(() => undefined);
-      setBusy(null);
+      if (!redirecting) {
+        // The ID token is only needed once; drop the browser-side Firebase session.
+        await signOut(auth).catch(() => undefined);
+        setBusy(null);
+      }
     }
   }
 

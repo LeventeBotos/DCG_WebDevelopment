@@ -93,14 +93,30 @@ const nextConfig = {
       },
     ],
   },
+  // Serve Firebase's auth helper pages from our own origin so signInWithRedirect works in browsers that
+  // partition third-party storage (Safari, Chrome). Client authDomain is set to the current host.
+  async rewrites() {
+    return [
+      { source: "/__/auth/:path*", destination: `https://${firebaseAuthDomain}/__/auth/:path*` },
+      { source: "/__/firebase/:path*", destination: `https://${firebaseAuthDomain}/__/firebase/:path*` },
+    ];
+  },
   async headers() {
     return [
       {
         // Everything except /admin (negative lookahead keeps the two CSP headers from stacking).
-        source: "/((?!admin).*)",
+        source: "/((?!admin|__/auth).*)",
         headers: [
           ...commonSecurityHeaders,
           { key: "Content-Security-Policy", value: buildCsp({ admin: false }) },
+        ],
+      },
+      {
+        // The auth helper iframe is embedded by our own login page.
+        source: "/__/auth/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Cache-Control", value: "no-store, max-age=0" },
         ],
       },
       {
