@@ -261,18 +261,18 @@ export default function Footer() {
               <div className="flex items-center gap-2">
                 {/* <span className="text-xs uppercase tracking-wide">Web</span> */}
                 <a
-                  href="https://www.dataconsulting-group.com"
+                  href="https://dataconsulting-group.com"
                   className="break-all transition-colors hover:text-white sm:break-normal"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
                     track("outbound_click", {
-                      href: "https://www.dataconsulting-group.com",
+                      href: "https://dataconsulting-group.com",
                       location: "footer",
                     })
                   }
                 >
-                  www.dataconsulting-group.com
+                  dataconsulting-group.com
                 </a>
               </div>
               <p className="text-sm text-white/70">

@@ -6,6 +6,8 @@ Everything server-side runs on the **edge runtime** (Cloudflare Pages), so `fire
 ## 1. Firebase (project `dataconsultinggroup`)
 - Authentication → Sign-in method: enable **Google**.
 - Authentication → Settings → Authorized domains: production domain, the `*.pages.dev` domain, `localhost`.
+- Google Cloud → APIs & Services → Credentials: keep
+  `https://dataconsulting-group.com/__/auth/handler` in the OAuth client's authorized redirect URIs.
 - Firestore: security rules must stay **deny-all** (`allow read, write: if false`). All access goes through
   server code using a service account; the browser never talks to Firestore.
 - Project settings → Service accounts → generate a private key (role: Cloud Datastore User is enough).
@@ -58,7 +60,7 @@ While `jobs` is empty the public careers page shows the original three roles; us
 Cloudflare Pages has no cron, so `.github/workflows/scheduled-jobs.yml` calls `POST /api/cron/digest` (Mondays 07:00 UTC)
 and `POST /api/cron/maintenance` (daily 03:15 UTC) with `Authorization: Bearer $CRON_SECRET`.
 1. Set `CRON_SECRET` (32+ random characters) in Cloudflare Pages, and the same value as a GitHub repository secret.
-2. Add the GitHub repository secret `SITE_URL` (e.g. `https://www.dataconsulting-group.com`).
+2. Add the GitHub repository secret `SITE_URL` (e.g. `https://dataconsulting-group.com`).
 3. Optional: `DIGEST_TO` (defaults to `RESEND_TO`). Settings → Scheduled jobs has buttons to test both by hand.
 Maintenance merges analytics shards, deletes expired visitor records, rate-limit counters and trash (30 days), purges
 rejected applications older than 12 months, and archives jobs past their closing date.
