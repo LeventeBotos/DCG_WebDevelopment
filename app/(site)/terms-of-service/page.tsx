@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
   return (
     <LegalDocumentPage
       title="Terms of Service"
-      description="These terms govern your access to and use of www.dataconsulting-group.com as a guest or registered user."
+      description="These terms govern your access to and use of dataconsulting-group.com as a guest or registered user."
       lastUpdated="February 2026"
       pdfHref="/documents/TermsOfService.pdf"
       pdfLabel="View Terms of Service PDF"

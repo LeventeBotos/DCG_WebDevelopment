@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const industrySlugs = ["energy", "banking", "manufacturing", "retail"] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = getSiteUrl() ?? new URL("https://www.dataconsulting-group.com");
+  const base = getSiteUrl() ?? new URL("https://dataconsulting-group.com");
   const now = new Date();
 
   const staticRoutes = [

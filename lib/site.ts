@@ -7,7 +7,7 @@ export const siteConfig = {
     "Production-ready AI, data, and cloud consulting for ambitious enterprises.",
   ogImagePath: "/og-image.png",
   locale: "en_GB",
-  defaultSiteUrl: "https://www.dataconsulting-group.com",
+  defaultSiteUrl: "https://dataconsulting-group.com",
   socialLinks: {
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || null,
     x: process.env.NEXT_PUBLIC_X_URL || null,

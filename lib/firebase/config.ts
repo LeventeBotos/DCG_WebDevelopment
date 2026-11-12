@@ -1,6 +1,6 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyDAAt0CnMSmck5h0Zo-Oy5dQf6dx21N1Tc",
-  authDomain: "dataconsultinggroup.firebaseapp.com",
+  authDomain: "dataconsulting-group.com",
   projectId: "dataconsultinggroup",
   storageBucket: "dataconsultinggroup.firebasestorage.app",
   messagingSenderId: "791574804700",

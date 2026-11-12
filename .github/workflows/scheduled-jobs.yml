@@ -1,5 +1,5 @@
 # Cloudflare Pages has no built-in cron, so GitHub Actions calls the protected endpoints on a schedule.
-# Required repository secrets: SITE_URL (e.g. https://www.dataconsulting-group.com) and CRON_SECRET
+# Required repository secrets: SITE_URL (e.g. https://dataconsulting-group.com) and CRON_SECRET
 # (must equal the CRON_SECRET environment variable set in Cloudflare Pages).
 name: Scheduled jobs
 
